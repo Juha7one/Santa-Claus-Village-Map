@@ -1,0 +1,335 @@
+
+
+
+
+
+export const en = {
+  places: {
+    'arctic-circle-line': {
+      name: 'Arctic Circle Line',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/Santa-Claus-Village-Rovaniemi-Lapland-Finland-family-crossing-the-Arctic-Circle.jpg" /><br><br>The Arctic Circle is a circle of latitude that runs 66°33′45.9″ north of the Equator. It marks the southernmost latitude where the sun can stay continuously below or above the horizon for 24 hours – these phenomena are known as the Midnight Sun in the summer and the Polar Night “Kaamos” in the winter.]]>`,
+    },
+    'roosevelt-cottage': {
+      name: 'Roosevelt Cottage',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/roosevelt-cottage-arctic-circle-rovaniemi-lapland.jpg" /><br><br>The Roosevelt Cottage is the oldest building in Santa Claus Village, built in 1950 to honor a visit from Eleanor Roosevelt. It was constructed in just a couple of weeks to welcome her and see the rebuilding efforts in post-WWII Rovaniemi. Today, the historic cottage is a souvenir shop and a reminder of the international cooperation that helped Rovaniemi recover.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/roosavelt-cottage-new-copy.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/DJI_20231126123154_0047_D-2048x1152.jpg" />]]>`,
+    },
+    'arctic-circle-tourist-information': {
+      name: 'Arctic Circle Tourist Information',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/napapiiri-08-03__DSC2373.jpg" /><br><br>Arctic Circle Information, located in Santa’s Gift House in the center of Santa Claus Village, provides information about Santa Claus Village, the Rovaniemi area and Lapland. Go to the Information Point or contact them by email or phone.<br>Their multilingual staff will help you to book your activities, and get your Arctic Circle Crossing Certificate.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/napapiiri-08-03__DSC2356.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/09/DSC05352-Copy-2048x1071.jpg" />]]>`,
+    },
+    'santa-claus-village-central-square': {
+      name: 'Santa Claus Village Central Square',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/hero-winter-scaled.jpg" /><br><br>The heart of the village, from where you can see and get to the rest of the attractions, as well as cross the Arctic Circle line and experience the live webcam.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/santa-claus-village-arctic-circle-rovaniemi-21.jpg" />]]>`,
+    },
+    'christmas-house-and-santa': {
+      name: 'Christmas House and Santa',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Christmas-House-1-Copy-scaled.jpg" /><br><br>Here you can visit Santa Claus in his Christmas House, every day of the year. If you desire, the elves can create a lasting memory of your meeting with Santa Claus with a high quality photo. Entrance to meet Santa in Christmas House is FREE. Christmas House is located at the entrance of Santa Claus Village at the Arctic Circle.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/House-of-Santa-Claus-Rovaniemi-Lapland-village-2048x1185.jpg" />]]>`,
+    },
+    'elf-hat-academy': {
+      name: 'Elf Hat Academy',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Elf-Hat-3.jpg" /><br><br>On the Arctic Circle, close by Santas’ Main Office, there is a magic place named Elf Academy. It is an academy like no other – the place where different kind of elves gather to learn the ancient elf wisdoms and crafts.<br>Book Elves read and organize larger and smaller books, Home Elves practice the art of hiding in plain sight, Toy Elves study the craft of toy making, Sauna Elves learn secrets of sauna rituals and Santa’s elves prepare for the hustle and bustle of Christmas Eve. Of course, it is impossible to learn all Elf wisdom at once, but during your secret visit to the charming Elf Academy, the elves will share their tips and tricks on how to become an elf little helper yourself.<br>Expect to become one of the elves, sneak peek into their daily lives in the academy and experience the preparations for Christmas on the Arctic Circle. Upon graduation, the elf students will receive a special elf mark to symbolize the newly acquired wisdom and, of course, an Elf Academy graduates’ diploma to always remember the secrets you learned.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Elf-Hat-10.jpg" />]]>`,
+    },
+    'santas-main-post-office': {
+      name: "Santa Claus' Main Post Office",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/JPP-95-2048x936.jpg" /><br><br>Santa Claus' Main Post Office is a genuine, official post office located in the Santa Claus Village on the Arctic Circle near Rovaniemi, Finland. It serves as a hub for all of Santa's mail and is open year-round, staffed by elves who help visitors send postcards and letters with a special Arctic Circle postmark. Visitors can also purchase souvenirs, write a personalized letter from Santa, and see some of the millions of letters Santa receives annually. <br>Did you know that every year Santa Claus receives around half a million letters to his post office at the Arctic Circle? The letters arrive from children and adults all over the world!<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/JPP-110-2048x936.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/JPP-120-2048x936.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/2800_1280_JPP3-2048x936.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/JPP-78-2048x936.jpg" />]]>`,
+    },
+    'santa-claus-office': {
+      name: 'Santa Claus Office',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Vaaka-2048x1025.jpg" /><br><br>Meet Santa Claus! It is possible every day of the year at Santa Claus Office. Everybody is welcome to visit this atmospheric place and enjoy a private chat with Santa.<br>Entrance is free of charge. Santa Claus Office is situated right at the Arctic Circle, next to the main square of Santa Claus Village. The Arctic Circle has always been a dear and delightful place for Santa, as many of the fairy-tale secrets of Christmas have their roots in this magical area.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/1-2048x1151.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/2-2048x1365.jpg" />]]>`,
+    },
+    'crossing-the-arctic-circle': {
+      name: 'Crossing the Arctic Circle',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/santa-claus-village-arctic-circle-rovaniemi-lapland-finland-summer-6-1920x1281.jpg" /><br><br>You can cross the Arctic Circle effortlessly simply by landing in Rovaniemi airport, or with more creative ways. Many visitors have fun crossing the Arctic Circle in Santa Claus Village – where it is clearly marked on the ground – and even acquire a certificate confirming the deed. A variety of activity tours in Rovaniemi cross the Arctic Circle at some point, meaning one can cross the line on a snowmobile, a husky sled or in a reindeer sleigh – only your imagination is the limit.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/Sights-attractions-Santa-Claus-Village-Rovaniemi-Lapland-Finland-13-1920x1279.jpg" /><br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/santa-claus-village-arctic-circle-rovaniemi-lapland-finland-summer-3-1280x853.jpg" />]]>`,
+    },
+    'mrs-santa-claus-christmas-cottage': {
+      name: 'Mrs. Santa Claus Christmas Cottage',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/DJI_0211-2048x1417.jpg" /><br><br>Mrs. Santa Claus’ Christmas Cottage is an unforgettable attraction of Santa Claus Village in Rovaniemi.<br>Visiting Mrs. Santa Claus and the elves is guaranteed to be exciting, warm and fun. Mrs. Santa Claus loves to tell stories about Lapland and to share the joy in her heart with visiting friends.<br>The destination includes also the cozy Café of Mrs. Claus with a FREE entrance.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Mrs-Claus_JTV02482-Copy-2048x1216.jpg" />]]>`,
+    },
+    'nova-skyland-aurora-suites': {
+      name: 'Nova Skyland Aurora Suites',
+      description: `<![CDATA[<img src="https://r.profitroom.pl/novaskyland/images/offers/SMVRVWNBgXjqP9UR.jpg" /><br><br>Aurora Suites offer you a unique accommodation experience mixed with Scandinavian design, luxury and a perfect set up for relaxation under the Northern sky. Aurora Suites are suitable for couples, friends and smaller families.<br><br><img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/623698149.jpg?k=bcdf43bd266ea90caa49a3f985a0cfb85332fbb115338f0665b7a1a3d3c38c71&o=" /><br><br><img src="https://r.profitroom.pl/novaskyland/images/202201261054590.NovaSkyland_0005_ilmakuva.jpg" />]]>`,
+    },
+    'santas-luxury-boutique-villa': {
+      name: "Santa's Luxury Boutique Villa",
+      description: `<![CDATA[<img src="https://cdn.shopify.com/s/files/1/0470/0343/5171/files/marikotaniemi-talvi25-1-26.jpg?v=1739171899" /><br><br>Santa’s Luxury Boutique Villa / Apartments in Santa Claus Village and Rovaniemi City center are a contemporary boutique hotel and provides premium accommodation. Our family-owned hotel is easy to reach by plane, car and train and all the services and activities of the Santa Claus Village and Rovaniemi city are right at the door step.<br>The villa / apartments (Santa Claus Village) are located right in the heart of Santa Claus Village, the location is absolutely ideal. Santa's main office can be seen directly from the windows and is only about 50 meters away. All other nice things to do and restaurant services are also within walking distance. The spacious apartments have plenty of room for the whole family, and if you wish, you can also choose an entire villa if you are traveling with a larger group.<br><br><img src="https://cdn.shopify.com/s/files/1/0470/0343/5171/files/santasluxuryboutiquevilla-1-55.jpg?v=1744705361" /><br><br><img src="https://cdn.shopify.com/s/files/1/0470/0343/5171/files/santasluxuryboutiquevilla-1-55.jpg?v=1744705361" />]]>`,
+    },
+    'glass-resort': {
+      name: 'Glass Resort',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/GlassResortAir3-2048x1210.jpg" /><br><br>Located in the heart of Santa Claus Village, family-owned Glass Resort combines Lappish heritage, modern Scandinavian design, and the purity of the Arctic Circle’s nature.<br>The Premium Glass Apartments (44 m2) and new Deluxe Glass Apartments (120 m2) feature glass walls and ceilings for unobstructed views of the Northern Lights, along with private saunas, outdoor Hot Spring spas, and interiors decorated with Lappish crafts and designer furnishings.<br>For larger groups, the exclusive Premium Lodge (320 m2) provides a spacious retreat with a large sauna area, outdoor spa, fireplace, and beautiful through large glass ceiling.<br>Restaurant Gallis welcomes both resort guests and visitors to indulge in a culinary journey. The chefs blend globally inspired flavors with locally sourced Lappish ingredients, creating dishes that celebrate the richness of the Arctic in every bite.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/glassresort_lodge-2048x1074.jpg" />]]>`,
+    },
+    'nova-skyland-hotel': {
+      name: 'Nova Skyland Hotel',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/novaskylandhotel_1-1536x861.jpg" /><br><br>Nova Skyland Hotel warmly welcomes you to the Arctic Circle in Finnish Lapland. The hotel offers a unique experience in high-quality lodgings with Nordic luxury for everyone. The hotel is dedicated to create a memorable holiday in Santa Claus Village and Rovaniemi for all generations. Embraced by the forest, a lifestyle close to the nature is essential to us. The modern Scandinavian styled rooms with natural wooden materials and big windows are designed by a Finnish designer for our guests to be able to embrace the Northern sky.<br>The hotel's specialties are family friendly facilities, private saunas in each room, an upscale restaurant with local ingredients and reindeer living on the hotel yard during the winter season.<br>Nova Skyland Hotel has Biosphere Sustainable certificate and Sustainable Travel Finland (STF) Badge.<br><br><img src="https://wa-uploads.profitroom.com/novaskyland/1920x1080/17415915254921_novaskylanddrone12copy.jpg" /><br><br><img src="https://r.profitroom.pl/novaskyland/images/offers/SMVRVWNBgXjqP9UR.jpg" />]]>`,
+    },
+    'bestpark-rovaniemi-arctic-circle': {
+      name: 'BestPark Rovaniemi Arctic Circle',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/dji_0627.jpg" /><br><br>A safe caravan park for camper vans & trailers next to Santa Claus Village. All facilities needed included to the low parking fee; electricity, water, toilet, shower, waste disposal, terrace, barbecue area, sauna, etc..<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/dji_0641.jpg" />]]>`,
+    },
+    'santa-claus-holiday-village-reception': {
+      name: 'Santa Claus Holiday Village Reception',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/07/IMG_2287photo-1-2048x1170.jpg" /><br><br>Everything for a dream holiday in Santa Claus Village! Experience the wonder of the midnight sun or winter wonderland and magic of the northern lights in their cozy red cabins or modern suite apartments.<br>Family-owned Santa Claus Holiday Village offers everything you may need for a romantic getaway or an active family holiday! Accommodation always includes buffet breakfast, terrace, kitchen corner, final cleaning, and your very own private sauna. Pets are also very welcome!<br>Santa’s office is right next to their front desk building and in the Santa Claus Village you can find something to do and see for everyone.]]>`,
+    },
+    'santa-claus-holliday-village-cottages': {
+      name: 'Santa Claus Holliday Village Cottages',
+      description: `<![CDATA[<img src="https://r.profitroom.com/santaclausholidayvillage1/images/rooms/6622d9c7-6d85-4b75-8c15-6433bf8cefc4.jpg" /><br><br>The Classic cottages are designed for families with children and active adult vacationers alike. The cozy apartments are equipped with two single beds as well as a sofa bed. All cottages have their own terrace, sauna, toilet, shower and mini-kitchen.<br>Each cottage apartment consists of the half of the house and can fit up to two adults and two children. Families of more than four should rent the whole house, two cottages. The cottages are connected by a warm hallway, so doors can be kept open for easy access. There is only one outside entrance.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/67055fc0-684d-11ee-9fca-6fdb01d69922.jpeg" />]]>`,
+    },
+    'santa-claus-holiday-village-suites': {
+      name: 'Santa Claus Holiday Village Suites',
+      description: `<![CDATA[<img src="https://r.profitroom.com/santaclausholidayvillage1/images/gallery/thumbs/700x440/202110191236530.Suites_balcony.jpg?updated=2025-10-20_17-49" /><br><br>The holiday suites are located in peaceful, forest surroundings where you can truly enjoy the silence and your own privacy. Yet they are very close to the main building (5 min walk) with its restaurants and other services. These spacious, elegantly furnished suites are full of bright light and modern design with traditional features. Each suite has a separate living room and bed room, a terrace with a forest view, and a bathroom with a sauna. There’s also a mini kitchen in every suite.<br><br><img src="https://wa-uploads.profitroom.com/santaclausholidayvillage1/800x550/17460076676079_suiteandcar.jpeg" />]]>`,
+    },
+    'santas-igloos-arctic-circle': {
+      name: "Santa's Igloos Arctic Circle",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/glass-igloos-in-santa-claus-village-on-the-arctic-circle-in-rovaniemi-1536x1005.jpg" /><br><br>Santa’s Igloos Arctic Circle, 71 luxurious glass igloos, are located at Santa Claus Village in Rovaniemi. This holiday village also includes reception and the Restaurant Arctic Eye (from Santa’s Hotel Santa Claus).<br>Santa’s Hotels’ glass igloos are intended for year-round use. The new glass-roofed, arctic view rooms offer a whole new opportunity to experience Lapland’s ever-changing nature while enjoying the comforts of a hotel room.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/SininenHetki1-1536x864.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Igloos_aurora_borealis.jpg" />]]>`,
+    },
+    'restaurant-gallis': {
+      name: 'Restaurant Gallis',
+      description: `<![CDATA[<img src="https://glassresort.fi/wp-content/uploads/2025/06/glass-resort-inspiration-let-lapland-spark-your-curiosity-1.jpg" /><br><br>Enjoy a dining experience at Restaurant Gallis, where the menu has been crafted as a culinary journey. The restaurant, located in Glass Resort in Santa Claus Village harmoniously combines global ingredients with pristine, locally sourced Lappish ingredients.<br>Lapland’s unspoiled nature, Arctic climate and the Midnight Sun give the wild produce their distinct qualities, pure flavors, and excellent nutritional value. At Restaurant Gallis, the richness of the region is celebrated by prominently featuring game meat, wild fish, forest mushrooms, and wild berries on the menu.<br>Glass Resort and Restaurant Gallis believe in the power of personalized and genuine service. At Restaurant Gallis, you are invited to experience the perfect blend of a cozy atmosphere and heartfelt hospitality. Your input and preferences are valued, and we’re here to ensure your dining experience exceeds your expectations.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/gallis4-scaled.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/glassresort_gallis2-Copy-1536x912.jpg" />]]>`,
+    },
+    'santas-salmon-place': {
+      name: "Santa's Salmon Place",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Santas-salmon-place-rovaniemi-lapland--1536x930.jpg" /><br><br>At Santa’s Salmon Place, located in Santa Claus Village, you can try some of the best traditional salmon cooked on an open fire right in front of you. Fresh salmon steaks combined with some magic of the fire promise you an extremely juicy experience!<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/salmon-place-santas-rovaniemi-1536x899.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/santas-salmon-place-autumn2025-photo-by-allaboutlapland-18-1536x823.jpg" />]]>`,
+    },
+    'restaurant-forest-manor': {
+      name: 'Restaurant Forest Manor',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/restaurant-forest-manor-outside-winter-1280x921.jpg" /><br><br>Joulumaantie 3, Rovaniemi<br>The historical and beautifully renovated Forest Manor is a charter restaurant located at the Arctic Circle. This former residence of a factory owner cherishes the Lappish lumberjack tradition.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/Restaurant-Forest-Manor-interior-800x533.jpg" />]]>`,
+    },
+    'cafe-restaurant-napatapuli': {
+      name: 'Cafe Restaurant Napatapuli',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/terassi-joulu-scaled.jpg" /><br><br>Café restaurant Napatapuli is a premier and authentic Fast and traditional Food Restaurant that has been proudly serving the Santa Claus Village area and beyond since 1998.]]>`,
+    },
+    'golden-bowl-dim-sum': {
+      name: 'Golden Bowl Dim Sum-Rovaniemi',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/DSC01267-1536x1024.jpg" /><br><br>The restaurant, centrally located in the second floor of Santa’s Gift House in Santa Claus Village, seats 65 people.<br>If you’re in the mood for some Asian cuisine —especially some delectable dim sum during your visit to Father Christmas— Golden Bowl Dim Sum is the right place to be.<br>More than just dim sums, tuck into wok dishes, fried rice and noodle soup that for sure tastes like a big warm hug in the Arctic winter.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/IMG_2650-scaled.jpg" />]]>`,
+    },
+    'loft-cafe': {
+      name: 'Loft Cafe',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/IMG_20210202_073918_848.jpg" /><br><br>From locally handpicked to happily homemade. Serving hearty, no-nonsense cakes and snacks made in house, alongside best brewed beans is our mission. There is no room for compromise. Warmly welcome to Loft Cafe and Snack Shop.<br><br><img src="https://loftcafe.fi/wp-content/uploads/2022/08/Loft-cafe-and-snack-cozy-place-in-Santa-Claus-Village-Rovaniemi-2.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/LoftCafe-49-scaled.jpg" />]]>`,
+    },
+    'loft-cocktail-lounge': {
+      name: 'Loft Cocktail Lounge',
+      description: `<![CDATA[<img src="https://loftcafe.fi/wp-content/uploads/2022/10/Loft-Cocktail-Lounge-Bar-Santa-Claus-Village-Rovaniemi.jpg" /><br><br>Fancy a cocktail? Whether you want to taste something new from their House cocktail selection or are just craving a classic drink, they’ll pour you a drink or two.<br>Loft Cocktail lounge is located in the heart of Santa Claus Village, Arctic Circle. The bar is small, and the interior decoration is cozy and calm – just what you need to take a moment for yourself. The space is child-free and dog-friendly. Also, if you haven’t been lucky enough to see the Northern Lights, their wall is beautifully painted by a local artist. They have Auroras every day!<br><br><img src="https://loftcafe.fi/wp-content/uploads/2022/10/Loft-Cocktail-Lounge-Bar-Rovaniemi-Santa-Claus-Village.jpg" />]]>`,
+    },
+    'piparina-day-cabins-dining': {
+      name: 'Piparina Day Cabins & Dining (ex-Santamus)',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2025/11/Gingerbread-village-Santa-Claus-Village-Rovaniemi-Finland-Piparina-Day-Cabins-Dining-1-9-640x427.jpg" /><br><br>Piparina in Rovaniemi is a "gingerbread village" located in Santa Claus Village that offers both a walk-in restaurant and private gingerbread cabins for rent. It provides a unique space for visitors to relax, dine on Lapland-inspired cuisine, or host small gatherings in a festive, magical atmosphere. The name "Piparina" is inspired by the Finnish word for gingerbread and the traditional Christmas treat. Formerly known as Santamus Restaurant. <br><br><img src="https://santaclausvillage.info/wp-content/uploads/2025/11/Medium-cabin-Gingerbread-village-Santa-Claus-Village-Rovaniemi-Finland-Piparina-Day-Cabins-Dining-3-1536x1024.jpg" />]]>`,
+    },
+    'all-about-salmon': {
+      name: 'All About Salmon',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2024/10/C032498-1536x952.jpg" /><br><br>All About Salmon restaurant, located in Santa Claus Village, is restaurant full of different tastes from Lapland. Cooking the salmon on the open fire has long roots and traditions in Lapland. The restaurant has been operating since 2023 next to Santa Claus Post Office.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2024/10/C032504-1536x858.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2024/10/9202158-1536x916.jpg" />]]>`,
+    },
+    'santas-pizza-burger': {
+      name: "Santa's Pizza & Burger",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/27264bb1-c38a-432f-b26a-1050c8477e34-1536x1026.jpg" /><br><br>Santa’s Pizza & Burger is a traditional fast food restaurant located on the Arctic Circle (Santa Claus Village, Rovaniemi). The menu consists of delicious pizzas and hamburgers made from the restaurant's own recipes. For dessert, they offer a variety of ice cream options for both kids and adults.]]>`,
+    },
+    'arctic-eye-restaurant': {
+      name: 'Arctic Eye Restaurant',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Arctic-Eye-Lapas-1536x1024.jpg" /><br><br>Restaurant Arctic Eye in Santa Claus Village offers tastes of Lapland and the North, with an international twist. Located in the center of Santa’s Igloos area, with large reclined glass windows facing North, it seats up to 120 people. You don’t have to worry about missing the Northern lights, the staff will give out the Aurora Alarm! Between meals, sit back and relax at the lobby bar.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/image00012.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/SantasHotel_4E5A2655-1536x1024.jpg" />]]>`,
+    },
+    'st1-arctic-circle': {
+      name: 'St1 Arctic Circle (former Shell) - with restaurant and shop 24/7',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/St1_logo.png" /><br><br>St1 Rovaniemi Napapiiri at Santa Claus Village offers HelmiSimpukka delicious food and comprehensive services for motorists. Our station serves you every day around the clock.<br>At the station, you can get high-quality fuels and charge your electric car at a powerful high-speed charging point. The charging station has 12 high-speed chargers and is drive-through, so you can charge without detaching a trailer.<br>At the HelmiSimpukka Restaurant, you will find homemade delicacies for breakfast, lunch or dinner. Additionally, the station has a versatile shop and Kotipizza restaurant.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/HelmiSimpukka3-2048x1152.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/HelmiSimpukka-2048x1536.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/HelmiSimpukka2-2048x1152.jpg" />]]>`,
+    },
+    'cafe-ensilumi': {
+      name: 'Café Ensilumi',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/Snowman-World-Cafe-Ensilumi-Rovaniemi-Arctic-Circle-Lapland-Finland-28.jpg" /><br><br>Café Ensilumi is a warm, peaceful, cozy and spacious café located next to the reception of Snowman World, right next to Santa Claus Village’ Main Square.<br>At Ensilumi (which means “First Snow” in English), you will find hot and cold drinks, including alcoholic beverages, as well as sweet and salty snacks. You can also buy quality souvenirs and Snowman World products from Café Ensilumi.<br>Entrance to Café Ensilumi is of course FREE and you do not need a Snowman World entrance ticket to visit the café.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/Snowman-World-Cafe-Ensilumi-Rovaniemi-Arctic-Circle-Lapland-Finland-32-1.jpg" />]]>`,
+    },
+    'mushers-tavern': {
+      name: "Musher's Tavern",
+      description: `<![CDATA[<img src="https://huskypark.fi/wp-content/uploads/2025/02/Blogipostauksien-kuvat-1024x724.png" /><br><br>Welcome to Musher’s Tavern, located in Husky Park at Santa Claus Village, where every visit promises a delightful fusion of husky-inspired charm and culinary excellence. Musher’s Tavern is not just a café but a haven for those seeking homemade savory and sweet delights, all wrapped in a charming husky theme.<br>During Husky Park’s opening hours, they operate as a café, offering a selection of delicious, homemade meals, including fresh lunch options. In the evening, they present an exclusive à la carte menu, available outside of the park’s opening hours. Please reserve your à la carte experience by email at least three days in advance.<br>Musher’s Tavern has its own entrance separate from the Husky Park entrance, so you’re welcome to visit them even if you don’t visit the Park.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2024/11/DSC4881-Enhanced-NR-1536x1271.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2024/11/DSC4839-Enhanced-NR-2-1536x1206.jpg" /><br><br><img src="https://cdn-datahub.visitfinland.com/images/d8263660-7292-11f0-b8c5-45d9aad4e447.jpeg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2024/11/IMG20241101135701-1536x1201.jpg" />]]>`,
+    },
+    'lapland-restaurant-kotahovi': {
+      name: 'Lapland Restaurant Kotahovi',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Kotahovi-ulko-p%E2%80%9Eiv%E2%80%9E-1536x979.jpg" /><br><br>Lapland Restaurant Kotahovi in Santa Claus Village offers quality Lappish gastronomy.<br>The Lapland Restaurant Kotahovi gets its name from “kota” which is Finnish for Lappish-style hut. This Lapland style restaurant is located at the Santa Claus Reindeer Resort (www.santaclausreindeer.fi) next to Mrs. Santa Claus Christmas House ( www.mrssantaclaus.fi ) in Santa Claus Village at the Arctic Circle . They offer traditional Lappish dishes and modern cuisine in a very cozy atmosphere.<br>They can receive groups of up to 50 persons. They can even receive bigger groups if the group is divided in two (half the group dines while the other half visits reindeer and vice versa). For groups they recommend a reservation by e-mail or phone. You can contact them by e-mail or give them a call to receive the group menus and related prices.<br><br><img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/2d/e7/05/img-20190704-wa0045-largejpg.jpg?w=900&h=500&s=1" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Kotahovi-ulko-2-scaled.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Kotahovi-annos-2-1536x951.jpg" />]]>`,
+    },
+    'three-elves-restaurant': {
+      name: 'Three Elves Restaurant & Lobby Bar',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/07/IMG_2287photo-1-2048x1170.jpg" /><br><br>The Three Elves restaurant is a beautiful and atmospheric restaurant in the middle of Santa Claus Village. You can enjoy a rich buffet breakfast and delicious à la carte dishes in the evenings. In addition, the restaurant has a cozy bar where you can order a cup of hot glög. You can go to the restaurant alone or with a larger group, there is room for about 160 people.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/3c603120-6c29-11ee-9fca-6fdb01d69922.jpeg" /><br><br><img src="https://wa-uploads.profitroom.com/santaclausholidayvillage1/1920x1080/16638493800008_santaclausholidayvillagethreeelves02.jpg" />]]>`,
+    },
+    'santas-cuisine-restaurant': {
+      name: "Santa's Cuisine Restaurant",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/07/Santas-cuisine-claus-village-Rovaniemi--1536x864.jpg" /><br><br>The wonderful Santa’s Cuisine restaurant is located in the middle of the cottage village of Santa Claus Holiday Village (https://www.santaclausholidayvillage.fi/). The restaurant can accommodate 100 people to eat, and there is also a meeting facility. Santa’s Cuisine serves daily during the winter season, and in the summer the restaurant can be rented for private use, for example for a company’s meeting day or for a big family celebration.<br><br><img src="https://wa-uploads.profitroom.com/santaclausholidayvillage1/685x470/1744010807532_santascuisinerestaurantbuilding1.jpeg" />]]>`,
+    },
+    'santas-gift-house': {
+      name: "Santa's Gift House",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/09/DSC05352-Copy-1536x804.jpg" /><br><br>The Santa’s Gift House is, together with the Roosevelt Cottage, the historical building of the Santa Claus Village in Rovaniemi. Santa’s Gift House is located in the middle of the Village. This building, representing a unique architecture and crossed by the Arctic Circle line, is protected and definitely worth visiting. Santa’s Gift House is, with its various boutiques and restaurants, a unique destination for shopping or for a lunch or a coffee break.<br>Traveler’s Arctic Circle Information Point is located in the middle of the building. In addition you can find in the Gift House the following companies:<br>Café-Restaurant Napatapuli<br>Golden Bowl Dim Sum<br>Lappituote<br>Loft Cafe Coffee Shop<br>Loft Cocktail Lounge<br>Maahisenkolo<br>Saga Gifts<br>Sarvesta Saparoon<br>Santa´s Gift and Delicacies<br>Piece of Lapland gift shop<br>Santa Claus Holiday Village Souvenir & Gift Shops.<br><br>Address:<br>Joulupukin Pajakylä, 96930 Rovaniemi<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/09/Santa-gift-house-1536x859.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/09/DJI_20231201045940_0361_D-Copy-1536x881.jpg" />]]>`,
+    },
+    'maahispaja-maahisenkolo': {
+      name: 'Maahispaja/Maahisenkolo',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/maahisen-kolo-2048x909.jpg" /><br><br>Handcrafted Lapland drums, Viking jewelry, and other gift items from the store.]]>`,
+    },
+    'lappi-shop': {
+      name: 'Lappi Shop',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/kuksa_puukko-1536x887.jpg" /><br><br>Lappituote Oy, in Santa’s Gift House in Santa Claus Village, has produced souvenirs for over 30 years and is the leading company in Finland.<br>Quality materials used in products – reindeer horn, birch, old wood and reindeer leather – carries the Lapland atmosphere all the way back to home. In addition to our own production, we also import quality souvenirs from our long term partners.]]>`,
+    },
+    'piece-of-lapland-gift-shop': {
+      name: 'Piece of Lapland gift shop',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/06-lapland-finland-souvenirs-gifts-shop-rovaniemi-1536x857.jpg" /><br><br>Located in Santa's Gift House in the middle of Santa Claus Village, Piece of Lapland offers high-quality, authentic gifts and souvenirs from northern Finland, including Northern Lights jewelry, handmade wooden decorations, exclusive aurora prints, summer tees, soft toys, dolls and more.]]>`,
+    },
+    'sarvesta-saparoon': {
+      name: "Sarvesta Saparoon Ky: Poronpulkka, Santa's Gifts and Delicacies",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/sarvesta_saparoon.jpg" /><br><br>Sarvesta Saparoon Ky produces authentic Lappish handicrafts and souvenirs. We also offer meat products made from the highest quality raw materials.<br>You can find Sarvesta Saparoon Ky’s Lappish souvenirs at the shop called “Poronpulkka ja Santa’s Gifts and Delicacies” in Santa’s Gift House (Santa’s Gift Shop), located in Santa Claus Village.<br>The shops offer local specialties made from reindeer, berries, and herbs, handmade pottery, and wonderful reindeer-based products.]]>`,
+    },
+    'iittala-napapiiri': {
+      name: 'Iittala & co Napapiiri',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Iittala_2023_Aalto-Collection_vase160mm_Aino-Aalto_Teema-1536x1152.jpg" /><br><br>In Iittala & co in the Arctic Circle you can find Iittala, Arabia, Fiskars and Hackman products, included Moomin products.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Iittala_2022_Oiva_Toikka_collection_1-scaled.jpg" />]]>`,
+    },
+    'pentik-rovaniemi-napapiiri': {
+      name: 'Pentik Rovaniemi Napapiiri',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Pentik_20Napapiiri_myyml-1536x907.jpg" /><br><br>Pentik is a family-owned company founded in 1971, and today a versatile design house, with a mission to bring lasting beauty to homes. Our roots are close to the Arctic Circle in Posio, which is also the home of our Northernmost ceramics factory, and much more.<br>In the Pentik Arctic Circle store you will find ceramic tableware collections and applied art pieces for homes, all made in Posio, Finland. Seasonally changing textile collections and interior decoration items provide inspiration throughout the year. A further reason to visit the store is the Riding the Wind installation by Pentik’s founder, ceramic artist Anu Pentik. The installation consists of hundreds of ceramic seeds covering the roof of the store.]]>`,
+    },
+    'marttiini-napapiiri-factory-store': {
+      name: 'Marttiini Napapiiri Factory Store',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/8.jpg" /><br><br>Founded in Rovaniemi in 1928, Marttiini has been making knives to meet the demanding needs of the North for nearly a century. In Marttiini’s internationally renowned knives, first-class materials are combined with practical design and aesthetics inspired by the ruggedly beautiful Finnish wilderness.<br>In their vast selection, you will find traditional Lapp knives and Finnish puukko knives, kitchen knives, filleting knives, hunting knives, folding knives, and mesmerizing design knives. Marttiini’s knives are fit for many tasks – but they are most at home in the same place their inspiration comes from: the wilderness.<br>Marttiini stores will always provide you with a free blade engraving along with your purchase.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/Marttiini-Arctic-Circle-Knife.jpg" /><br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/7Marttiini-Arctic-Circle-Knife-Fireplace.jpg" />]]>`,
+    },
+    'santas-foodmarket': {
+      name: "Santa's Foodmarket",
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/fce9ca30-99f6-11f0-ad5c-1d3c21bcc0a5.jpg" /><br><br>In their store, located in Santa Claus Holiday Village next to Christmas House, you will always find fresh local delicacies as well as a wide range of everyday essentials. The shelves are stocked with fresh fruits, vegetables, baked goods, snacks, and refreshing juices, soft drinks, and other beverages. They also offer high-quality local products and a selection of hygiene items for your journey.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2025/09/1-1536x912.jpg" /><br><br><img src="https://cdn-datahub.visitfinland.com/images/ae8347e0-897a-11f0-bb95-59fb21061ddd.jpeg" />]]>`,
+    },
+    'marimekko-napapiiri': {
+      name: 'Marimekko Napapiiri',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Continuing-Collection-Home-45-1536x922.jpg" /><br><br>Marimekko is a Finnish design house renowned for its original prints and colors. Marimekko Napapiiri is located in the Santa Claus Office building in the heart of Santa Claus Village in Rovaniemi, Finland.<br>The company’s product portfolio includes high-quality clothing, bags and accessories as well as home décor items ranging from textiles to tableware. When Marimekko was founded in 1951, its unparalleled printed fabrics gave it a strong and unique identity.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Continuing-Collection-Home-38.jpg" />]]>`,
+    },
+    'arctic-circle-husky-park': {
+      name: 'Arctic Circle Husky Park',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/3G2A3565-scaled.jpg" /><br><br>Welcome to real Husky heaven, with over 100 genuine Siberian Huskies! They are open every day year-round, offering unique experiences in Lappish surroundings. There are programs for everybody: Husky safaris, Husky Hugging, Husky Hikings, and of course the popular Park visits. With their professional guides and lovely fur-riends, you will make memories that you’ll remember fur-ever!<br>Husky Park has been operating next to Santa Claus Village already for several decades. In Husky Park you can see how the dogs live, from feeding to taking off the harnesses. Check out and book all the must-do activities on the website!<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Husky-Park-Husky-ride.png" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Husky-Park-Husky-Hugging.png" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Husky-Park-summer-carriage-ride.png" />]]>`,
+    },
+    'arctic-circle-snowmobile-park': {
+      name: 'Arctic Circle Snowmobile park',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/2-3-1536x1024.jpg" /><br><br>Arctic Circle Snowmobile Park is a Finnish family business, based in the Santa Claus Village. The company was established in 1999 and grows little by little every year.<br>They organize various snowmobile safari programmes for individuals, families and groups. They strongly believe that our individual approach, heartfelt customer service and professional staff members are what makes their safaris unforgettable adventures for everyone. They offer authentic experiences throughout the year for all guests of Finnish Lapland.<br>Whether it is drifting through the snow-filled forests on a snowmobile in winter, looking for the Northern Lights or hiking under the Midnight sun in the summertime – they will make your adventure memorable!<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/20160407_Visit_Rovaniemi_Fullres_72dpi-19-of-22-1536x969.jpg" />]]>`,
+    },
+    'aurora-horses': {
+      name: 'Aurora Horses',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/Horse_sleigh_ride_forest_Aurora_Horses_Rovaniemi_Lapland_Finland.jpg" /><br><br>In winter, they offer horse sleigh rides around Santa Claus Village: Aurora Horses’ Finnhorse sleigh transports depart from the heart of Santa Claus Village. They also organize longer atmospheric Finnhorse sleigh rides and Northern Lights Sleigh ride safaris in the evenings.<br>In summer, you can visit the lovely Finnhorses and go horseback riding. They also arrange wagon rides and horseback riding trips on request.<br>Aurora Horses also organises Northern Lights tours, which you can participate in without a horse program. All our tours are also available as private events.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/10/F22A1374-Copy-1536x946.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/10/F22A12781-Copy-scaled.jpg" />]]>`,
+    },
+    'santas-husky-rides-bearhill-husky': {
+      name: "Santa's Husky Rides provided by BearHill Husky",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/bh1600_6.jpg" /><br><br>Bearhill Husky is a family owned and operated husky kennel located in the pristine wilderness location just outside Rovaniemi that has been situated in the area since 2012. They have extensive experience creating memorable husky adventures for groups, families and individuals.<br>Good dog care, respect for the animals and the sustainability of their business are ethical principles they value highly. They believe that as a working kennel they should do better than just good!<br>Join them, year round, for an unforgettable premium husky adventure at their kennel on the beautiful Viiksjärvi lake, just 30 minutes outside of Rovaniemi, or for a thrilling ride at their Santa’s Husky Rides in the Santa Claus Village. They have programs and adventures suited for all capabilities and ages.<br>Transfers from Rovaniemi center hotels and winter clothing are included in their tours to the Viiksjärvi kennel. Their professional team will guide you safely through tours and tell you all about their amazing Alaskan huskies.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/bh1600_7-1536x907.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/1600_2.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/bh166_5-1536x943.jpg" />]]>`,
+    },
+    'santas-pets': {
+      name: "Santa's Pets/Tallitontun piha",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Elf-Farm-Yard-Reindeer-Walk-6-1536x1025.jpg" /><br><br>In Santa Claus Village at the Arctic Circle, you’ll find the welcoming Santa’s Pets (in Finnish: Tallitontun piha). Visit and feed their reindeer and meet fluffy alpacas, goats, sheep, rabbits, donkeys and different birds or enjoy winter fun by coasting down the little hill on site! Guests can also use the Lapland huts (kota) & campfire / barbecue.<br>As an extra service, Santa’s Pets also offers nice reindeer walks and alpaca walks in the forests of Santa Claus Village. These activities must be booked in advance from their online shop. More info and bookings on their website: https://santaspets.fi/<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Elf-Farm-Yard-Summer-2022-42-1536x1025.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Elf-Farm-Yard-119-1536x864.jpg" />]]>`,
+    },
+    'santa-claus-reindeer': {
+      name: 'Santa Claus Reindeer',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/Visitors-at-Forest-path-in-winter-at-Santa-Claus-Reindeer-in-Santa-Claus-Village-Rovaniemi-Finland.jpg" /><br><br>Santa Claus Reindeer is a family-owned company in Rovaniemi offering year-round authentic reindeer experiences, such as sleigh rides and farm visits, in both Santa Claus Village and a remote farm. The company prioritizes animal welfare and offers activities like feeding reindeer, enjoying sleigh rides through snowy forests (in winter), and learning about Lapland's reindeer herding traditions.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/joulupukin_porot-2.jpg" /><br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/Santa-Claus-Reindeer-in-Santa-Claus-Village-Arctic-Circle-in-Rovaniemi-Lapland-Finland.jpg" />]]>`,
+    },
+    'wild-nordic-rovaniemi-safari-center': {
+      name: 'Wild Nordic Rovaniemi - Safari Center',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/WN-Safaris-snowmobile-1536x864.jpg" /><br><br>Wild Nordic in Rovaniemi is a destination management company that specializes in creating arctic and wilderness experiences, with a particular focus on snowmobile tours. They offer a variety of activities, including multi-day expeditions, safaris, and shorter tours designed for different skill levels, all designed to showcase the natural beauty of Lapland. They also provide other activities, such as husky and reindeer rides, and experiences centered around Santa Claus. <br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/WN-Safaris-husky-1536x1026.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/WN-Safaris-snowmobile-campfire-1536x864.jpg" />]]>`,
+    },
+    'snowman-world': {
+      name: 'Snowman World',
+      description: `<![CDATA[<img src="https://snowmanworld.fi/wp-content/uploads/2025/05/Ice-Disco-Snowman-World-3-1024x683.jpg" /><br><br>Snowman World in Santa Claus Village is the home of cute snowmen characters and a snow activity park for the whole family with daily lunch and dinner in the spectacular Snow Restaurant made entirely of snow and ice.<br>The activity park entrance ticket is valid for the whole day, and you can slide down the icy hill with a tube and try some ice skating and explore the snowy labyrinth. After all the snow fun it is nice to have a drink from a frozen glass at Ice bar and enjoy lunch or dinner at Snow restaurant. Small snacks and drinks are available in the warm indoor café Ensilumi.<br>The coolest party in town is in the Ice Disco in below zero temperature! Enjoy an ice glass drink while you dance at Ice bar while the DJ plays the coolest tunes!<br>Included in the entrance ticket: Snow sliding with tubes, ice skating, snow labyrinth, entrance to tour the snow and ice structures and sculptures, ice disco.<br><br><img src="https://snowmanworld.fi/wp-content/uploads/2025/08/Ice-skating-Snowman-World-2-1024x731.jpg" /><br><br><img src="https://snowmanworld.fi/wp-content/uploads/2025/05/Snow-art-Visitors-Snowman-World-2-1024x683.jpg" /><br><br><img src="https://snowmanworld.fi/wp-content/uploads/2025/08/Snow-tubing-Snowman-World-2-1-1024x683.jpg" /><br><br><img src="https://snowmanworld.fi/wp-content/uploads/2025/05/Snowmen-in-Snow-labyrinth-Snowman-World-1-1024x683.jpg" />]]>`,
+    },
+    'tahtikuja-parking': {
+      name: 'Tähtikuja parking'
+    },
+    'pukinpolku-parking-1': {
+      name: 'Pukinpolku parking 1'
+    },
+    'campervan-parking': {
+      name: 'Campervan & caravan parking'
+    },
+    'pukinpolku-parking-2': {
+      name: 'Pukinpolku parking 2'
+    },
+    'pukinpolku-parking-3': {
+      name: 'Pukinpolku parking 3'
+    },
+    'joulumaantie-bus-stop': {
+      name: 'Joulumaantie I city bus stop',
+      description: 'The bus stop for city bus number 8',
+    },
+    'santa-express-bus-stop': {
+      name: 'Santa Express and Airport Bus bus stop',
+      description: 'The bus stop for Santa Claus Express bus and Airport bus',
+    },
+    'restrooms-main': {
+      name: 'Restroom Facility',
+      description: 'Toilets available for public, inside Santa Claus Office',
+    },
+    'h68OM': { name: 'Walking Path' },
+    'MIsi1': { name: 'Walking Path' },
+    'dRSqb': { name: 'Walking Path' },
+    '4wKVA': { name: 'Walking Path' },
+    'Y1MTB': { name: 'Walking Path' },
+    'aCedM': { name: 'Walking Path' },
+    'L5F4U': { name: 'Walking Path' },
+    'faA4O': { name: 'Walking Path' },
+    'IkQIn': { name: 'Walking Path' },
+    '8uZeN': { name: 'Walking Path' },
+    's5KM1': { name: 'Walking Path' },
+    'I3xGx': { name: 'Walking Path' },
+    'oTPc8': { name: 'Walking Path' },
+    'zbGkG': { name: 'Walking Path' },
+    'fqhn8': { name: 'Walking Path' },
+    'skDwk': { name: 'Walking Path' },
+    'b6bfP': { name: 'Walking Path' },
+    '3gCPx': { name: 'Walking Path' },
+    'e6JIK': { name: 'Walking Path' },
+    'TAPEk': { name: 'Walking Path' },
+    'L3EEq': { name: 'Walking Path' },
+    'JTAGt': { name: 'Walking Path' },
+    'xSMWH': { name: 'Walking Path' },
+    'fl0aI': { name: 'Walking Path' },
+    'ZEWpS': { name: 'Walking Path' },
+    'EitIO': { name: 'Walking Path' },
+    '9ihHL': { name: 'Walking Path' },
+    'zzlgX': { name: 'Walking Path' },
+    '1kxp5': { name: 'Walking Path' },
+    'Phodd': { name: 'Walking Path' },
+    '8leGB': { name: 'Walking Path' },
+  },
+  categories: {
+    'Attractions': 'Attractions',
+    'Accommodation': 'Accommodation',
+    'Food-And-Drink': 'Food & Drink',
+    'Shopping': 'Shopping',
+    'Transportation': 'Transportation',
+    'Facilities': 'Facilities',
+    'Paths': 'Paths',
+    'My Stay': 'My Stay',
+    'My Car': 'My Car',
+    'Love this': 'Love this',
+    'allServices': 'Services',
+  },
+  ui: {
+    'calculatingRoute': 'Calculating best route...',
+    'yourCustomLocation': 'Your custom location',
+    'mapTitle': 'Santa Claus Village',
+    'stop': 'Stop',
+    'stopNavigation': 'Stop navigation',
+    'toggleUserPlacesPanel': 'Toggle user places panel',
+    'centerOnLocation': 'Center on your location',
+    'yourLocation': 'Your current location',
+    'showRoute': 'Show Route',
+    'toggleFavouritesRoute': 'Toggle favourites route',
+    'addFavouritesToShowRoute': 'Add at least two favourites to show a route',
+    'showAllCategories': 'Show All Categories',
+    'myPlaces': 'My Places',
+    'closePanel': 'Close my places panel',
+    'addNewPlace': 'Add a new place',
+    'add': 'Add',
+    'favouritesRoute': 'Favourites Route',
+    'addFavouritesForRoute': 'Add at least two favourites to create a route.',
+    'showRouteOnMap': 'Show Route on Map',
+    'dragReorder': 'You can drag and drop your favourites below to reorder the route.',
+    'noPlacesAdded': "You haven't added any places yet. Add your car, accommodation, or favourites!",
+    'delete': 'Delete',
+    'closePopup': 'Close popup',
+    'yourCustomPlace': 'Your custom place.',
+    'goThere': 'Go there',
+    'bookTable': 'Book Table',
+    'unlovePlace': 'Unlove this place',
+    'lovePlace': 'Love this place',
+    'book': 'Book',
+    'shop': 'Shop',
+    'drive': 'Drive',
+    'walk': 'Walk',
+    'min': 'min',
+    'searchPlaceholder': 'Search places...',
+    'cancel': 'Cancel',
+    'setAsMyStay': 'Set as My Stay',
+    'removeMyStay': 'Remove My Stay',
+  },
+};

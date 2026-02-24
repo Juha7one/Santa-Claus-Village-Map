@@ -1,0 +1,7 @@
+{
+  "name": "Santa-Claus Village-map",
+  "description": "An interactive map for a resort allowing guests to find places and get directions",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

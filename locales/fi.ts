@@ -1,0 +1,325 @@
+
+
+
+
+
+export const fi = {
+  places: {
+    'arctic-circle-line': {
+      name: 'Napapiirin linja',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/Santa-Claus-Village-Rovaniemi-Lapland-Finland-family-crossing-the-Arctic-Circle.jpg" /><br><br>Napapiiri on leveyspiiri, joka kulkee 66°33′45.9″ pohjoiseen päiväntasaajasta. Se merkitsee eteläisintä leveyttä, jossa aurinko voi pysyä jatkuvasti horisontin alapuolella tai yläpuolella 24 tuntia – nämä ilmiöt tunnetaan kesällä keskiyön aurinkona ja talvella kaamoksena.]]>`,
+    },
+    'roosevelt-cottage': {
+      name: 'Rooseveltin Maja',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/roosevelt-cottage-arctic-circle-rovaniemi-lapland.jpg" /><br><br>Rooseveltin Maja on Joulupukin Pajakylän vanhin rakennus, joka rakennettiin vuonna 1950 Eleanor Rooseveltin vierailun kunniaksi. Se rakennettiin vain parissa viikossa toivottamaan hänet tervetulleeksi ja näkemään Rovaniemen jälleenrakennusponnisteluja toisen maailmansodan jälkeen. Nykyään historiallinen mökki on matkamuistomyymälä ja muistutus kansainvälisestä yhteistyöstä, joka auttoi Rovaniemeä toipumaan.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/roosavelt-cottage-new-copy.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/DJI_20231126123154_0047_D-2048x1152.jpg" />]]>`,
+    },
+    'arctic-circle-tourist-information': {
+      name: 'Napapiirin Matkailuneuvonta',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/napapiiri-08-03__DSC2373.jpg" /><br><br>Napapiirin matkailuneuvonta, joka sijaitsee Joulupukin Lahjatalossa Joulupukin Pajakylän keskustassa, tarjoaa tietoa Joulupukin Pajakylästä, Rovaniemen alueesta ja Lapista. Mene infopisteeseen tai ota yhteyttä sähköpostitse tai puhelimitse.<br>Heidän monikielinen henkilökuntansa auttaa sinua varaamaan aktiviteetteja ja hankkimaan Napapiirin ylitystodistuksen.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/napapiiri-08-03__DSC2356.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/09/DSC05352-Copy-2048x1071.jpg" />]]>`,
+    },
+    'santa-claus-village-central-square': {
+      name: 'Joulupukin Pajakylän keskusaukio',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/hero-winter-scaled.jpg" /><br><br>Kylän sydän, josta näet ja pääset muihin nähtävyyksiin, sekä ylität napapiirin ja koet live-webkameran.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/santa-claus-village-arctic-circle-rovaniemi-21.jpg" />]]>`,
+    },
+    'christmas-house-and-santa': {
+      name: 'Joulutalo ja Joulupukki',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Christmas-House-1-Copy-scaled.jpg" /><br><br>Täällä voit vierailla Joulupukin luona Joulutalossa, vuoden jokaisena päivänä. Halutessasi tontut voivat ikuistaa tapaamisesi Joulupukin kanssa laadukkaalla valokuvalla. Sisäänpääsy Joulupukin tapaamiseen Joulutalossa on ILMAINEN. Joulutalo sijaitsee Joulupukin Pajakylän sisäänkäynnillä napapiirillä.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/House-of-Santa-Claus-Rovaniemi-Lapland-village-2048x1185.jpg" />]]>`,
+    },
+    'elf-hat-academy': {
+      name: 'Tonttulakkikoulu',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Elf-Hat-3.jpg" /><br><br>Napapiirillä, lähellä Joulupukin päätoimistoa, on taianomainen paikka nimeltä Tonttukoulu. Se on koulu vailla vertaa – paikka, jossa erilaiset tontut kokoontuvat oppimaan ikivanhoja tonttuviisauksia ja -taitoja.<br>Varaa salainen vierailusi viehättävään Tonttukouluun, jossa tontut jakavat vinkkinsä ja temppunsa, kuinka sinusta voi tulla tontun pieni apulainen. Valmistuessasi saat erityisen tonttumerkin symboloimaan uutta viisauttasi ja tietenkin Tonttukoulun valmistujaisdiplomin muistuttamaan oppimistasi salaisuuksista.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Elf-Hat-10.jpg" />]]>`,
+    },
+    'santas-main-post-office': {
+      name: "Joulupukin Pääposti",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/JPP-95-2048x936.jpg" /><br><br>Joulupukin pääposti on aito, virallinen posti, joka sijaitsee Joulupukin Pajakylässä Napapiirillä lähellä Rovaniemeä. Se toimii kaiken Joulupukin postin keskuksena ja on avoinna ympäri vuoden. Tontut auttavat vierailijoita lähettämään postikortteja ja kirjeitä erityisellä napapiirin postileimalla. Vierailijat voivat myös ostaa matkamuistoja, tilata henkilökohtaisen kirjeen Joulupukilta ja nähdä osan miljoonista kirjeistä, joita Joulupukki vuosittain saa.<br>Tiesitkö, että joka vuosi Joulupukki saa noin puoli miljoonaa kirjettä postiinsa Napapiirille? Kirjeitä saapuu lapsilta ja aikuisilta ympäri maailmaa!<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/JPP-110-2048x936.jpg" />]]>`,
+    },
+    'santa-claus-office': {
+      name: 'Joulupukin Kammari',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Vaaka-2048x1025.jpg" /><br><br>Tapaa Joulupukki! Se on mahdollista vuoden jokaisena päivänä Joulupukin Kammarissa. Kaikki ovat tervetulleita vierailemaan tässä tunnelmallisessa paikassa ja nauttimaan yksityisestä keskustelusta Joulupukin kanssa.<br>Sisäänpääsy on ilmainen. Joulupukin Kammari sijaitsee aivan Napapiirillä, Joulupukin Pajakylän pääaukion vieressä. Napapiiri on aina ollut Joulupukille rakas ja ihastuttava paikka, sillä monet joulun satumaiset salaisuudet juontavat juurensa tälle maagiselle alueelle.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/1-2048x1151.jpg" /><br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/2-2048x1365.jpg" />]]>`,
+    },
+    'crossing-the-arctic-circle': {
+      name: 'Napapiirin ylitys',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/santa-claus-village-arctic-circle-rovaniemi-lapland-finland-summer-6-1920x1281.jpg" /><br><br>Voit ylittää Napapiirin vaivattomasti laskeutumalla Rovaniemen lentoasemalle tai luovemmilla tavoilla. Monet vierailijat pitävät hauskaa ylittäessään Napapiirin Joulupukin Pajakylässä – jossa se on selvästi merkitty maahan – ja jopa hankkivat todistuksen teosta. Monet Rovaniemen aktiviteettikierrokset ylittävät Napapiirin jossain vaiheessa, mikä tarkoittaa, että rajan voi ylittää moottorikelkalla, huskyvaljakolla tai porokyydillä – vain mielikuvitus on rajana.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/Sights-attractions-Santa-Claus-Village-Rovaniemi-Lapland-Finland-13-1920x1279.jpg" />]]>`,
+    },
+    'mrs-santa-claus-christmas-cottage': {
+      name: 'Joulumuorin Joulumökki',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/DJI_0211-2048x1417.jpg" /><br><br>Joulumuorin Joulumökki on unohtumaton nähtävyys Joulupukin Pajakylässä Rovaniemellä.<br>Vierailu Joulumuorin ja tonttujen luona on taatusti jännittävä, lämmin ja hauska. Joulumuori rakastaa kertoa tarinoita Lapista ja jakaa sydämensä iloa vierailevien ystävien kanssa.<br>Kohteeseen kuuluu myös Joulumuorin viihtyisä kahvila, johon on VAPAA PÄÄSY.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Mrs-Claus_JTV02482-Copy-2048x1216.jpg" />]]>`,
+    },
+    'nova-skyland-aurora-suites': {
+      name: 'Nova Skyland Aurora Suites',
+      description: `<![CDATA[<img src="https://r.profitroom.pl/novaskyland/images/offers/SMVRVWNBgXjqP9UR.jpg" /><br><br>Aurora Suites tarjoaa sinulle ainutlaatuisen majoituskokemuksen, jossa yhdistyvät skandinaavinen muotoilu, ylellisyys ja täydelliset puitteet rentoutumiseen pohjoisen taivaan alla. Aurora Suites sopii pariskunnille, ystäville ja pienemmille perheille.<br><br><img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/623698149.jpg?k=bcdf43bd266ea90caa49a3f985a0cfb85332fbb115338f0665b7a1a3d3c38c71&o=" />]]>`,
+    },
+    'santas-luxury-boutique-villa': {
+      name: "Santa's Luxury Boutique Villa",
+      description: `<![CDATA[<img src="https://cdn.shopify.com/s/files/1/0470/0343/5171/files/marikotaniemi-talvi25-1-26.jpg?v=1739171899" /><br><br>Santa’s Luxury Boutique Villa / Apartments Joulupukin Pajakylässä ja Rovaniemen keskustassa on nykyaikainen boutique-hotelli ja tarjoaa premium-tason majoitusta. Perheomisteinen hotellimme on helppo saavuttaa lentäen, autolla ja junalla, ja kaikki Joulupukin Pajakylän ja Rovaniemen keskustan palvelut ja aktiviteetit ovat aivan oven ulkopuolella.<br>Villa / huoneistot (Joulupukin Pajakylä) sijaitsevat aivan Joulupukin Pajakylän sydämessä, sijainti on täydellinen. Joulupukin päätoimisto näkyy suoraan ikkunoista ja on vain noin 50 metrin päässä.<br><br><img src="https://cdn.shopify.com/s/files/1/0470/0343/5171/files/santasluxuryboutiquevilla-1-55.jpg?v=1744705361" />]]>`,
+    },
+    'glass-resort': {
+      name: 'Glass Resort',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/GlassResortAir3-2048x1210.jpg" /><br><br>Joulupukin Pajakylän sydämessä sijaitseva perheomisteinen Glass Resort yhdistää lappilaisen perinnön, modernin skandinaavisen muotoilun ja Napapiirin luonnon puhtauden.<br>Premium Glass Apartments (44 m2) ja uudet Deluxe Glass Apartments (120 m2) sisältävät lasiseinät ja -katot, jotka tarjoavat esteettömät näkymät revontulille, sekä yksityiset saunat, ulkoporealtaat ja lappilaisilla käsitöillä ja design-huonekaluilla sisustetut sisätilat.<br>Suuremmille ryhmille ylellinen Premium Lodge (320 m2) tarjoaa tilavan pakopaikan suurella sauna-alueella, ulkoporealtaalla, takalla ja kauniilla lasikatolla.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/glassresort_lodge-2048x1074.jpg" />]]>`,
+    },
+    'nova-skyland-hotel': {
+      name: 'Nova Skyland Hotel',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/novaskylandhotel_1-1536x861.jpg" /><br><br>Nova Skyland Hotel toivottaa sinut lämpimästi tervetulleeksi Napapiirille Suomen Lappiin. Hotelli tarjoaa ainutlaatuisen kokemuksen korkealaatuisissa majoitustiloissa pohjoismaisella ylellisyydellä kaikille. Hotelli on omistautunut luomaan ikimuistoisen loman Joulupukin Pajakylässä ja Rovaniemellä kaikille sukupolville. Metsän syleilyssä luonnonläheinen elämäntapa on meille olennainen. Modernit skandinaaviset huoneet luonnonpuumateriaaleilla ja suurilla ikkunoilla on suunnitellut suomalainen muotoilija, jotta vieraamme voivat nauttia pohjoisesta taivaasta.<br><br><img src="https://wa-uploads.profitroom.com/novaskyland/1920x1080/17415915254921_novaskylanddrone12copy.jpg" />]]>`,
+    },
+    'bestpark-rovaniemi-arctic-circle': {
+      name: 'BestPark Rovaniemi Arctic Circle',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/dji_0627.jpg" /><br><br>Turvallinen matkaparkki matkailuautoille ja -vaunuille Joulupukin Pajakylän vieressä. Kaikki tarvittavat palvelut sisältyvät edulliseen pysäköintimaksuun; sähkö, vesi, WC, suihku, jätehuolto, terassi, grillialue, sauna jne.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/dji_0641.jpg" />]]>`,
+    },
+    'santa-claus-holiday-village-reception': {
+      name: 'Santa Claus Holiday Village Vastaanotto',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/07/IMG_2287photo-1-2048x1170.jpg" /><br><br>Kaikki unelmalomaan Joulupukin Pajakylässä! Koe keskiyön auringon tai talven ihmemaan ja revontulien taika viihtyisissä punaisissa mökeissämme tai moderneissa sviittihuoneistoissamme.<br>Perheomisteinen Santa Claus Holiday Village tarjoaa kaiken, mitä tarvitset romanttiseen lomaan tai aktiiviseen perhelomaan! Majoitukseen sisältyy aina buffet-aamiainen, terassi, keittiönurkkaus, loppusiivous ja oma yksityinen sauna. Myös lemmikit ovat erittäin tervetulleita!]]>`,
+    },
+    'santa-claus-holliday-village-cottages': {
+      name: 'Santa Claus Holliday Village Mökit',
+      description: `<![CDATA[<img src="https://r.profitroom.com/santaclausholidayvillage1/images/rooms/6622d9c7-6d85-4b75-8c15-6433bf8cefc4.jpg" /><br><br>Classic-mökit on suunniteltu lapsiperheille ja aktiivisille aikuisille lomailijoille. Viihtyisissä huoneistoissa on kaksi erillistä sänkyä sekä vuodesohva. Kaikissa mökeissä on oma terassi, sauna, wc, suihku ja minikeittiö.<br>Jokainen mökkiasunto on puolet talosta ja siihen mahtuu kaksi aikuista ja kaksi lasta. Yli neljän hengen perheiden tulisi vuokrata koko talo, kaksi mökkiä. Mökit on yhdistetty lämpimällä käytävällä, joten ovet voidaan pitää auki helpon kulun varmistamiseksi.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/67055fc0-684d-11ee-9fca-6fdb01d69922.jpeg" />]]>`,
+    },
+    'santa-claus-holiday-village-suites': {
+      name: 'Santa Claus Holiday Village Sviitit',
+      description: `<![CDATA[<img src="https://r.profitroom.com/santaclausholidayvillage1/images/gallery/thumbs/700x440/202110191236530.Suites_balcony.jpg?updated=2025-10-20_17-49" /><br><br>Lomahuoneistot sijaitsevat rauhallisessa metsäympäristössä, jossa voit todella nauttia hiljaisuudesta ja omasta rauhasta. Silti ne ovat hyvin lähellä päärakennusta (5 min kävelymatka) ravintoloineen ja muine palveluineen. Nämä tilavat, elegantisti kalustetut sviitit ovat täynnä kirkasta valoa ja modernia muotoilua perinteisillä piirteillä. Jokaisessa sviitissä on erillinen olohuone ja makuuhuone, terassi metsänäkymällä ja kylpyhuone saunalla.<br><br><img src="https://wa-uploads.profitroom.com/santaclausholidayvillage1/800x550/17460076676079_suiteandcar.jpeg" />]]>`,
+    },
+    'santas-igloos-arctic-circle': {
+      name: "Santa's Igloos Arctic Circle",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/glass-igloos-in-santa-claus-village-on-the-arctic-circle-in-rovaniemi-1536x1005.jpg" /><br><br>Santa’s Igloos Arctic Circle, 71 ylellistä lasi-iglua, sijaitsevat Joulupukin Pajakylässä Rovaniemellä. Tähän lomakylään kuuluu myös vastaanotto ja ravintola Arctic Eye. Santa’s Hotelsin lasi-iglut on tarkoitettu ympärivuotiseen käyttöön. Uudet lasikattoiset, arktisella näkymällä varustetut huoneet tarjoavat aivan uuden mahdollisuuden kokea Lapin alati muuttuva luonto hotellihuoneen mukavuuksista nauttien.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Igloos_aurora_borealis.jpg" />]]>`,
+    },
+    'restaurant-gallis': {
+      name: 'Ravintola Gallis',
+      description: `<![CDATA[<img src="https://glassresort.fi/wp-content/uploads/2025/06/glass-resort-inspiration-let-lapland-spark-your-curiosity-1.jpg" /><br><br>Nauti ruokailukokemuksesta Ravintola Galliksessa, jonka menu on laadittu kulinaariseksi matkaksi. Ravintola, joka sijaitsee Glass Resortissa Joulupukin Pajakylässä, yhdistää harmonisesti maailmanlaajuisia raaka-aineita puhtaisiin, paikallisesti hankittuihin lappilaisiin aineksiin.<br>Lapin koskematon luonto, arktinen ilmasto ja keskiyön aurinko antavat villeille tuotteille niiden erityiset ominaisuudet, puhtaat maut ja erinomaisen ravintoarvon.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/glassresort_gallis2-Copy-1536x912.jpg" />]]>`,
+    },
+    'santas-salmon-place': {
+      name: "Santa's Salmon Place",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Santas-salmon-place-rovaniemi-lapland--1536x930.jpg" /><br><br>Santa’s Salmon Place -ravintolassa, joka sijaitsee Joulupukin Pajakylässä, voit maistaa parasta perinteistä loimulohta, joka kypsennetään avotulella aivan silmiesi edessä. Tuoreet lohipihvit yhdistettynä tulen taikaan takaavat sinulle erittäin mehukkaan kokemuksen!<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/santas-salmon-place-autumn2025-photo-by-allaboutlapland-18-1536x823.jpg" />]]>`,
+    },
+    'restaurant-forest-manor': {
+      name: 'Tilausravintola Metsäkartano',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/restaurant-forest-manor-outside-winter-1280x921.jpg" /><br><br>Joulumaantie 3, Rovaniemi<br>Historiallinen ja kauniisti remontoitu Metsäkartano on tilausravintola Napapiirillä. Tämä entinen tehtaanomistajan asunto kunnioittaa lappilaista tukkijätkäperinnettä.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/Restaurant-Forest-Manor-interior-800x533.jpg" />]]>`,
+    },
+    'cafe-restaurant-napatapuli': {
+      name: 'Kahvila-Ravintola Napatapuli',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/terassi-joulu-scaled.jpg" /><br><br>Kahvila-ravintola Napatapuli on ensiluokkainen ja aito pika- ja perinneruokaravintola, joka on ylpeänä palvellut Joulupukin Pajakylän aluetta ja sen ulkopuolella vuodesta 1998.]]>`,
+    },
+    'golden-bowl-dim-sum': {
+      name: 'Golden Bowl Dim Sum-Rovaniemi',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/DSC01267-1536x1024.jpg" /><br><br>Ravintola, joka sijaitsee keskeisellä paikalla Joulupukin Lahjatalon toisessa kerroksessa Joulupukin Pajakylässä, tarjoaa 65 asiakaspaikkaa.<br>Jos kaipaat aasialaista ruokaa – erityisesti herkullisia dim sumeja – Joulupukin vierailusi aikana, Golden Bowl Dim Sum on oikea paikka.<br>Tarjolla on muutakin kuin dim sumeja: wok-ruokia, paistettua riisiä ja nuudelikeittoa, jotka varmasti maistuvat lämpimältä halaukselta arktisessa talvessa.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/IMG_2650-scaled.jpg" />]]>`,
+    },
+    'loft-cafe': {
+      name: 'Loft Cafe',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/IMG_20210202_073918_848.jpg" /><br><br>Paikallisesti poimituista, onnellisesti kotitekoisiin. Tarjoilemme täyteläisiä, mutkattomia kakkuja ja välipaloja, jotka on tehty paikan päällä, sekä parhaiten haudutettuja papuja. Kompromisseille ei ole tilaa. Lämpimästi tervetuloa Loft Cafe and Snack Shopiin.<br><br><img src="https://loftcafe.fi/wp-content/uploads/2022/08/Loft-cafe-and-snack-cozy-place-in-Santa-Claus-Village-Rovaniemi-2.jpg" />]]>`,
+    },
+    'loft-cocktail-lounge': {
+      name: 'Loft Cocktail Lounge',
+      description: `<![CDATA[<img src="https://loftcafe.fi/wp-content/uploads/2022/10/Loft-Cocktail-Lounge-Bar-Santa-Claus-Village-Rovaniemi.jpg" /><br><br>Haluatko cocktailin? Halusitpa sitten maistaa jotain uutta House-cocktailvalikoimastamme tai kaipaat vain klassista juomaa, kaadamme sinulle juoman tai kaksi.<br>Loft Cocktail Lounge sijaitsee Joulupukin Pajakylän sydämessä, Napapiirillä. Baari on pieni ja sisustus on viihtyisä ja rauhallinen – juuri sitä, mitä tarvitset hetken itsellesi. Tila on lapsivapaa ja koiraystävällinen.<br><br><img src="https://loftcafe.fi/wp-content/uploads/2022/10/Loft-Cocktail-Lounge-Bar-Rovaniemi-Santa-Claus-Village.jpg" />]]>`,
+    },
+    'piparina-day-cabins-dining': {
+      name: 'Piparina Day Cabins & Dining (ent. Santamus)',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2025/11/Gingerbread-village-Santa-Claus-Village-Rovaniemi-Finland-Piparina-Day-Cabins-Dining-1-9-640x427.jpg" /><br><br>Piparina Rovaniemellä on "piparkakkukylä", joka sijaitsee Joulupukin Pajakylässä ja tarjoaa sekä walk-in-ravintolan että vuokrattavia yksityisiä piparkakkumökkejä. Se tarjoaa ainutlaatuisen tilan vierailijoille rentoutua, nauttia lappilaisesta keittiöstä tai järjestää pieniä kokoontumisia juhlavassa, maagisessa ilmapiirissä. Nimi "Piparina" on saanut inspiraationsa suomen kielen sanasta piparkakku ja perinteisestä jouluherkusta. Aiemmin tunnettu nimellä Santamus-ravintola.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2025/11/Medium-cabin-Gingerbread-village-Santa-Claus-Village-Rovaniemi-Finland-Piparina-Day-Cabins-Dining-3-1536x1024.jpg" />]]>`,
+    },
+    'all-about-salmon': {
+      name: 'All About Salmon',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2024/10/C032498-1536x952.jpg" /><br><br>All About Salmon -ravintola, joka sijaitsee Joulupukin Pajakylässä, on ravintola täynnä erilaisia makuja Lapista. Lohen valmistus avotulella on pitkät perinteet Lapissa. Ravintola on toiminut vuodesta 2023 Joulupukin pääpostin vieressä.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2024/10/9202158-1536x916.jpg" />]]>`,
+    },
+    'santas-pizza-burger': {
+      name: "Santa's Pizza & Burger",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/27264bb1-c38a-432f-b26a-1050c8477e34-1536x1026.jpg" /><br><br>Santa’s Pizza & Burger on perinteinen pikaruokaravintola, joka sijaitsee Napapiirillä (Joulupukin Pajakylä, Rovaniemi). Ruokalista koostuu herkullisista pizzoista ja hampurilaisista, jotka on valmistettu ravintolan omilla resepteillä. Jälkiruoaksi tarjolla on erilaisia jäätelövaihtoehtoja sekä lapsille että aikuisille.]]>`,
+    },
+    'arctic-eye-restaurant': {
+      name: 'Arctic Eye Restaurant',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Arctic-Eye-Lapas-1536x1024.jpg" /><br><br>Ravintola Arctic Eye Joulupukin Pajakylässä tarjoaa Lapin ja pohjoisen makuja kansainvälisellä otteella. Se sijaitsee Santa’s Igloos -alueen keskellä, ja sen suuret, kallistetut lasi-ikkunat avautuvat pohjoiseen. Ravintolassa on paikkoja 120 hengelle. Sinun ei tarvitse huolehtia revontulien missaamisesta, henkilökunta antaa revontulihälytyksen! Aterioiden välissä voit rentoutua aulabaarissa.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/SantasHotel_4E5A2655-1536x1024.jpg" />]]>`,
+    },
+    'st1-arctic-circle': {
+      name: 'St1 Napapiiri (ent. Shell) - ravintola ja kauppa 24/7',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/St1_logo.png" /><br><br>St1 Rovaniemi Napapiiri Joulupukin Pajakylässä tarjoaa HelmiSimpukan herkullista ruokaa ja kattavat palvelut autoilijoille. Asemamme palvelee sinua joka päivä ympäri vuorokauden.<br>Asemalta saat laadukkaita polttoaineita ja voit ladata sähköautosi tehokkaalla pikalatauspisteellä. Latausasemalla on 12 pikalaturia ja se on läpiajettava, joten voit ladata irrottamatta perävaunua.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/HelmiSimpukka2-2048x1152.jpg" />]]>`,
+    },
+    'cafe-ensilumi': {
+      name: 'Kahvila Ensilumi',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/Snowman-World-Cafe-Ensilumi-Rovaniemi-Arctic-Circle-Lapland-Finland-28.jpg" /><br><br>Kahvila Ensilumi on lämmin, rauhallinen, viihtyisä ja tilava kahvila, joka sijaitsee Snowman Worldin vastaanoton vieressä, aivan Joulupukin Pajakylän pääaukion tuntumassa.<br>Ensilumesta löydät kuumia ja kylmiä juomia, mukaan lukien alkoholijuomia, sekä makeita ja suolaisia välipaloja. Voit myös ostaa laadukkaita matkamuistoja ja Snowman World -tuotteita Kahvila Ensilumesta.<br>Sisäänpääsy Kahvila Ensilumeen on tietenkin ILMAINEN, eikä sinun tarvitse Snowman Worldin pääsylippua vieraillaksesi kahvilassa.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/Snowman-World-Cafe-Ensilumi-Rovaniemi-Arctic-Circle-Lapland-Finland-32-1.jpg" />]]>`,
+    },
+    'mushers-tavern': {
+      name: "Musher's Tavern",
+      description: `<![CDATA[<img src="https://huskypark.fi/wp-content/uploads/2025/02/Blogipostauksien-kuvat-1024x724.png" /><br><br>Tervetuloa Musher’s Taverniin, joka sijaitsee Husky Parkissa Joulupukin Pajakylässä, jossa jokainen vierailu lupaa ihastuttavan sekoituksen husky-aiheista charmia ja kulinaarista erinomaisuutta. Musher’s Tavern ei ole vain kahvila, vaan paratiisi niille, jotka etsivät kotitekoisia suolaisia ja makeita herkkuja, kaikki käärittynä viehättävään husky-teemaan.<br>Husky Parkin aukioloaikoina toimimme kahvilana, tarjoten valikoiman herkullisia, kotitekoisia aterioita, mukaan lukien tuoreita lounasvaihtoehtoja.<br><br><img src="https://cdn-datahub.visitfinland.com/images/d8263660-7292-11f0-b8c5-45d9aad4e447.jpeg" />]]>`,
+    },
+    'lapland-restaurant-kotahovi': {
+      name: 'Lapland Restaurant Kotahovi',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Kotahovi-ulko-p%E2%80%9Eiv%E2%80%9E-1536x979.jpg" /><br><br>Lapland Restaurant Kotahovi Joulupukin Pajakylässä tarjoaa laadukasta lappilaista gastronomiaa.<br>Lapland Restaurant Kotahovi saa nimensä sanasta "kota", joka on suomea ja tarkoittaa lappilaista kotaa. Tämä lappilaistyylinen ravintola sijaitsee Santa Claus Reindeer -lomakeskuksessa Joulupukin Pajakylässä Napapiirillä. Tarjoamme perinteisiä lappilaisia ruokia ja modernia keittiötä erittäin viihtyisässä ilmapiirissä.<br>Voimme ottaa vastaan jopa 50 hengen ryhmiä.<br><br><img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/2d/e7/05/img-20190704-wa0045-largejpg.jpg?w=900&h=500&s=1" />]]>`,
+    },
+    'three-elves-restaurant': {
+      name: 'Three Elves Restaurant & Lobby Bar',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/07/IMG_2287photo-1-2048x1170.jpg" /><br><br>Three Elves -ravintola on kaunis ja tunnelmallinen ravintola keskellä Joulupukin Pajakylää. Voit nauttia runsaan buffet-aamiaisen ja herkullisia à la carte -annoksia iltaisin. Lisäksi ravintolassa on viihtyisä baari, josta voit tilata kupin kuumaa glögiä. Voit mennä ravintolaan yksin tai suuremmalla ryhmällä, tilaa on noin 160 hengelle.<br><br><img src="https://wa-uploads.profitroom.com/santaclausholidayvillage1/1920x1080/16638493800008_santaclausholidayvillagethreeelves02.jpg" />]]>`,
+    },
+    'santas-cuisine-restaurant': {
+      name: "Santa's Cuisine Restaurant",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/07/Santas-cuisine-claus-village-Rovaniemi--1536x864.jpg" /><br><br>Ihana Santa’s Cuisine -ravintola sijaitsee Santa Claus Holiday Villagen mökkikylän keskellä. Ravintolaan mahtuu 100 henkeä ruokailemaan, ja siellä on myös kokoustila. Santa’s Cuisine palvelee päivittäin talvikaudella, ja kesällä ravintolan voi vuokrata yksityiskäyttöön, esimerkiksi yrityksen kokouspäivää tai suurta perhejuhlaa varten.<br><br><img src="https://wa-uploads.profitroom.com/santaclausholidayvillage1/685x470/1744010807532_santascuisinerestaurantbuilding1.jpeg" />]]>`,
+    },
+    'santas-gift-house': {
+      name: "Joulupukin Lahjatalo",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/09/DSC05352-Copy-1536x804.jpg" /><br><br>Joulupukin Lahjatalo on yhdessä Rooseveltin Majan kanssa Joulupukin Pajakylän historiallinen rakennus Rovaniemellä. Joulupukin Lahjatalo sijaitsee keskellä kylää. Tämä ainutlaatuista arkkitehtuuria edustava ja Napapiirin ylittävä rakennus on suojeltu ja ehdottomasti vierailun arvoinen. Joulupukin Lahjatalo on monine putiikkeineen ja ravintoloineen ainutlaatuinen kohde ostoksille tai lounaalle tai kahvitauolle.<br>Matkailijoiden Napapiirin infopiste sijaitsee rakennuksen keskellä.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/09/DJI_20231201045940_0361_D-Copy-1536x881.jpg" />]]>`,
+    },
+    'maahispaja-maahisenkolo': {
+      name: 'Maahispaja/Maahisenkolo',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/maahisen-kolo-2048x909.jpg" /><br><br>Käsintehtyjä lapinrumpuja, viikinkikoruja ja muita lahjatavaroita myymälästä.]]>`,
+    },
+    'lappi-shop': {
+      name: 'Lappi Shop',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/kuksa_puukko-1536x887.jpg" /><br><br>Lappituote Oy, Joulupukin Lahjatalossa Joulupukin Pajakylässä, on valmistanut matkamuistoja yli 30 vuoden ajan ja on Suomen johtava yritys alallaan.<br>Tuotteissa käytetyt laadukkaat materiaalit – poronsarvi, koivu, vanha puu ja poronnahka – tuovat Lapin tunnelman kotiin asti. Oman tuotannon lisäksi tuomme maahan laadukkaita matkamuistoja pitkäaikaisilta kumppaneiltamme.]]>`,
+    },
+    'piece-of-lapland-gift-shop': {
+      name: 'Piece of Lapland lahjatavaraliike',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/06-lapland-finland-souvenirs-gifts-shop-rovaniemi-1536x857.jpg" /><br><br>Sijaitsee Joulupukin Lahjatalossa keskellä Joulupukin Pajakylää, Piece of Lapland tarjoaa laadukkaita, aitoja lahjoja ja matkamuistoja Pohjois-Suomesta, mukaan lukien revontulikorut, käsintehdyt puukoristeet, eksklusiiviset revontuliprintit, kesäpaidat, pehmolelut, nuket ja paljon muuta.]]>`,
+    },
+    'sarvesta-saparoon': {
+      name: "Sarvesta Saparoon Ky: Poronpulkka, Santa's Gifts and Delicacies",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/sarvesta_saparoon.jpg" /><br><br>Sarvesta Saparoon Ky valmistaa aitoja lappilaisia käsitöitä ja matkamuistoja. Tarjoamme myös korkealaatuisista raaka-aineista valmistettuja lihatuotteita.<br>Löydät Sarvesta Saparoon Ky:n lappilaiset matkamuistot "Poronpulkka ja Santa’s Gifts and Delicacies" -myymälästä Joulupukin Lahjatalosta Joulupukin Pajakylässä.<br>Myymälät tarjoavat paikallisia erikoisuuksia porosta, marjoista ja yrteistä, käsintehtyä keramiikkaa ja upeita porotuotteita.]]>`,
+    },
+    'iittala-napapiiri': {
+      name: 'Iittala & co Napapiiri',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Iittala_2023_Aalto-Collection_vase160mm_Aino-Aalto_Teema-1536x1152.jpg" /><br><br>Iittala & co:sta Napapiiriltä löydät Iittalan, Arabian, Fiskarsin ja Hackmanin tuotteita, mukaan lukien Muumi-tuotteet.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Iittala_2022_Oiva_Toikka_collection_1-scaled.jpg" />]]>`,
+    },
+    'pentik-rovaniemi-napapiiri': {
+      name: 'Pentik Rovaniemi Napapiiri',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Pentik_20Napapiiri_myyml-1536x907.jpg" /><br><br>Pentik on vuonna 1971 perustettu perheyritys ja nykyään monipuolinen design-talo, jonka missiona on tuoda kestävää kauneutta koteihin. Juuremme ovat lähellä Napapiiriä Posiolla, jossa sijaitsee myös pohjoisin keramiikkatehtaamme ja paljon muuta.<br>Pentikin Napapiirin myymälästä löydät Posiolla valmistettuja keramiikka-astiastoja ja käyttötaide-esineitä koteihin. Kausittain vaihtuvat tekstiilimallistot ja sisustustuotteet tarjoavat inspiraatiota ympäri vuoden.]]>`,
+    },
+    'marttiini-napapiiri-factory-store': {
+      name: 'Marttiini Napapiirin Tehtaanmyymälä',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/8.jpg" /><br><br>Vuonna 1928 Rovaniemellä perustettu Marttiini on valmistanut veitsiä pohjoisen vaativiin tarpeisiin lähes vuosisadan ajan. Marttiinin kansainvälisesti tunnetuissa veitsissä ensiluokkaiset materiaalit yhdistyvät käytännölliseen muotoiluun ja karun kauniin suomalaisen erämaan inspiroimaan estetiikkaan.<br>Laajasta valikoimastamme löydät perinteisiä lapinleukuja ja suomalaisia puukkoja, keittiöveitsiä, fileointiveitsiä, metsästysveitsiä, taittoveitsiä ja upeita design-veitsiä. Marttiinin myymälät tarjoavat aina ilmaisen teräkaiverruksen ostoksesi yhteydessä.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/7Marttiini-Arctic-Circle-Knife-Fireplace.jpg" />]]>`,
+    },
+    'santas-foodmarket': {
+      name: "Santa's Foodmarket",
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/fce9ca30-99f6-11f0-ad5c-1d3c21bcc0a5.jpg" /><br><br>Myymälästämme, joka sijaitsee Santa Claus Holiday Villagessa Joulutalon vieressä, löydät aina tuoreita paikallisia herkkuja sekä laajan valikoiman päivittäistavaroita. Hyllyt ovat täynnä tuoreita hedelmiä, vihanneksia, leivonnaisia, välipaloja ja virkistäviä mehuja, virvoitusjuomia ja muita juomia. Tarjoamme myös laadukkaita paikallisia tuotteita ja valikoiman hygieniatuotteita matkallesi.<br><br><img src="https://cdn-datahub.visitfinland.com/images/ae8347e0-897a-11f0-bb95-59fb21061ddd.jpeg" />]]>`,
+    },
+    'marimekko-napapiiri': {
+      name: 'Marimekko Napapiiri',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Continuing-Collection-Home-45-1536x922.jpg" /><br><br>Marimekko on suomalainen design-talo, joka on tunnettu alkuperäisistä kuvioistaan ja väreistään. Marimekko Napapiiri sijaitsee Joulupukin Kammarin rakennuksessa Joulupukin Pajakylän sydämessä Rovaniemellä.<br>Yrityksen tuotevalikoimaan kuuluu laadukkaita vaatteita, laukkuja ja asusteita sekä kodin sisustustuotteita tekstiileistä astioihin.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Continuing-Collection-Home-38.jpg" />]]>`,
+    },
+    'arctic-circle-husky-park': {
+      name: 'Arctic Circle Husky Park',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/3G2A3565-scaled.jpg" /><br><br>Tervetuloa oikeaan husky-taivaaseen, jossa on yli 100 aitoa siperianhuskya! Olemme avoinna joka päivä ympäri vuoden tarjoten ainutlaatuisia elämyksiä lappilaisessa ympäristössä. Ohjelmia löytyy kaikille: huskysafareita, huskyjen halailua, huskyvaelluksia ja tietysti suosittuja puistovierailuja. Ammattitaitoisten oppaidemme ja ihanien karvaisten ystäviemme kanssa luot muistoja, jotka muistat ikuisesti!<br>Husky Park on toiminut Joulupukin Pajakylän vieressä jo useita vuosikymmeniä.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Husky-Park-Husky-Hugging.png" />]]>`,
+    },
+    'arctic-circle-snowmobile-park': {
+      name: 'Arctic Circle Snowmobile park',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/2-3-1536x1024.jpg" /><br><br>Arctic Circle Snowmobile Park on suomalainen perheyritys, joka sijaitsee Joulupukin Pajakylässä. Yritys on perustettu vuonna 1999 ja kasvaa vähitellen joka vuosi.<br>Järjestämme erilaisia moottorikelkkasafariohjelmia yksityisille, perheille ja ryhmille. Uskomme vakaasti, että yksilöllinen lähestymistapamme, sydämellinen asiakaspalvelumme ja ammattitaitoinen henkilökuntamme tekevät safareistamme unohtumattomia seikkailuja kaikille.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/20160407_Visit_Rovaniemi_Fullres_72dpi-19-of-22-1536x969.jpg" />]]>`,
+    },
+    'aurora-horses': {
+      name: 'Aurora Horses',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/Horse_sleigh_ride_forest_Aurora_Horses_Rovaniemi_Lapland_Finland.jpg" /><br><br>Talvella tarjoamme hevosrekiajeluja Joulupukin Pajakylän ympäristössä: Aurora Horsesin suomenhevosreki lähtee Joulupukin Pajakylän sydämestä. Järjestämme myös pidempiä tunnelmallisia suomenhevosrekiajeluja ja revontulirekiajeluja iltaisin.<br>Kesällä voit vierailla ihanien suomenhevosten luona ja ratsastaa. Järjestämme myös vankkuriajeluja ja ratsastusretkiä tilauksesta.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/10/F22A1374-Copy-1536x946.jpg" />]]>`,
+    },
+    'santas-husky-rides-bearhill-husky': {
+      name: "Santa's Husky Rides (BearHill Husky)",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/bh1600_6.jpg" /><br><br>Bearhill Husky on perheomisteinen ja -johtoinen huskykenneli, joka sijaitsee koskemattomassa erämaassa Rovaniemen ulkopuolella ja on toiminut alueella vuodesta 2012. Heillä on laaja kokemus ikimuistoisten huskyseikkailujen luomisesta ryhmille, perheille ja yksityishenkilöille.<br>Hyvä koiranhoito, eläinten kunnioitus ja liiketoiminnan kestävyys ovat eettisiä periaatteita, joita he arvostavat korkealle.<br>Liity mukaan ympäri vuoden unohtumattomaan premium-huskyseikkailuun heidän kennelillään kauniin Viiksjärven rannalla, vain 30 minuutin päässä Rovaniemeltä.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/1600_2.jpg" />]]>`,
+    },
+    'santas-pets': {
+      name: "Tallitontun piha",
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Elf-Farm-Yard-Reindeer-Walk-6-1536x1025.jpg" /><br><br>Joulupukin Pajakylässä Napapiirillä sijaitsee kutsuva Tallitontun piha. Vieraile ja syötä heidän poroja ja tapaa pörröisiä alpakoita, vuohia, lampaita, kaneja, aaseja ja erilaisia lintuja tai nauti talvisesta hauskanpidosta laskemalla mäkeä paikan päällä! Vieraat voivat myös käyttää kotaa ja nuotio-/grillipaikkaa.<br>Lisäpalveluna Tallitontun piha tarjoaa myös mukavia porokävelyjä ja alpakkakävelyjä Joulupukin Pajakylän metsissä.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/Elf-Farm-Yard-119-1536x864.jpg" />]]>`,
+    },
+    'santa-claus-reindeer': {
+      name: 'Joulupukin Porot',
+      description: `<![CDATA[<img src="https://www.visitrovaniemi.fi/wp-content/uploads/Visitors-at-Forest-path-in-winter-at-Santa-Claus-Reindeer-in-Santa-Claus-Village-Rovaniemi-Finland.jpg" /><br><br>Santa Claus Reindeer on perheyritys Rovaniemellä, joka tarjoaa ympärivuotisia aitoja poroelämyksiä, kuten rekiajeluja ja tilavierailuja, sekä Joulupukin Pajakylässä ja syrjäisellä tilalla. Yritys asettaa eläinten hyvinvoinnin etusijalle ja tarjoaa aktiviteetteja, kuten porojen ruokintaa, rekiajeluja lumisissa metsissä (talvella) ja oppimista Lapin poronhoitoperinteistä.<br><br><img src="https://www.visitrovaniemi.fi/wp-content/uploads/Santa-Claus-Reindeer-in-Santa-Claus-Village-Arctic-Circle-in-Rovaniemi-Lapland-Finland.jpg" />]]>`,
+    },
+    'wild-nordic-rovaniemi-safari-center': {
+      name: 'Wild Nordic Rovaniemi - Safarikeskus',
+      description: `<![CDATA[<img src="https://santaclausvillage.info/wp-content/uploads/2023/06/WN-Safaris-snowmobile-1536x864.jpg" /><br><br>Wild Nordic Rovaniemellä on ohjelmapalveluyritys, joka on erikoistunut arktisten ja erämaaelämysten luomiseen, erityisesti moottorikelkkaretkiin. He tarjoavat erilaisia aktiviteetteja, kuten monipäiväisiä retkiä, safareita ja lyhyempiä retkiä eri taitotasoille, jotka kaikki on suunniteltu esittelemään Lapin luonnon kauneutta. He tarjoavat myös muita aktiviteetteja, kuten husky- ja porokyydityksiä sekä Joulupukkiin liittyviä elämyksiä.<br><br><img src="https://santaclausvillage.info/wp-content/uploads/2023/06/WN-Safaris-snowmobile-campfire-1536x864.jpg" />]]>`,
+    },
+    'snowman-world': {
+      name: 'Snowman World',
+      description: `<![CDATA[<img src="https://snowmanworld.fi/wp-content/uploads/2025/05/Ice-Disco-Snowman-World-3-1024x683.jpg" /><br><br>Snowman World Joulupukin Pajakylässä on söpöjen lumiukkohahmojen koti ja lumiaktiviteettipuisto koko perheelle, jossa on päivittäin lounas ja illallinen upeassa Lumiravintolassa, joka on tehty kokonaan lumesta ja jäästä.<br>Aktiviteettipuiston pääsylippu on voimassa koko päivän, ja voit laskea jäämäkeä tuubilla, kokeilla luistelua ja tutkia lumista labyrinttiä. Kaiken lumisen hauskanpidon jälkeen on mukava nauttia juoma jäälasista Jääbaarissa ja nauttia lounasta tai illallista Lumiravintolassa.<br><br><img src="https://snowmanworld.fi/wp-content/uploads/2025/08/Snow-tubing-Snowman-World-2-1-1024x683.jpg" />]]>`,
+    },
+    'tahtikuja-parking': { name: 'Tähtikujan pysäköintialue' },
+    'pukinpolku-parking-1': { name: 'Pukinpolun pysäköintialue 1' },
+    'campervan-parking': { name: 'Matkailuautojen ja -vaunujen pysäköinti' },
+    'pukinpolku-parking-2': { name: 'Pukinpolun pysäköintialue 2' },
+    'pukinpolku-parking-3': { name: 'Pukinpolun pysäköintialue 3' },
+    'joulumaantie-bus-stop': {
+      name: 'Joulumaantie I paikallisbussin pysäkki',
+      description: 'Paikallisbussin numero 8 pysäkki',
+    },
+    'santa-express-bus-stop': {
+      name: 'Santa Express ja Lentokenttäbussin pysäkki',
+      description: 'Santa Claus Express -bussin ja Lentokenttäbussin pysäkki',
+    },
+    'restrooms-main': {
+      name: 'WC-tilat',
+      description: 'Yleisövessat, sijaitsevat Joulupukin Kammarin rakennuksessa',
+    },
+    'h68OM': { name: 'Kävelytie' },
+    'MIsi1': { name: 'Kävelytie' },
+    'dRSqb': { name: 'Kävelytie' },
+    '4wKVA': { name: 'Kävelytie' },
+    'Y1MTB': { name: 'Kävelytie' },
+    'aCedM': { name: 'Kävelytie' },
+    'L5F4U': { name: 'Kävelytie' },
+    'faA4O': { name: 'Kävelytie' },
+    'IkQIn': { name: 'Kävelytie' },
+    '8uZeN': { name: 'Kävelytie' },
+    's5KM1': { name: 'Kävelytie' },
+    'I3xGx': { name: 'Kävelytie' },
+    'oTPc8': { name: 'Kävelytie' },
+    'zbGkG': { name: 'Kävelytie' },
+    'fqhn8': { name: 'Kävelytie' },
+    'skDwk': { name: 'Kävelytie' },
+    'b6bfP': { name: 'Kävelytie' },
+    '3gCPx': { name: 'Kävelytie' },
+    'e6JIK': { name: 'Kävelytie' },
+    'TAPEk': { name: 'Kävelytie' },
+    'L3EEq': { name: 'Kävelytie' },
+    'JTAGt': { name: 'Kävelytie' },
+    'xSMWH': { name: 'Kävelytie' },
+    'fl0aI': { name: 'Kävelytie' },
+    'ZEWpS': { name: 'Kävelytie' },
+    'EitIO': { name: 'Kävelytie' },
+    '9ihHL': { name: 'Kävelytie' },
+    'zzlgX': { name: 'Kävelytie' },
+    '1kxp5': { name: 'Kävelytie' },
+    'Phodd': { name: 'Kävelytie' },
+    '8leGB': { name: 'Kävelytie' },
+  },
+  categories: {
+    'Attractions': 'Nähtävyydet',
+    'Accommodation': 'Majoitus',
+    'Food-And-Drink': 'Ruoka & Juoma',
+    'Shopping': 'Ostokset',
+    'Transportation': 'Kulkuyhteydet',
+    'Facilities': 'Palvelut',
+    'Paths': 'Polut',
+    'My Stay': 'Oma majapaikka',
+    'My Car': 'Oma auto',
+    'Love this': 'Suosikit',
+    'allServices': 'Kaikki palvelut',
+  },
+  ui: {
+    'calculatingRoute': 'Lasketaan parasta reittiä...',
+    'yourCustomLocation': 'Oma sijaintisi',
+    'mapTitle': 'Santa Claus Village',
+    'stop': 'Pysäytä',
+    'stopNavigation': 'Pysäytä navigointi',
+    'toggleUserPlacesPanel': 'Omat paikat',
+    'centerOnLocation': 'Keskitä sijaintiisi',
+    'yourLocation': 'Nykyinen sijaintisi',
+    'showRoute': 'Näytä reitti',
+    'toggleFavouritesRoute': 'Näytä/piilota suosikkien reitti',
+    'addFavouritesToShowRoute': 'Lisää vähintään kaksi suosikkia nähdäksesi reitin',
+    'showAllCategories': 'Näytä kaikki kategoriat',
+    'myPlaces': 'Omat paikkani',
+    'closePanel': 'Sulje paneeli',
+    'addNewPlace': 'Lisää uusi paikka:',
+    'add': 'Lisää',
+    'favouritesRoute': 'Suosikkien reitti',
+    'addFavouritesForRoute': 'Lisää vähintään kaksi suosikkia luodaksesi reitin.',
+    'showRouteOnMap': 'Näytä reitti kartalla',
+    'dragReorder': 'Voit järjestää reitin vetämällä ja pudottamalla suosikkejasi.',
+    'noPlacesAdded': "Et ole lisännyt paikkoja. Lisää autosi, majoituksesi tai suosikkisi!",
+    'delete': 'Poista',
+    'closePopup': 'Sulje',
+    'yourCustomPlace': 'Oma lisäämäsi paikka.',
+    'goThere': 'Mene tänne',
+    'bookTable': 'Varaa pöytä',
+    'unlovePlace': 'Poista suosikeista',
+    'lovePlace': 'Lisää suosikkeihin',
+    'book': 'Varaa',
+    'shop': 'Osta',
+    'drive': 'Aja',
+    'walk': 'Kävele',
+    'min': 'min',
+    'searchPlaceholder': 'Etsi paikkoja...',
+    'cancel': 'Peruuta',
+    'setAsMyStay': 'Aseta majapaikaksi',
+    'removeMyStay': 'Poista majapaikka',
+  },
+};
