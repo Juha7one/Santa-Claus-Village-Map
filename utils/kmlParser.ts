@@ -135,14 +135,19 @@ export const parseKML = (kmlString: string, translations: any): { places: Place[
         const lineStringNodes = Array.from(placemark.getElementsByTagNameNS(kmlNamespace, 'LineString'));
         const lineStrings = lineStringNodes.map(node => node.getElementsByTagNameNS(kmlNamespace, 'coordinates')[0]).filter(Boolean);
 
-        // Extract bookingUrl from ExtendedData
+        // Extract additional data from ExtendedData
         const extendedDataNode = placemark.getElementsByTagNameNS(kmlNamespace, 'ExtendedData')[0];
         const dataNodes = extendedDataNode ? extendedDataNode.getElementsByTagNameNS(kmlNamespace, 'Data') : [];
         let bookingUrl: string | undefined;
+        let linkedWpUrl: string | undefined;
+        let website: string | undefined;
+
         Array.from(dataNodes).forEach(node => {
-            if (node.getAttribute('name') === 'bookingUrl') {
-                bookingUrl = node.getElementsByTagNameNS(kmlNamespace, 'value')[0]?.textContent?.trim() || undefined;
-            }
+            const dataName = node.getAttribute('name');
+            const dataValue = node.getElementsByTagNameNS(kmlNamespace, 'value')[0]?.textContent?.trim();
+            if (dataName === 'bookingUrl') bookingUrl = dataValue;
+            if (dataName === 'linkedWpUrl') linkedWpUrl = dataValue;
+            if (dataName === 'website' || dataName === 'Website') website = dataValue;
         });
 
 
@@ -161,6 +166,8 @@ export const parseKML = (kmlString: string, translations: any): { places: Place[
                     location: coords,
                     color: finalStyle?.color,
                     bookingUrl: bookingUrl,
+                    linkedWpUrl: linkedWpUrl,
+                    website: website,
                 });
             }
         } else if (lineStrings.length > 0) {

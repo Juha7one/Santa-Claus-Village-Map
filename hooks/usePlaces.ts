@@ -16,7 +16,23 @@ export function usePlaces(translations: any) {
       // First, get default KML parsed data as fallback and base setup
       const parsedData = parseKML(kmlDataString, translations);
       setMapCenter(parsedData.mapCenter);
-      setBounds(parsedData.bounds);
+
+      // Calculate village-specific bounds from paths/facilities lines.
+      // Remote activities shouldn't expand the primary village bounds used for routing decisions.
+      const villageLines = parsedData.lines.filter(l => l.categoryKey === 'Paths' || l.categoryKey === 'Facilities');
+      if (villageLines.length > 0) {
+        const points = villageLines.flatMap(l => l.coordinates);
+        let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180;
+        points.forEach(p => {
+          minLat = Math.min(minLat, p.lat);
+          maxLat = Math.max(maxLat, p.lat);
+          minLng = Math.min(minLng, p.lng);
+          maxLng = Math.max(maxLng, p.lng);
+        });
+        setBounds([[minLat, minLng], [maxLat, maxLng]]);
+      } else {
+        setBounds(parsedData.bounds);
+      }
 
       // Always use the local KML data directly for lines, as requested.
       setLines(parsedData.lines);

@@ -22,9 +22,9 @@ export function calculateDistance(coord1: Coordinates, coord2: Coordinates): num
     const deltaLngRad = (coord2.lng - coord1.lng) * Math.PI / 180;
 
     const a = Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) +
-              Math.cos(lat1Rad) * Math.cos(lat2Rad) *
-              Math.sin(deltaLngRad / 2) * Math.sin(deltaLngRad / 2);
-    
+        Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+        Math.sin(deltaLngRad / 2) * Math.sin(deltaLngRad / 2);
+
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
 }
@@ -118,16 +118,16 @@ function buildWalkingGraph(paths: LineData[]): Graph {
     // 2. Handle Intersections
     // We repeat splitting until no new splits occur (limit passes for safety)
     const MAX_PASSES = 3;
-    
-    for(let pass = 0; pass < MAX_PASSES; pass++) {
+
+    for (let pass = 0; pass < MAX_PASSES; pass++) {
         const splits = new Map<number, Coordinates[]>();
         let hasSplits = false;
 
-        for(let i = 0; i < currentSegments.length; i++) {
-            for(let j = i + 1; j < currentSegments.length; j++) {
+        for (let i = 0; i < currentSegments.length; i++) {
+            for (let j = i + 1; j < currentSegments.length; j++) {
                 const s1 = currentSegments[i];
                 const s2 = currentSegments[j];
-                
+
                 const intersection = getLineIntersection(s1.p1, s1.p2, s2.p1, s2.p2);
                 if (intersection) {
                     // Ignore if intersection is one of the endpoints (existing connection)
@@ -151,14 +151,14 @@ function buildWalkingGraph(paths: LineData[]): Graph {
         if (!hasSplits) break;
 
         const nextSegments: { p1: Coordinates, p2: Coordinates }[] = [];
-        for(let i = 0; i < currentSegments.length; i++) {
+        for (let i = 0; i < currentSegments.length; i++) {
             const seg = currentSegments[i];
             const segSplits = splits.get(i);
-            
+
             if (segSplits && segSplits.length > 0) {
                 // Sort splits by distance from start point
                 segSplits.sort((a, b) => calculateDistance(seg.p1, a) - calculateDistance(seg.p1, b));
-                
+
                 let prev = seg.p1;
                 segSplits.forEach(splitPoint => {
                     // Avoid zero-length segments
@@ -167,7 +167,7 @@ function buildWalkingGraph(paths: LineData[]): Graph {
                         prev = splitPoint;
                     }
                 });
-                
+
                 if (calculateDistance(prev, seg.p2) > 0.1) {
                     nextSegments.push({ p1: prev, p2: seg.p2 });
                 }
@@ -194,13 +194,13 @@ function buildWalkingGraph(paths: LineData[]): Graph {
         const uId = addNode(s.p1);
         const vId = addNode(s.p2);
         const dist = calculateDistance(s.p1, s.p2);
-        
+
         // Avoid zero-length edges
         if (dist < 0.05) return;
 
         adj.get(uId)!.set(vId, dist);
         adj.get(vId)!.set(uId, dist);
-        
+
         finalSegments.push({
             id: `seg-${idx}`,
             u: s.p1,
@@ -212,16 +212,16 @@ function buildWalkingGraph(paths: LineData[]): Graph {
     });
 
     // 4. Welding: Merge very close nodes to fix KML drawing errors
-    const WELD_DIST = 5.0; 
+    const WELD_DIST = 5.0;
     const nodeKeys = Array.from(nodes.keys());
-    
-    for(let i=0; i<nodeKeys.length; i++) {
-        for(let j=i+1; j<nodeKeys.length; j++) {
+
+    for (let i = 0; i < nodeKeys.length; i++) {
+        for (let j = i + 1; j < nodeKeys.length; j++) {
             const k1 = nodeKeys[i];
             const k2 = nodeKeys[j];
             const p1 = nodes.get(k1)!;
             const p2 = nodes.get(k2)!;
-            
+
             if (Math.abs(p1.lat - p2.lat) > 0.0001 || Math.abs(p1.lng - p2.lng) > 0.0002) continue;
 
             const d = calculateDistance(p1, p2);
@@ -245,7 +245,7 @@ function findPathDijkstra(
 ): string[] | null {
     const dist = new Map<string, number>();
     const prev = new Map<string, string | null>();
-    const pq: string[] = []; 
+    const pq: string[] = [];
 
     dist.set(startNode, 0);
     pq.push(startNode);
@@ -291,18 +291,18 @@ export async function calculateWalkingRoute(
     localPaths: LineData[],
     signal: AbortSignal
 ): Promise<RouteSegment[]> {
-    
+
     const walkingPaths = localPaths.filter(p => p.categoryKey === 'Facilities' || p.categoryKey === 'Paths');
     if (walkingPaths.length === 0) return [];
 
     // 1. Build the graph with intersections
     const graph = buildWalkingGraph(walkingPaths);
-    
+
     // 2. Find Closest Point on Network for Start & End
     const findProjection = (p: Coordinates): { point: Coordinates, segment: GraphSegment, dist: number } | null => {
         let best: { point: Coordinates, segment: GraphSegment, dist: number } | null = null;
         let minDist = Infinity;
-        
+
         for (const seg of graph.segments) {
             const proj = findClosestPointOnLineSegment(p, seg.u, seg.v);
             const d = calculateDistance(p, proj);
@@ -339,22 +339,22 @@ export async function calculateWalkingRoute(
     // and we are running in a single-threaded JS environment where we await nothing *during* the Dijkstra calc, this is safe-ish.
     // However, to be purely safe, let's just add them and assume we don't need to clean up because the graph is rebuilt next time or this graph object is local.
     // `buildWalkingGraph` creates a fresh object every time `calculateWalkingRoute` is called.
-    
+
     const injectNodeOnSegment = (tempId: string, proj: { point: Coordinates, segment: GraphSegment }) => {
         graph.nodes.set(tempId, proj.point);
         if (!graph.adj.has(tempId)) graph.adj.set(tempId, new Map());
-        
+
         const uId = proj.segment.uId;
         const vId = proj.segment.vId;
-        
+
         // Distances from projection to segment endpoints
         const d1 = calculateDistance(proj.point, proj.segment.u);
         const d2 = calculateDistance(proj.point, proj.segment.v);
-        
+
         // Connect Temp Node to endpoints
         graph.adj.get(tempId)!.set(uId, d1);
         graph.adj.get(tempId)!.set(vId, d2);
-        
+
         // Connect endpoints to Temp Node (bi-directional)
         graph.adj.get(uId)?.set(tempId, d1);
         graph.adj.get(vId)?.set(tempId, d2);
@@ -367,13 +367,15 @@ export async function calculateWalkingRoute(
     const pathIds = findPathDijkstra(sNodeId, eNodeId, graph.adj);
 
     if (!pathIds) {
-        // Fallback: Straight line if graph disconnected
+        // Fallback: Straight line if graph disconnected (only for short distances)
         const d = calculateDistance(start, end);
+        if (d > 1000) return [];
+
         return [{
-             type: 'path',
-             geometry: [start, end],
-             distance: d,
-             duration: d / 1.4
+            type: 'path',
+            geometry: [start, end],
+            distance: d,
+            duration: d / 1.4
         }];
     }
 
@@ -388,13 +390,13 @@ export async function calculateWalkingRoute(
     // Filter duplicates
     const cleanGeometry = geometry.filter((p, i) => {
         if (i === 0) return true;
-        return calculateDistance(p, geometry[i-1]) > 0.1;
+        return calculateDistance(p, geometry[i - 1]) > 0.1;
     });
 
     // Calculate total metrics
     let totalDist = 0;
-    for(let i=0; i<cleanGeometry.length-1; i++) {
-        totalDist += calculateDistance(cleanGeometry[i], cleanGeometry[i+1]);
+    for (let i = 0; i < cleanGeometry.length - 1; i++) {
+        totalDist += calculateDistance(cleanGeometry[i], cleanGeometry[i + 1]);
     }
 
     return [{
@@ -409,13 +411,13 @@ export async function calculateWalkingRoute(
 /** Fetches a route from the OSRM API. */
 async function fetchOSRMRoute(start: Coordinates, end: Coordinates, mode: 'driving' | 'foot', signal: AbortSignal): Promise<{ geometry: Coordinates[], distance: number, duration: number, isRoute: boolean }> {
     const url = `https://router.project-osrm.org/route/v1/${mode}/${start.lng},${start.lat};${end.lng},${end.lat}?overview=full&geometries=geojson`;
-    
+
     try {
         const response = await fetch(url, { signal });
         if (!response.ok) throw new Error('OSRM error');
-        
+
         const data: OSRMRouteResponse = await response.json();
-        
+
         if (data.code !== 'Ok' || !data.routes || data.routes.length === 0) {
             throw new Error('No route found');
         }
@@ -427,16 +429,16 @@ async function fetchOSRMRoute(start: Coordinates, end: Coordinates, mode: 'drivi
             duration: route.duration,
             isRoute: true
         };
-    } catch(error) {
+    } catch (error) {
         if ((error as Error).name !== 'AbortError') {
             console.warn("OSRM fetch failed, falling back to straight line", error);
         }
         const dist = calculateDistance(start, end);
-        return { 
-            geometry: [start, end], 
-            distance: dist, 
-            duration: mode === 'driving' ? dist / 5.5 : dist / 1.4, 
-            isRoute: false 
+        return {
+            geometry: [start, end],
+            distance: dist,
+            duration: mode === 'driving' ? dist / 5.5 : dist / 1.4,
+            isRoute: false
         };
     }
 }
@@ -444,7 +446,7 @@ async function fetchOSRMRoute(start: Coordinates, end: Coordinates, mode: 'drivi
 /** Fallback function to calculate a direct route without parking spots. */
 async function calculateDirectRoute(start: Coordinates, end: Coordinates, localPaths: LineData[], signal: AbortSignal): Promise<{ segments: RouteSegment[], mode: 'walk' | 'car' }> {
     const walkingSegments = await calculateWalkingRoute(start, end, localPaths, signal);
-    
+
     if (walkingSegments.length > 0) {
         return { segments: walkingSegments, mode: 'walk' };
     } else {
@@ -456,7 +458,7 @@ async function calculateDirectRoute(start: Coordinates, end: Coordinates, localP
                 distance: roadRouteResult.distance,
                 duration: roadRouteResult.duration,
             }],
-            mode: 'car' 
+            mode: 'car'
         };
     }
 }
@@ -464,7 +466,7 @@ async function calculateDirectRoute(start: Coordinates, end: Coordinates, localP
 /** Helper function to check if a point is within the map bounds with a buffer. */
 function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
     if (!bounds) return true;
-    const buffer = 0.01; 
+    const buffer = 0.01;
     const [[minLat, minLng], [maxLat, maxLng]] = bounds;
     return (
         point.lat >= minLat - buffer &&
@@ -482,8 +484,8 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
     if (bounds && !isInsideBounds(end, bounds)) {
         const remoteRoute = await fetchOSRMRoute(start, end, 'driving', signal);
         return {
-            segments: [{ 
-                type: 'road', 
+            segments: [{
+                type: 'road',
                 geometry: remoteRoute.geometry,
                 distance: remoteRoute.distance,
                 duration: remoteRoute.duration
@@ -493,8 +495,8 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         };
     }
 
-    const parkingSpots = allPlaces.filter(p => 
-        p.categoryKey === 'Transportation' && 
+    const parkingSpots = allPlaces.filter(p =>
+        p.categoryKey === 'Transportation' &&
         p.id.toLowerCase().includes('parking')
     );
 
@@ -518,7 +520,23 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
                 nearestParking = parking;
             }
         }
-        
+
+        // If the nearest parking is more than 1.5km from the destination, 
+        // it's probably better to drive directly to the destination (remote activity).
+        if (nearestParking && minDistance > 1500) {
+            const directDrive = await fetchOSRMRoute(start, end, 'driving', signal);
+            return {
+                segments: [{
+                    type: 'road',
+                    geometry: directDrive.geometry,
+                    distance: directDrive.distance,
+                    duration: directDrive.duration
+                }],
+                mode: 'car',
+                bestParking: null
+            };
+        }
+
         if (nearestParking) {
             const segments: RouteSegment[] = [];
 
@@ -532,7 +550,7 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
             const walkingStart = nearestParking.location;
             const walkingSegments = await calculateWalkingRoute(walkingStart, end, localPaths, signal);
-            
+
             if (walkingSegments.length > 0) {
                 segments.push(...walkingSegments);
             } else {
@@ -544,7 +562,7 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
                     duration: dist / 1.4
                 });
             }
-            
+
             return { segments, mode: 'car', bestParking: nearestParking };
         }
     }

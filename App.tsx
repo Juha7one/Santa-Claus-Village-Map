@@ -4,6 +4,7 @@ import Header from './components/Header';
 import MapView from './components/MapView';
 import AdminPanel from './components/AdminPanel';
 import AdminMapSettings from './components/AdminMapSettings';
+import AdminBulkSync from './components/AdminBulkSync';
 import PlacePopup from './components/PlacePopup';
 import { usePlaces } from './hooks/usePlaces';
 import { useUserPlaces } from './hooks/useUserPlaces';
@@ -515,6 +516,8 @@ function App() {
           }}
         />
       )}
+
+      {isDbAdminMode && <AdminBulkSync />}
 
       {isRouteLoading && (
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center z-[2000]">

@@ -3,50 +3,8 @@ import { CATEGORIES, getCategoryColor } from '../constants';
 import { getLangString } from '../utils/langUtils';
 import { LocalizedString, Place, Coordinates } from '../types';
 
-// Simple translation helper using MyMemory API (Free, no key needed for low volume)
-async function translateText(text: string, from: string, to: string): Promise<string> {
-    if (!text || from === to) return text;
-    const googleKey = (import.meta as any).env.VITE_GOOGLE_TRANSLATE_API_KEY;
-    const cleanText = text.replace(/<[^>]*>/g, ' ').trim();
-    if (!cleanText) return text;
-
-    try {
-        if (googleKey && googleKey !== "") {
-            console.log(`Using Google Translate for: ${to}`);
-            const res = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${googleKey}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    q: cleanText,
-                    source: from,
-                    target: to,
-                    format: 'text'
-                })
-            });
-            const data = await res.json();
-            if (data.data?.translations?.[0]?.translatedText) {
-                return data.data.translations[0].translatedText;
-            }
-        }
-
-        console.log(`Using MyMemory for: ${to}`);
-        const email = "juha.tahvonen@santaclausvillage.info";
-        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanText.slice(0, 500))}&langpair=${from}|${to}&de=${email}`);
-        const data = await response.json();
-        const translated = data.responseData?.translatedText;
-
-        if (translated && (translated.includes("MYMEMORY WARNING") || translated.includes("YOU USED ALL AVAILABLE FREE TRANSLATIONS"))) {
-            console.warn("MyMemory quota exceeded for today.");
-            return text;
-        }
-
-        return translated || text;
-    } catch (e) {
-        console.error("Translation error:", e);
-        return text;
-    }
-}
 import { supabase } from '../src/lib/supabase';
+import { syncPlaceFromWp, savePlaceToDb, translateText } from '../utils/wpSync';
 
 interface AdminMapSettingsProps {
     existingPlace: Place | null;
@@ -139,226 +97,58 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
     }, [existingPlace, clickedLocation]);
 
     const handleWpSync = async () => {
+        if (!linkedWpUrl) return;
         setIsSyncing(true);
         setError(null);
         setSyncStatus("Initializing global sync...");
 
         try {
-            console.log("Starting global sync for URL:", linkedWpUrl);
+            const results = await syncPlaceFromWp(linkedWpUrl, (status) => setSyncStatus(status));
 
-            // 1. Determine base path info
-            const getWpInfo = (urlStr: string) => {
-                const u = new URL(urlStr);
-                const parts = u.pathname.split('/').filter(Boolean);
-                // Detect language prefix if any
-                const wpLanguages = ['fi', 'de', 'fr', 'es', 'it'];
-                const firstPartIsLang = wpLanguages.includes(parts[0]);
-                const lang = firstPartIsLang ? parts[0] : 'en';
-                const typeIdx = firstPartIsLang ? 1 : 0;
-                const type = parts[typeIdx];
-                const slug = parts[typeIdx + 1] || type;
-                return { lang, type, slug };
-            };
-
-            const info = getWpInfo(linkedWpUrl.trim());
-            const typeMap: Record<string, string> = {
-                'restaurants': 'restaurants', 'ravintolat': 'restaurants',
-                'accommodation': 'accommodation', 'majoitus': 'accommodation',
-                'shops': 'shops', 'ostokset': 'shops',
-                'activities': 'activities', 'aktiviteetit': 'activities',
-                'services': 'services', 'palvelut': 'services',
-                'news': 'posts', 'uutiset': 'posts'
-            };
-            const wpType = typeMap[info.type] || 'pages';
-
-            // 2. Fetch Helper with Retry/Multi-proxy support
-            const fetchWp = async (lang: string, slug: string) => {
-                const api = `https://santaclausvillage.info/wp-json/wp/v2/${wpType}?slug=${slug}&_embed&lang=${lang}`;
-                try {
-                    const proxy1 = `https://api.allorigins.win/get?url=${encodeURIComponent(api)}`;
-                    const res = await fetch(proxy1);
-                    if (!res.ok) throw new Error("Proxy 1 down");
-                    const json = await res.json();
-                    const data = JSON.parse(json.contents);
-                    return Array.isArray(data) ? data[0] : data;
-                } catch (e) {
-                    try {
-                        const proxy2 = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(api)}`;
-                        const res = await fetch(proxy2);
-                        if (!res.ok) throw new Error("Proxy 2 down");
-                        const data = await res.json();
-                        return Array.isArray(data) ? data[0] : data;
-                    } catch (e2) {
-                        return null;
-                    }
-                }
-            };
-
-            // 3. Define Language Sets
-            const wpLanguages = ['fi', 'de', 'fr', 'es', 'it'];
-            const aiOnlyLanguages = ['zh', 'ja', 'ko', 'sv', 'ar'];
-
-            // 4. Fetch English (Master)
-            setSyncStatus("Fetching Master (EN) data...");
-            let enPost = null;
-            if (info.lang === 'en') {
-                enPost = await fetchWp('en', info.slug);
-            } else {
-                const startingPost = await fetchWp(info.lang, info.slug);
-                if (startingPost?.translations?.en) {
-                    const enId = startingPost.translations.en;
-                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://santaclausvillage.info/wp-json/wp/v2/${wpType}/${enId}?_embed`)}`;
-                    try {
-                        const res = await fetch(proxyUrl);
-                        const json = await res.json();
-                        enPost = JSON.parse(json.contents);
-                    } catch (e) { }
-                }
-                if (!enPost) enPost = await fetchWp('en', info.slug);
-            }
-            if (!enPost) throw new Error("EN post not found.");
-
-            const extract = (post: any) => {
-                if (!post) return null;
-                const acf = post.acf || {};
-                let desc = acf.description || acf.content || acf.kuvaus || "";
-                let source = "ACF";
-
-                if (!desc && post.content?.rendered) {
-                    const doc = new DOMParser().parseFromString(post.content.rendered, 'text/html');
-                    doc.querySelectorAll('script, style, img').forEach(el => el.remove());
-                    desc = doc.body.innerHTML.trim();
-                    source = "Content";
-                }
-
-                if (!desc && post.excerpt?.rendered) {
-                    const doc = new DOMParser().parseFromString(post.excerpt.rendered, 'text/html');
-                    desc = doc.body.textContent || "";
-                    source = "Excerpt";
-                }
-
-                const featured = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || "";
-                const forceStr = (val: any) => (typeof val === 'string' ? val : (val ? String(val) : ""));
-
-                const result = {
-                    name: forceStr(post.title?.rendered),
-                    description: forceStr(desc).trim(),
-                    address: forceStr(acf.address),
-                    openingHours: forceStr(acf.opening_hours),
-                    featured: forceStr(featured)
-                };
-                console.log(`Extracted from ${source}:`, result.name, result.description?.slice(0, 50) + "...");
-                return result;
-            };
-
-            const enData = extract(enPost)!;
-
-            // 5. Build full translation Map
-            const newTranslations = {
-                name: { en: enData.name } as Record<string, string>,
-                description: { en: enData.description } as Record<string, string>,
-                address: { en: enData.address } as Record<string, string>,
-                openingHours: { en: enData.openingHours } as Record<string, string>
-            };
-
-            // Enhanced Translation Detection: Check for translations in metadata
-            const translationMap = enPost.translations || {}; // { "fi": 123, "de": 456 }
-            console.log("Translation Map for fetching:", translationMap);
-
-            for (const lang of wpLanguages) {
-                setSyncStatus(`Syncing ${lang.toUpperCase()} from website...`);
-
-                let post = null;
-                // If we have an ID for this language, fetch by ID (most reliable)
-                if (translationMap[lang]) {
-                    const id = translationMap[lang];
-                    console.log(`Fetching ${lang} by ID: ${id}`);
-                    // Use the site's base API for all languages if using Polylang, 
-                    // or the specific language sub-site API if using WPML/Multi-site.
-                    // Most SCV lang setups for REST are through ?lang= prefix or separate routes.
-                    const baseUrl = `https://santaclausvillage.info/wp-json/wp/v2/${wpType}/${id}?_embed`;
-                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(baseUrl)}`;
-                    try {
-                        const res = await fetch(proxyUrl);
-                        const json = await res.json();
-                        post = JSON.parse(json.contents);
-                    } catch (e) {
-                        console.warn(`Failed to fetch ${lang} by ID ${id}, falling back to slug.`);
-                    }
-                }
-
-                // Fallback to fetch by slug ONLY if ID fetch failed AND the starting URL matches this language
-                if (!post && info.lang === lang) {
-                    post = await fetchWp(lang, info.slug);
-                }
-
-                const data = extract(post);
-                if (data && (data.name || data.description)) {
-                    console.log(`Successfully found ${lang} content on website.`, data.description?.slice(0, 50));
-                    if (data.name) newTranslations.name[lang] = data.name;
-                    if (data.description) newTranslations.description[lang] = data.description;
-                    if (data.address) newTranslations.address[lang] = data.address;
-                    if (data.openingHours) newTranslations.openingHours[lang] = data.openingHours;
-                } else {
-                    console.log(`${lang} content NOT found on website (looked at id/slug), will use AI.`);
-                    // If we have an existing translation in the DB for this language, 
-                    // maybe we should keep it? For now, we follow the AI path as requested 
-                    // but with better detection.
-                }
-            }
-
-            // 7. AI Fill Gaps (only for missing fields)
-            const allTargetLangs = [...wpLanguages, ...aiOnlyLanguages];
-            for (const lang of allTargetLangs) {
-                const needsName = !newTranslations.name[lang];
-                const needsDesc = !newTranslations.description[lang];
-                const needsHours = !newTranslations.openingHours[lang];
-
-                if (needsName || needsDesc || needsHours) {
-                    try {
-                        setSyncStatus(`AI Translation: ${lang.toUpperCase()}...`);
-                        if (needsName) {
-                            newTranslations.name[lang] = await translateText(enData.name, 'en', lang);
-                        }
-                        if (needsDesc) {
-                            newTranslations.description[lang] = await translateText(enData.description, 'en', lang);
-                        }
-                        if (!newTranslations.address[lang]) newTranslations.address[lang] = enData.address;
-                        if (needsHours) {
-                            newTranslations.openingHours[lang] = await translateText(enData.openingHours, 'en', lang);
-                        }
-                    } catch (aiErr) {
-                        console.error(`AI error for ${lang}:`, aiErr);
-                    }
-                } else {
-                    console.log(`Skipping AI for ${lang} - already has content.`);
-                }
-            }
-            console.log("Final Sync Data:", newTranslations);
-
-            // 8. Update State
-            setName(enData.name);
-            setDescription(enData.description);
-            setAddress(enData.address);
-            setOpeningHours(enData.openingHours);
-            setImageUrl(enData.featured);
-            setFullTranslations(newTranslations);
-
-            // Universal data
-            const acf = enPost.acf || {};
-            if (acf.phone) setPhone(acf.phone);
-            if (acf.email) setEmail(acf.email);
-            const siteUrl = acf.links?.[0]?.url || acf.website || "";
-            if (siteUrl) {
-                setWebsite(siteUrl);
-                if (!bookingUrl) setBookingUrl(siteUrl);
-            }
-            if (acf.facebook) setFacebookUrl(acf.facebook);
-            if (acf.instagram) setInstagramUrl(acf.instagram);
+            // Update State
+            setName(results.name.en);
+            setDescription(results.description.en);
+            setAddress(results.address.en);
+            setOpeningHours(results.openingHours.en);
+            setImageUrl(results.imageUrl);
+            setPhone(results.phone);
+            setEmail(results.email);
+            setWebsite(results.website);
+            setFacebookUrl(results.facebookUrl);
+            setInstagramUrl(results.instagramUrl);
+            setFullTranslations({
+                name: results.name,
+                description: results.description,
+                address: results.address,
+                openingHours: results.openingHours
+            });
 
             setSyncStatus("Global Sync Complete!");
+
+            // Automatically save to database after sync
+            const categoryLabel = CATEGORIES.find(c => c.key === categoryKey)?.label || categoryKey;
+
+            await saveToDatabase({
+                name: results.name,
+                category: categoryLabel,
+                category_key: categoryKey,
+                description: results.description,
+                image_url: results.imageUrl || null,
+                location_lat: parseFloat(latInput),
+                location_lng: parseFloat(lngInput),
+                booking_url: (bookingUrl || results.website).trim() || null,
+                linked_wp_url: linkedWpUrl.trim() || null,
+                address: results.address,
+                phone: results.phone.trim() || null,
+                email: results.email.trim() || null,
+                website: results.website.trim() || null,
+                opening_hours: results.openingHours,
+                facebook_url: results.facebookUrl.trim() || null,
+                instagram_url: results.instagramUrl.trim() || null,
+                sub_category: subCategory.trim() || null
+            });
+
             setTimeout(() => setSyncStatus(null), 3000);
-            alert("Global Sync Ready! 11 languages processed.");
         } catch (err: any) {
             console.error("Sync error:", err);
             setError(`Sync failed: ${err.message}`);
@@ -368,67 +158,55 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
         }
     };
 
-    const handleSave = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const saveToDatabase = async (customPlaceData?: any) => {
         setIsLoading(true);
         setError(null);
 
-        const lat = parseFloat(latInput);
-        const lng = parseFloat(lngInput);
-
-        if (isNaN(lat) || isNaN(lng)) {
-            setError("Location coordinates are invalid.");
-            setIsLoading(false);
-            return;
-        }
-
-        const categoryLabel = CATEGORIES.find(c => c.key === categoryKey)?.label || categoryKey;
-
-        const placeData = {
-            name: { ...fullTranslations.name, en: name.trim() },
-            category: categoryLabel,
-            category_key: categoryKey,
-            description: { ...fullTranslations.description, en: description.trim() },
-            image_url: imageUrl.trim() || null,
-            location_lat: lat,
-            location_lng: lng,
-            booking_url: bookingUrl.trim() || null,
-            linked_wp_url: linkedWpUrl.trim() || null,
-            address: { ...fullTranslations.address, en: address.trim() },
-            phone: phone.trim() || null,
-            email: email.trim() || null,
-            website: website.trim() || null,
-            opening_hours: { ...fullTranslations.openingHours, en: openingHours.trim() },
-            facebook_url: facebookUrl.trim() || null,
-            instagram_url: instagramUrl.trim() || null,
-            sub_category: subCategory.trim() || null
-        };
-
         try {
-            // Very simple pseudo-uuid check: UUIDs are 36 chars long and contain dashes at specific positions
-            // e.g. 550e8400-e29b-41d4-a716-446655440000
-            const isUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+            const lat = parseFloat(latInput);
+            const lng = parseFloat(lngInput);
 
-            if (existingPlace && existingPlace.id && !existingPlace.id.startsWith('user_place_') && isUUID(existingPlace.id)) {
-                // Update existing DB entry
-                const { error: supabaseError } = await supabase
-                    .from('places')
-                    .update(placeData)
-                    .eq('id', existingPlace.id);
-                if (supabaseError) throw supabaseError;
+            if (isNaN(lat) || isNaN(lng)) {
+                throw new Error("Location coordinates are invalid.");
+            }
+
+            const categoryLabel = CATEGORIES.find(c => c.key === categoryKey)?.label || categoryKey;
+
+            const placeData = customPlaceData || {
+                name: { ...fullTranslations.name, en: name.trim() },
+                category: categoryLabel,
+                category_key: categoryKey,
+                description: { ...fullTranslations.description, en: description.trim() },
+                image_url: imageUrl.trim() || null,
+                location_lat: lat,
+                location_lng: lng,
+                booking_url: bookingUrl.trim() || null,
+                linked_wp_url: linkedWpUrl.trim() || null,
+                address: { ...fullTranslations.address, en: address.trim() },
+                phone: phone.trim() || null,
+                email: email.trim() || null,
+                website: website.trim() || null,
+                opening_hours: { ...fullTranslations.openingHours, en: openingHours.trim() },
+                facebook_url: facebookUrl.trim() || null,
+                instagram_url: instagramUrl.trim() || null,
+                sub_category: subCategory.trim() || null
+            };
+
+            if (existingPlace && existingPlace.id && !existingPlace.id.startsWith('user_place_')) {
+                await savePlaceToDb(existingPlace.id, placeData);
             } else {
-                // Insert as new DB entry, letting Supabase generate the UUID
-                const { error: supabaseError } = await supabase
-                    .from('places')
-                    .insert([{ ...placeData, original_id: existingPlace?.id }]);
-                if (supabaseError) throw supabaseError;
+                await savePlaceToDb(null, { ...placeData, original_id: existingPlace?.id });
             }
             onSaveSuccess();
         } catch (err: any) {
             setError(err.message || "Failed to save to database");
-        } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleSave = async (e: React.FormEvent) => {
+        e.preventDefault();
+        await saveToDatabase();
     };
 
     const handleDelete = async () => {
