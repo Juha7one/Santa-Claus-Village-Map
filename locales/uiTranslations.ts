@@ -12,6 +12,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Majoitus',
             'Facilities': 'Palvelut',
             'Transportation': 'Liikenne',
+            'allServices': 'Joulupukin Pajakylä',
         },
         ui: {
             openingHours: 'Aukioloajat',
@@ -52,6 +53,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Unterkunft',
             'Facilities': 'Einrichtungen',
             'Transportation': 'Verkehr',
+            'allServices': 'Weihnachtsmann-Dorf',
         },
         ui: {
             openingHours: 'Öffnungszeiten',
@@ -88,6 +90,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Hébergement',
             'Facilities': 'Services',
             'Transportation': 'Transports',
+            'allServices': 'Village du Père Noël',
         },
         ui: {
             openingHours: "Horaires d'ouverture",
@@ -128,6 +131,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Alojamiento',
             'Facilities': 'Instalaciones',
             'Transportation': 'Transporte',
+            'allServices': 'Pueblo de Papá Noel',
         },
         ui: {
             openingHours: 'Horarios de apertura',
@@ -168,6 +172,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Alloggio',
             'Facilities': 'Servizi',
             'Transportation': 'Trasporti',
+            'allServices': 'Villaggio di Babbo Natale',
         },
         ui: {
             openingHours: 'Orari di apertura',
@@ -208,6 +213,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Boende',
             'Facilities': 'Tjänster',
             'Transportation': 'Transport',
+            'allServices': 'Tomtens Pajakyla',
         },
         ui: {
             openingHours: 'Öppettider',
@@ -248,6 +254,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': '宿泊施設',
             'Facilities': '施設',
             'Transportation': '交通機関',
+            'allServices': 'サンタクロース村',
         },
         ui: {
             openingHours: '営業時間',
@@ -288,6 +295,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': '住宿',
             'Facilities': '设施',
             'Transportation': '交通',
+            'allServices': '圣诞老人村',
         },
         ui: {
             openingHours: '营业时间',
@@ -328,6 +336,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': '숙박',
             'Facilities': '편의 시설',
             'Transportation': '교통',
+            'allServices': '산타클로스 마을',
         },
         ui: {
             openingHours: '영업 시간',

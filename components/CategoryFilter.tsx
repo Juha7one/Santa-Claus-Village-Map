@@ -122,21 +122,21 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, sel
                     </button>
                 </div>
 
-                <div className="flex items-start justify-center space-x-1 w-full">
+                <div className="flex items-start justify-center space-x-1 w-full p-2">
                     <button
                         onClick={() => onSelectCategory(null)}
-                        className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 bg-gray-800 text-white ${selectedCategory ? 'opacity-25 hover:opacity-100' : 'opacity-100'}`}
+                        className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 bg-gray-800 text-white ${selectedCategory ? 'opacity-25 hover:opacity-100' : 'border-[1.5px] border-white shadow-[0_2px_4px_rgba(0,0,0,0.3)] opacity-100'}`}
                         title={t.ui.showAllCategories}
                     >
                         <AllCategoriesIcon />
                     </button>
-                    <div className="flex space-x-1 overflow-x-auto pb-1">
+                    <div className="flex space-x-1 overflow-x-auto py-1 px-1">
                         {buttonsToDisplay.map(categoryKey => {
                             const isSelected = selectedCategory === categoryKey;
                             const isAnySelected = selectedCategory !== null;
                             const opacityClass = isAnySelected && !isSelected ? 'opacity-25 hover:opacity-100' : 'opacity-100';
                             const color = getCategoryColor(categoryKey);
-                            const selectionClass = isSelected ? 'ring-2 ring-offset-2 ring-white' : '';
+                            const selectionClass = isSelected ? 'border-[1.5px] border-white shadow-[0_2px_4px_rgba(0,0,0,0.3)]' : '';
 
                             return (
                                 <button
