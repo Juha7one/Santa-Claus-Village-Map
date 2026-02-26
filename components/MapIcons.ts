@@ -6,11 +6,11 @@ import { Place } from '../types';
 
 
 // Icon for KML places
-export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved: boolean, placeId: string) => {
+export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved: boolean, placeId: string, subCategory?: string) => {
     // We ignore the specific place.color from KML to ensure strict consistency 
     // with the footer filter buttons and accessibility standards.
     const baseColor = getCategoryColor(categoryKey);
-    
+
     // This branch is kept for logical completeness. In the current app flow, a "loved" place
     // is rendered as a UserPlace, so this logic is not hit for a standard KML marker.
     if (isLoved) {
@@ -47,11 +47,22 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
             popupAnchor: [0, -16]
         });
     }
-    
+
     if (categoryKey === 'Accommodation') {
         const accommodationIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-white"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>`;
         return new L.DivIcon({
             html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white" style="background-color: ${color};">${accommodationIconSvg}</div>`,
+            className: 'bg-transparent border-0',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16], // Center anchor for a circle
+            popupAnchor: [0, -16]
+        });
+    }
+
+    if (categoryKey === 'Activities') {
+        const activitiesIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-white"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>`;
+        return new L.DivIcon({
+            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white" style="background-color: ${color};">${activitiesIconSvg}</div>`,
             className: 'bg-transparent border-0',
             iconSize: [32, 32],
             iconAnchor: [16, 16], // Center anchor for a circle
@@ -81,11 +92,11 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
             popupAnchor: [0, -16]
         });
     }
-    
+
     // Check for Bus stops in Transportation category
-    if (categoryKey === 'Transportation' && placeId.toLowerCase().includes('bus-stop')) {
+    if (categoryKey === 'Transportation' && (subCategory === 'bus' || placeId.toLowerCase().includes('bus-stop'))) {
         const busIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.22 210.57" fill="currentColor" class="w-5 h-5 text-white"><path d="M196.12,62.97h-6.21c-.39,0-.76.04-1.13.1V28.43c.03-.29.05-.57.05-.86,0-1.93-.63-3.82-1.83-5.63-.75-1.24-1.69-2.34-2.81-3.25C172.5,7.82,139.94,0,101.61,0S31.13,7.72,19.25,18.48c-1.47,1.14-2.68,2.59-3.53,4.27-.87,1.56-1.33,3.17-1.33,4.82,0,.15.01.29.02.43,0,.11-.02.21-.02.31v34.74c-.36-.05-.72-.09-1.09-.09h-6.21c-3.92,0-7.1,3.18-7.1,7.1v37.2c0,3.92,3.18,7.1,7.1,7.1h6.21c.37,0,.73-.04,1.09-.09v63.59c0,6.86,5.56,12.42,12.42,12.42h7.14v17.39c0,1.6,1.3,2.9,2.9,2.9h19.12c1.6,0,2.9-1.3,2.9-2.9v-17.39h85.46v17.39c0,1.6,1.3,2.9,2.9,2.9h19.12c1.6,0,2.9-1.3,2.9-2.9v-17.39h7.1c6.86,0,12.42-5.56,12.42-12.42v-63.6c.37.06.75.1,1.13.1h6.21c3.92,0,7.1-3.18,7.1-7.1v-37.2c0-3.92-3.18-7.1-7.1-7.1ZM58.14,17.99c0-4.55,3.68-8.23,8.23-8.23h70.48c4.55,0,8.23,3.68,8.23,8.23h0c0,4.55-3.68,8.23-8.23-8.23h-70.48c-4.55,0-8.23-3.68-8.23-8.23h0ZM46.99,174.76c-6.99,0-12.65-5.66-12.65-12.65s5.66-12.65,12.65-12.65,12.65,5.66,12.65,12.65-5.66,12.65-12.65,12.65ZM156.23,174.76c-6.99,0-12.65-5.66-12.65-12.65s5.66-12.65,12.65-12.65,12.65,5.66,12.65,12.65-5.66,12.65-12.65,12.65ZM171.94,122.45c0,6.28-5.09,11.37-11.37,11.37H42.65c-6.28,0-11.37-5.09-11.37-11.37V50.64c0-6.28,5.09-11.37,11.37-11.37h117.91c6.28,0,11.37,5.09,11.37,11.37v71.81Z"/></svg>`;
-         return new L.DivIcon({
+        return new L.DivIcon({
             html: `<div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md border-2 border-white" style="background-color: ${color};">${busIconSvg}</div>`,
             className: 'bg-transparent border-0',
             iconSize: [32, 32],
@@ -96,8 +107,8 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
 
 
     // Check for Parking spots in Transportation category
-    if (categoryKey === 'Transportation' && placeId.toLowerCase().includes('parking')) {
-         return new L.DivIcon({
+    if (categoryKey === 'Transportation' && (subCategory === 'parking' || placeId.toLowerCase().includes('parking') || !subCategory)) {
+        return new L.DivIcon({
             html: `<div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md border-2 border-white" style="background-color: ${color};">
                      <span class="text-white font-bold text-lg font-sans">P</span>
                    </div>`,
@@ -110,7 +121,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
 
     // Use the default pin icon
     const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-8 h-8 drop-shadow-lg" style="color: ${color};"><path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.1.4-.223.654-.369.395-.226.86-.52 1.358-.863.54-.38 1.14-.833 1.774-1.355a11.965 11.965 0 002.503-2.686 11.965 11.965 0 001.44-3.93C18.5 6.044 14.766 2 10 2S1.5 6.044 1.5 10c0 1.58.48 3.05 1.44 4.396a11.964 11.964 0 002.503 2.686c.635.522 1.234.975 1.774 1.355.498.343.963.637 1.358.863.254.146.468.27.654.369a5.745 5.745 0 00.28.14l.018.008.006.003zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>`;
-    
+
     return new L.DivIcon({
         html: `<div class="relative w-8 h-8">${iconSvg}</div>`,
         className: 'bg-transparent border-0',

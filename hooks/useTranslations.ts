@@ -1,17 +1,44 @@
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { translations } from '../locales';
+import { uiTranslations } from '../locales/uiTranslations';
 
-// This hook now detects the user's browser language and returns the
-// appropriate translation object. It defaults to English if a specific
-// translation is not found.
+/**
+ * This hook detects the current language and returns the appropriate 
+ * UI translation object. It prioritizes the URL 'lang' parameter,
+ * then i18next's detected language, falling back to English.
+ */
 export function useTranslations() {
-  // Get the user's preferred language from the browser, taking the primary language code
-  const userLang = navigator.language.split('-')[0]; // e.g., 'en-US' -> 'en', 'fi-FI' -> 'fi'
+  const { i18n } = useTranslation();
 
-  // Check if a translation for the user's language exists in our translations object
-  if (userLang === 'fi' && translations.fi) {
-    return translations.fi;
-  }
-  
-  // Default to English
-  return translations.en;
+  // 1. Check URL directly for immediate response
+  const urlParams = new URLSearchParams(window.location.search);
+  const langParam = urlParams.get('lang')?.split('-')[0];
+
+  // 2. Fallback to i18next state
+  const i18nLang = i18n.language?.split('-')[0];
+
+  const currentLang = langParam || i18nLang || 'en';
+
+  return useMemo(() => {
+    console.log(`[useTranslations] Lang detected: ${currentLang}`);
+
+    const en = translations.en;
+
+    // If it's Finnish, we have a full manual file
+    if (currentLang === 'fi' && translations.fi) {
+      return translations.fi;
+    }
+
+    // For other languages, use UI translations if available, otherwise fallback to English UI
+    if (uiTranslations[currentLang]) {
+      return {
+        ...en,
+        categories: { ...en.categories, ...uiTranslations[currentLang].categories },
+        ui: { ...en.ui, ...uiTranslations[currentLang].ui }
+      };
+    }
+
+    return en;
+  }, [currentLang]);
 }

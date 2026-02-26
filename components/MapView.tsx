@@ -43,13 +43,13 @@ function UserFollower({ userLocation, isFollowing }: { userLocation: Coordinates
 const isPlaceVisibleInCategory = (place: Place, selectedCategory: string | null) => {
     if (!selectedCategory) return true; // Always visible when no filter
     if (place.categoryKey === selectedCategory) return true; // Visible if its own category is selected
-    
+
     // A user place (like 'Love this') should be visible if its original category is selected
     if (place.originalCategoryKey && place.originalCategoryKey === selectedCategory) return true;
-    
+
     // Show 'My Stay' when 'Accommodation' category is conceptually active
     if (selectedCategory === 'Accommodation' && place.categoryKey === 'My Stay') return true;
-    
+
     // The 'Love this' filter should show all favorited items
     if (selectedCategory === 'Love this') {
         return ['Love this', 'My Stay', 'My Car'].includes(place.categoryKey);
@@ -58,54 +58,68 @@ const isPlaceVisibleInCategory = (place: Place, selectedCategory: string | null)
     if (selectedCategory === 'Transportation' && place.categoryKey === 'My Car') {
         return true;
     }
-    
+
     return false;
 };
 
-function ViewManager({ 
-    center, zoom, route, userLocation, bounds, viewState, places, userPlaces, selectedCategory
-}: { 
-    center: Coordinates, 
-    zoom: number, 
-    route: { start: Coordinates, end: Coordinates } | null, 
-    userLocation: Coordinates | null,
-    bounds: Bounds | null,
-    viewState: ViewState,
-    places: Place[],
-    userPlaces: Place[],
-    selectedCategory: string | null
+function ViewManager({
+    center, zoom, route, userLocation, bounds, viewState, places, userPlaces, lines, selectedCategory, isVillageFocused
+}: {
+    center: Coordinates;
+    zoom: number;
+    route: { start: Coordinates, end: Coordinates } | null;
+    userLocation: Coordinates | null;
+    bounds: Bounds | null;
+    viewState: ViewState;
+    places: Place[];
+    userPlaces: Place[];
+    selectedCategory: string | null;
+    lines: LineData[];
+    isVillageFocused: boolean;
 }) {
     const map = useMap();
-    const hasSetInitialView = useRef(false);
-    const zoomedCategoryRef = useRef<string | null>(null);
     const zoomedRouteRef = useRef<string | null>(null);
-    const lastViewState = useRef(viewState);
+    const zoomedCategoryRef = useRef<string | null>(null);
+    const hasSetInitialView = useRef(false);
+    const lastViewState = useRef<ViewState | null>(null);
+
+    const villageBounds = useMemo(() => {
+        const points = lines.flatMap(line => line.coordinates);
+        if (points.length === 0) return null;
+        return L.latLngBounds(points);
+    }, [lines]);
 
     useEffect(() => {
-        const isNewAllPlacesView = viewState === 'all-places' && lastViewState.current !== 'all-places';
+        const isNewAllPlacesView = (viewState === 'all-places' && lastViewState.current !== 'all-places');
+        const focusChanged = lastViewState.current !== null && lastViewState.current === viewState && isVillageFocused !== (map as any)._lastVillageFocus;
+        (map as any)._lastVillageFocus = isVillageFocused;
 
         if (viewState === 'route' && route) {
-            const currentRouteId = `${route.start.lat},${route.start.lng}-${route.end.lat},${route.end.lng}`;
-            if (currentRouteId !== zoomedRouteRef.current) {
-                const routeBounds = L.latLngBounds([route.start, route.end]);
-                if(userLocation) {
-                  routeBounds.extend(userLocation);
-                }
-                map.flyToBounds(routeBounds, { padding: [50, 50] });
-                zoomedRouteRef.current = currentRouteId;
+            const routeId = `${route.start.lat},${route.start.lng}-${route.end.lat},${route.end.lng}`;
+            if (routeId !== zoomedRouteRef.current) {
+                const points = [route.start, route.end];
+                const boundsToFit = L.latLngBounds(points);
+                map.flyToBounds(boundsToFit, { padding: [100, 100], maxZoom: 16 });
+                zoomedRouteRef.current = routeId;
             }
             hasSetInitialView.current = false;
-            zoomedCategoryRef.current = null;
             lastViewState.current = viewState;
             return;
         }
         zoomedRouteRef.current = null;
 
         if (viewState === 'category-view' && selectedCategory) {
-            if (selectedCategory !== zoomedCategoryRef.current) {
+            if (selectedCategory !== zoomedCategoryRef.current || focusChanged) {
                 const allPlaces = [...places, ...userPlaces];
                 const filteredPoints = allPlaces
-                    .filter(p => isPlaceVisibleInCategory(p, selectedCategory))
+                    .filter(p => {
+                        const inCat = isPlaceVisibleInCategory(p, selectedCategory);
+                        if (!inCat) return false;
+                        if (isVillageFocused && villageBounds) {
+                            return villageBounds.contains(p.location);
+                        }
+                        return true;
+                    })
                     .map(p => p.location);
 
                 if (filteredPoints.length > 0) {
@@ -125,53 +139,61 @@ function ViewManager({
         zoomedCategoryRef.current = null;
 
         if ((viewState === 'initial' && !hasSetInitialView.current) || isNewAllPlacesView) {
-            const allInterestPoints = [
-                ...places.map(p => p.location), 
-                ...userPlaces.map(p => p.location)
-            ];
+            // Define interest points by routes/lines to focus on the village center
+            const linePoints = lines.flatMap(line => line.coordinates);
 
-            if (allInterestPoints.length > 0) {
-                const boundsToFit = L.latLngBounds(allInterestPoints);
-                map.flyToBounds(boundsToFit, { padding: [50, 50] });
-            } else if (bounds) {
-                map.fitBounds(bounds, { padding: [50, 50] });
+            if (linePoints.length > 0) {
+                const boundsToFit = L.latLngBounds(linePoints);
+                map.flyToBounds(boundsToFit, { padding: [30, 30] });
             } else {
-                map.flyTo(center, zoom);
+                // Fallback to places if no lines exist
+                const allInterestPoints = [
+                    ...places.map(p => p.location),
+                    ...userPlaces.map(p => p.location)
+                ];
+                if (allInterestPoints.length > 0) {
+                    const boundsToFit = L.latLngBounds(allInterestPoints);
+                    map.flyToBounds(boundsToFit, { padding: [50, 50] });
+                } else if (bounds) {
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                } else {
+                    map.flyTo(center, zoom);
+                }
             }
-            
+
             if (viewState === 'initial') {
-              hasSetInitialView.current = true;
+                hasSetInitialView.current = true;
             }
         }
 
         lastViewState.current = viewState;
-    }, [viewState, route, selectedCategory, userLocation, map, bounds, center, zoom, places, userPlaces]);
+    }, [viewState, route, selectedCategory, userLocation, map, bounds, center, zoom, places, userPlaces, lines, isVillageFocused, villageBounds]);
 
     return null;
 }
 
 function MapClickHandler({ onClick, isLocationSelectMode }: { onClick: (coords: Coordinates) => void, isLocationSelectMode: boolean }) {
-  const map = useMap();
-  
-  useEffect(() => {
-      map.getContainer().style.cursor = isLocationSelectMode ? 'crosshair' : '';
-  }, [isLocationSelectMode, map]);
-  
-  useMapEvents({
-    click(e) {
-      onClick({ lat: e.latlng.lat, lng: e.latlng.lng });
-    },
-  });
+    const map = useMap();
 
-  return null;
+    useEffect(() => {
+        map.getContainer().style.cursor = isLocationSelectMode ? 'crosshair' : '';
+    }, [isLocationSelectMode, map]);
+
+    useMapEvents({
+        click(e) {
+            onClick({ lat: e.latlng.lat, lng: e.latlng.lng });
+        },
+    });
+
+    return null;
 }
 
-const LocateControl = ({ 
-    userLocation, 
-    isNavigating, 
+const LocateControl = ({
+    userLocation,
+    isNavigating,
     setIsFollowingUser,
     setViewState
-}: { 
+}: {
     userLocation: Coordinates | null;
     isNavigating: boolean;
     setIsFollowingUser: (following: boolean) => void;
@@ -191,7 +213,7 @@ const LocateControl = ({
     };
 
     return (
-        <div 
+        <div
             className="absolute top-4 right-4 z-[1000]"
         >
             <button
@@ -237,31 +259,36 @@ type RouteInfo = {
 }
 
 interface MapViewProps {
-  mapRef: React.RefObject<L.Map | null>;
-  places: Place[];
-  userPlaces: Place[];
-  lines: LineData[];
-  mapCenter: Coordinates;
-  bounds: Bounds | null;
-  userLocation: Coordinates | null;
-  onSelectPlace: (place: Place) => void;
-  route: { start: Coordinates, end: Coordinates } | null;
-  routeInfo: RouteInfo | null;
-  favouriteRouteSegments: RouteSegment[] | null;
-  onMapClick: (coords: Coordinates) => void;
-  isLocationSelectMode: boolean;
-  viewState: ViewState;
-  setViewState: (state: ViewState) => void;
-  selectedCategory: string | null;
-  onSelectCategory: (category: string | null) => void;
-  showFavouritesRoute: boolean;
-  setShowFavouritesRoute: (show: boolean) => void;
-  animatedPlaceId: string | null;
-  setAnimatedPlaceId: (id: string | null) => void;
-  lovedPlaceIds: Set<string>;
-  isMyStayActive: boolean;
-  isFollowingUser: boolean;
-  setIsFollowingUser: (following: boolean) => void;
+    mapRef: React.RefObject<L.Map | null>;
+    places: Place[];
+    userPlaces: Place[];
+    lines: LineData[];
+    mapCenter: Coordinates;
+    bounds: Bounds | null;
+    userLocation: Coordinates | null;
+    onSelectPlace: (place: Place) => void;
+    route: { start: Coordinates, end: Coordinates } | null;
+    routeInfo: RouteInfo | null;
+    favouriteRouteSegments: RouteSegment[] | null;
+    onMapClick: (coords: Coordinates) => void;
+    isLocationSelectMode: boolean;
+    viewState: ViewState;
+    setViewState: (state: ViewState) => void;
+    selectedCategory: string | null;
+    onSelectCategory: (category: string | null) => void;
+    showFavouritesRoute: boolean;
+    setShowFavouritesRoute: (show: boolean) => void;
+    animatedPlaceId: string | null;
+    setAnimatedPlaceId: (id: string | null) => void;
+    lovedPlaceIds: Set<string>;
+    isMyStayActive: boolean;
+    isFollowingUser: boolean;
+    setIsFollowingUser: (following: boolean) => void;
+    isDbAdminMode?: boolean;
+    onMarkerDragEnd?: (place: Place, newCoords: Coordinates) => void;
+    dbAdminClickedCoords?: Coordinates | null;
+    selectedPlace?: Place | null;
+    isVillageFocused: boolean;
 }
 
 interface PlaceMarkerProps {
@@ -271,13 +298,22 @@ interface PlaceMarkerProps {
     routeInfo: RouteInfo | null;
     onSelectPlace: (place: Place) => void;
     lovedPlaceIds: Set<string>;
+    isDraggable?: boolean;
+    onDragEnd?: (place: Place, newCoords: Coordinates) => void;
+    isVillageFocused?: boolean;
+    villageBounds?: L.LatLngBounds | null;
 }
 
-const PlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onSelectPlace, lovedPlaceIds }: PlaceMarkerProps) => {
+const PlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onSelectPlace, lovedPlaceIds, isDraggable, onDragEnd, isVillageFocused, villageBounds }: PlaceMarkerProps) => {
     const isSelected = route?.end.lat === place.location.lat && route?.end.lng === place.location.lng;
     const isLoved = lovedPlaceIds.has(place.id);
     const isVisible = isPlaceVisibleInCategory(place, selectedCategory);
-                
+
+    const isInsideVillage = !villageBounds || villageBounds.contains(place.location);
+    if (isVillageFocused && !isInsideVillage && !isSelected) {
+        return null;
+    }
+
     let opacity = 1.0;
     if (selectedCategory && !isVisible) {
         opacity = 0.2;
@@ -291,26 +327,41 @@ const PlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onS
             opacity = 1.0;
         }
     }
-    
+
     const isClickable = !selectedCategory || isVisible;
 
     return (
-        <Marker 
-            position={place.location} 
+        <Marker
+            position={place.location}
             // We pass categoryKey to determine color from constant palette
-            icon={placeMarkerIcon(place.categoryKey, isSelected, isLoved, place.id)}
+            icon={placeMarkerIcon(place.categoryKey, isSelected, isLoved, place.id, place.subCategory)}
             zIndexOffset={isSelected ? 1000 : 0}
             opacity={opacity}
-            eventHandlers={isClickable ? { click: () => onSelectPlace(place) } : {}}
+            draggable={isDraggable}
+            eventHandlers={{
+                ...(isClickable ? { click: () => onSelectPlace(place) } : {}),
+                ...(isDraggable && onDragEnd ? {
+                    dragend: (e) => {
+                        const marker = e.target;
+                        const position = marker.getLatLng();
+                        onDragEnd(place, { lat: position.lat, lng: position.lng });
+                    }
+                } : {})
+            }}
         />
     );
 });
 
-const UserPlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onSelectPlace }: PlaceMarkerProps) => {
+const UserPlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onSelectPlace, isDraggable, onDragEnd, isVillageFocused, villageBounds }: PlaceMarkerProps) => {
     const isSelected = route?.end.lat === place.location.lat && route?.end.lng === place.location.lng;
-    
+
     const isVisible = isPlaceVisibleInCategory(place, selectedCategory);
-                 
+
+    const isInsideVillage = !villageBounds || villageBounds.contains(place.location);
+    if (isVillageFocused && !isInsideVillage && !isSelected) {
+        return null;
+    }
+
     let opacity = 1.0;
     if (selectedCategory && !isVisible) {
         opacity = 0.2;
@@ -323,16 +374,26 @@ const UserPlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo,
             opacity = 1.0;
         }
     }
-    
+
     const isClickable = !selectedCategory || isVisible;
-                 
+
     return (
-        <Marker 
-            position={place.location} 
+        <Marker
+            position={place.location}
             icon={userPlaceMarkerIcon(place, isSelected, selectedCategory)}
             zIndexOffset={isSelected ? 1000 : 500}
             opacity={opacity}
-            eventHandlers={isClickable ? { click: () => onSelectPlace(place) } : {}}
+            draggable={isDraggable}
+            eventHandlers={{
+                ...(isClickable ? { click: () => onSelectPlace(place) } : {}),
+                ...(isDraggable && onDragEnd ? {
+                    dragend: (e) => {
+                        const marker = e.target;
+                        const position = marker.getLatLng();
+                        onDragEnd(place, { lat: position.lat, lng: position.lng });
+                    }
+                } : {})
+            }}
         />
     );
 });
@@ -345,8 +406,8 @@ const formatRouteInfo = (distance: number, duration: number, type: 'road' | 'pat
 };
 
 
-const MapView: React.FC<MapViewProps> = ({ 
-    mapRef, places, userPlaces, lines, mapCenter, bounds, userLocation, 
+const MapView: React.FC<MapViewProps> = ({
+    mapRef, places, userPlaces, lines, mapCenter, bounds, userLocation,
     onSelectPlace, route, routeInfo,
     favouriteRouteSegments, onMapClick, isLocationSelectMode, viewState, setViewState,
     selectedCategory, onSelectCategory,
@@ -354,203 +415,232 @@ const MapView: React.FC<MapViewProps> = ({
     animatedPlaceId, setAnimatedPlaceId,
     lovedPlaceIds,
     isMyStayActive,
-    isFollowingUser, setIsFollowingUser
+    isFollowingUser, setIsFollowingUser,
+    isDbAdminMode, onMarkerDragEnd,
+    dbAdminClickedCoords, selectedPlace,
+    isVillageFocused
 }) => {
-  const defaultZoom = 16;
-  const t = useTranslations();
-  const [animationDetails, setAnimationDetails] = useState<{location: Coordinates, color: string} | null>(null);
-  
-  // Memoize the set of original IDs from user places to efficiently filter KML places
-  const userPlaceOriginalIds = useMemo(() => 
-    new Set(userPlaces.map(p => p.originalId).filter(Boolean))
-  , [userPlaces]);
+    const defaultZoom = 16;
+    const t = useTranslations();
+    const [animationDetails, setAnimationDetails] = useState<{ location: Coordinates, color: string } | null>(null);
 
-  useEffect(() => {
-    if (animatedPlaceId) {
-        const newlyAddedPlace = userPlaces.find(p => p.id === animatedPlaceId);
-        if (newlyAddedPlace) {
-            const color = getCategoryColor(newlyAddedPlace.categoryKey);
-            setAnimationDetails({ location: newlyAddedPlace.location, color });
-            
-            if (mapRef.current) {
-                mapRef.current.flyTo(newlyAddedPlace.location, mapRef.current.getZoom(), { animate: true, duration: 0.5 });
-            }
-            
-            const timer = setTimeout(() => {
-                setAnimationDetails(null);
+    const villageBounds = useMemo(() => {
+        const points = lines.flatMap(line => line.coordinates);
+        if (points.length === 0) return null;
+        return L.latLngBounds(points);
+    }, [lines]);
+
+    // Memoize the set of original IDs from user places to efficiently filter KML places
+    const userPlaceOriginalIds = useMemo(() =>
+        new Set(userPlaces.map(p => p.originalId).filter(Boolean))
+        , [userPlaces]);
+
+    useEffect(() => {
+        if (animatedPlaceId) {
+            const newlyAddedPlace = userPlaces.find(p => p.id === animatedPlaceId);
+            if (newlyAddedPlace) {
+                const color = getCategoryColor(newlyAddedPlace.categoryKey);
+                setAnimationDetails({ location: newlyAddedPlace.location, color });
+
+                if (mapRef.current) {
+                    mapRef.current.flyTo(newlyAddedPlace.location, mapRef.current.getZoom(), { animate: true, duration: 0.5 });
+                }
+
+                const timer = setTimeout(() => {
+                    setAnimationDetails(null);
+                    setAnimatedPlaceId(null);
+                }, 1500); // Corresponds to CSS animation duration
+
+                return () => clearTimeout(timer);
+            } else {
+                // If place not found (e.g., deleted quickly), just reset.
                 setAnimatedPlaceId(null);
-            }, 1500); // Corresponds to CSS animation duration
-
-            return () => clearTimeout(timer);
-        } else {
-            // If place not found (e.g., deleted quickly), just reset.
-            setAnimatedPlaceId(null);
+            }
         }
-    }
-  }, [animatedPlaceId, userPlaces, setAnimatedPlaceId, mapRef]);
-  
-  const markerProps: Omit<PlaceMarkerProps, 'place'> = {
-      route,
-      selectedCategory,
-      routeInfo,
-      onSelectPlace,
-      lovedPlaceIds,
-  };
+    }, [animatedPlaceId, userPlaces, setAnimatedPlaceId, mapRef]);
 
-  return (
-    <div className="w-full h-full relative">
-        <MapContainer center={mapCenter} zoom={defaultZoom} scrollWheelZoom={true} className="w-full h-full relative z-0">
-            <SetMapReference mapRef={mapRef} />
-            <MapResizer />
-            {/* Define panes in order of z-index for correct layering */}
-            <Pane name="kmlPathPane" style={{ zIndex: 410 }} />
-            <Pane name="routePane" style={{ zIndex: 420 }} />
+    const markerProps: Omit<PlaceMarkerProps, 'place'> = {
+        route,
+        selectedCategory,
+        routeInfo,
+        onSelectPlace,
+        lovedPlaceIds,
+        isDraggable: isDbAdminMode,
+        onDragEnd: onMarkerDragEnd,
+        isVillageFocused,
+        villageBounds
+    };
 
-            <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-                url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-            />
+    return (
+        <div className="w-full h-full relative">
+            <MapContainer center={mapCenter} zoom={defaultZoom} scrollWheelZoom={true} className="w-full h-full relative z-0">
+                <SetMapReference mapRef={mapRef} />
+                <MapResizer />
+                {/* Define panes in order of z-index for correct layering */}
+                <Pane name="kmlPathPane" style={{ zIndex: 410 }} />
+                <Pane name="routePane" style={{ zIndex: 420 }} />
 
-            <ViewManager 
-                center={mapCenter} 
-                zoom={defaultZoom} 
-                route={route} 
-                userLocation={userLocation} 
-                bounds={bounds} 
-                viewState={viewState}
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                    url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                />
+
+                <ViewManager
+                    center={mapCenter}
+                    zoom={defaultZoom}
+                    route={route}
+                    userLocation={userLocation}
+                    bounds={bounds}
+                    viewState={viewState}
+                    places={places}
+                    userPlaces={userPlaces}
+                    selectedCategory={selectedCategory}
+                    lines={lines}
+                    isVillageFocused={isVillageFocused}
+                />
+                <MapClickHandler onClick={onMapClick} isLocationSelectMode={isLocationSelectMode} />
+                <LocateControl
+                    userLocation={userLocation}
+                    isNavigating={!!route}
+                    setIsFollowingUser={setIsFollowingUser}
+                    setViewState={setViewState}
+                />
+
+                {/* Components for handling user following and interaction */}
+                <MapInteractionsManager setIsFollowingUser={setIsFollowingUser} setViewState={setViewState} />
+                <UserFollower userLocation={userLocation} isFollowing={isFollowingUser} />
+
+                {/* Render KML places, with filtering logic */}
+                {places.filter(p => {
+                    // Hide if there's an equivalent user place (like My Stay or Love this)
+                    if (userPlaceOriginalIds.has(p.id)) {
+                        return false;
+                    }
+                    // If a "My Stay" is set, hide all other original accommodation places
+                    if (isMyStayActive && p.categoryKey === 'Accommodation') {
+                        return false;
+                    }
+                    return true;
+                }).map(place => {
+                    const displayPlace = (isDbAdminMode && selectedPlace && selectedPlace.id === place.id)
+                        ? selectedPlace
+                        : place;
+                    return <PlaceMarker key={place.id} place={displayPlace} {...markerProps} />;
+                })}
+
+                {userPlaces.map(place => {
+                    const displayPlace = (isDbAdminMode && selectedPlace && selectedPlace.id === place.id)
+                        ? selectedPlace
+                        : place;
+                    return <UserPlaceMarker key={place.id} place={displayPlace} {...markerProps} />;
+                })}
+
+                {isDbAdminMode && dbAdminClickedCoords && (
+                    <Marker
+                        position={dbAdminClickedCoords}
+                        icon={placeMarkerIcon('Attractions', true, false, 'new_temp_marker')} // Highlighted icon for new marker
+                    />
+                )}
+
+                {lines.filter(line => line.categoryKey !== 'Facilities' && line.categoryKey !== 'Paths').map(line => (
+                    <Polyline
+                        key={line.id}
+                        positions={line.coordinates}
+                        pathOptions={{
+                            color: line.color || "rgba(0, 181, 255, 0.19)",
+                            weight: 5
+                        }}
+                    >
+                        <Tooltip>{line.name}</Tooltip>
+                    </Polyline>
+                ))}
+
+                {lines.filter(line => line.categoryKey === 'Facilities' || line.categoryKey === 'Paths').map(line => (
+                    <Polyline
+                        key={line.id}
+                        positions={line.coordinates}
+                        pane="kmlPathPane"
+                        pathOptions={{
+                            color: '#FFFFFF',
+                            weight: 4,
+                            opacity: line.categoryKey === 'Paths' ? 0.1 : 0.2,
+                        }}
+                    >
+                        <Tooltip>{line.name}</Tooltip>
+                    </Polyline>
+                ))}
+
+                {userLocation && (
+                    <Marker position={userLocation} icon={userMarkerIcon} >
+                        <Tooltip>{t.ui.yourLocation}</Tooltip>
+                    </Marker>
+                )}
+
+                {route && routeInfo && (
+                    routeInfo.segments.map((segment, index) => {
+                        const getPathOptions = () => {
+                            switch (segment.type) {
+                                case 'road':
+                                    return { color: '#2962FF', weight: 8, opacity: 0.7 }; // Blue for driving
+                                case 'path':
+                                    return {
+                                        color: '#D50000', // Red
+                                        weight: 6,
+                                        opacity: 0.9,
+                                        dashArray: '0, 12',
+                                        lineCap: 'round' as L.LineCapShape
+                                    };
+                                default:
+                                    return { color: '#FF0000', weight: 4, opacity: 1, dashArray: '4, 4' };
+                            }
+                        }
+                        return (
+                            <Polyline
+                                key={index}
+                                pane="routePane"
+                                pathOptions={getPathOptions()}
+                                positions={segment.geometry}
+                            >
+                                <Tooltip permanent className="route-label">
+                                    {formatRouteInfo(segment.distance, segment.duration, segment.type, t)}
+                                </Tooltip>
+                            </Polyline>
+                        );
+                    })
+                )}
+
+                {favouriteRouteSegments && favouriteRouteSegments.map((segment, index) => (
+                    <Polyline
+                        key={`fav-route-${index}`}
+                        positions={segment.geometry}
+                        pathOptions={{
+                            color: '#FF4081', // Lighter Pink for Love path
+                            weight: 6,
+                            opacity: 0.9,
+                            dashArray: '0, 12', // Dotted line style
+                            lineCap: 'round' as L.LineCapShape
+                        }}
+                        pane="routePane"
+                    >
+                        <Tooltip permanent className="route-label">
+                            {formatRouteInfo(segment.distance, segment.duration, segment.type, t)}
+                        </Tooltip>
+                    </Polyline>
+                ))}
+                {animationDetails && <PulsatingAnimationMarker position={animationDetails.location} color={animationDetails.color} />}
+            </MapContainer>
+            <CategoryFilter
                 places={places}
                 userPlaces={userPlaces}
                 selectedCategory={selectedCategory}
+                onSelectCategory={onSelectCategory}
+                showFavouritesRoute={showFavouritesRoute}
+                setShowFavouritesRoute={setShowFavouritesRoute}
+                isMyStayActive={isMyStayActive}
+                isVillageFocused={isVillageFocused}
             />
-            <MapClickHandler onClick={onMapClick} isLocationSelectMode={isLocationSelectMode} />
-            <LocateControl 
-                userLocation={userLocation} 
-                isNavigating={!!route} 
-                setIsFollowingUser={setIsFollowingUser} 
-                setViewState={setViewState}
-            />
-
-            {/* Components for handling user following and interaction */}
-            <MapInteractionsManager setIsFollowingUser={setIsFollowingUser} setViewState={setViewState} />
-            <UserFollower userLocation={userLocation} isFollowing={isFollowingUser} />
-
-            {/* Render KML places, with filtering logic */}
-            {places.filter(p => {
-                // Hide if there's an equivalent user place (like My Stay or Love this)
-                if (userPlaceOriginalIds.has(p.id)) {
-                    return false;
-                }
-                // If a "My Stay" is set, hide all other original accommodation places
-                if (isMyStayActive && p.categoryKey === 'Accommodation') {
-                    return false;
-                }
-                return true;
-            }).map(place => (
-                <PlaceMarker key={place.id} place={place} {...markerProps} />
-            ))}
-
-            {userPlaces.map(place => (
-                 <UserPlaceMarker key={place.id} place={place} {...markerProps} />
-            ))}
-            
-            {lines.filter(line => line.categoryKey !== 'Facilities' && line.categoryKey !== 'Paths').map(line => (
-                <Polyline 
-                    key={line.id} 
-                    positions={line.coordinates} 
-                    pathOptions={{
-                        color: line.color || "rgba(0, 181, 255, 0.19)",
-                        weight: 5
-                    }}
-                >
-                <Tooltip>{line.name}</Tooltip>
-                </Polyline>
-            ))}
-
-            {lines.filter(line => line.categoryKey === 'Facilities' || line.categoryKey === 'Paths').map(line => (
-                <Polyline
-                    key={line.id}
-                    positions={line.coordinates}
-                    pane="kmlPathPane"
-                    pathOptions={{
-                        color: line.categoryKey === 'Paths' ? '#0000FF' : '#FFFFFF', 
-                        weight: 4,
-                        opacity: line.categoryKey === 'Paths' ? 1.0 : 0.2, 
-                    }}
-                >
-                    <Tooltip>{line.name}</Tooltip>
-                </Polyline>
-            ))}
-            
-            {userLocation && (
-                <Marker position={userLocation} icon={userMarkerIcon} >
-                    <Tooltip>{t.ui.yourLocation}</Tooltip>
-                </Marker>
-            )}
-            
-            {route && routeInfo && (
-                routeInfo.segments.map((segment, index) => {
-                    const getPathOptions = () => {
-                        switch (segment.type) {
-                            case 'road':
-                                return { color: '#2962FF', weight: 8, opacity: 0.7 }; // Blue for driving
-                            case 'path':
-                                return { 
-                                    color: '#D50000', // Red
-                                    weight: 6, 
-                                    opacity: 0.9, 
-                                    dashArray: '0, 12', 
-                                    lineCap: 'round' as L.LineCapShape
-                                };
-                            default:
-                                return { color: '#FF0000', weight: 4, opacity: 1, dashArray: '4, 4' };
-                        }
-                    }
-                    return (
-                        <Polyline
-                            key={index}
-                            pane="routePane"
-                            pathOptions={getPathOptions()}
-                            positions={segment.geometry}
-                        >
-                            <Tooltip permanent className="route-label">
-                                {formatRouteInfo(segment.distance, segment.duration, segment.type, t)}
-                            </Tooltip>
-                        </Polyline>
-                    );
-                })
-            )}
-
-            {favouriteRouteSegments && favouriteRouteSegments.map((segment, index) => (
-                <Polyline
-                    key={`fav-route-${index}`}
-                    positions={segment.geometry}
-                    pathOptions={{
-                        color: '#FF4081', // Lighter Pink for Love path
-                        weight: 6,
-                        opacity: 0.9,
-                        dashArray: '0, 12', // Dotted line style
-                        lineCap: 'round' as L.LineCapShape
-                    }}
-                    pane="routePane"
-                >
-                    <Tooltip permanent className="route-label">
-                        {formatRouteInfo(segment.distance, segment.duration, segment.type, t)}
-                    </Tooltip>
-                </Polyline>
-            ))}
-            {animationDetails && <PulsatingAnimationMarker position={animationDetails.location} color={animationDetails.color} />}
-        </MapContainer>
-        <CategoryFilter
-            places={places}
-            userPlaces={userPlaces}
-            selectedCategory={selectedCategory}
-            onSelectCategory={onSelectCategory}
-            showFavouritesRoute={showFavouritesRoute}
-            setShowFavouritesRoute={setShowFavouritesRoute}
-            isMyStayActive={isMyStayActive}
-        />
-    </div>
-  );
+        </div>
+    );
 };
 
 export default MapView;

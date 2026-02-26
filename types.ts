@@ -5,22 +5,33 @@ export interface Coordinates {
 
 export type Bounds = [[number, number], [number, number]];
 
+export type LocalizedString = string | Record<string, string>;
+
 export interface Place {
   id: string;
-  name: string;
+  name: LocalizedString;
   category: string;
   categoryKey: string;
-  description: string;
+  description: LocalizedString;
   imageUrl: string | null;
   location: Coordinates;
   color?: string;
   originalId?: string;
   originalCategoryKey?: string;
   bookingUrl?: string;
+  linkedWpUrl?: string;
+  address?: LocalizedString;
+  phone?: string;
+  email?: string;
+  website?: string;
+  openingHours?: LocalizedString;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  subCategory?: string;
 }
 
 export interface LineData {
-  id:string;
+  id: string;
   name: string;
   category: string;
   categoryKey: string;

@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+plan.md
+.env
+.env.production
+.env.template

@@ -1,0 +1,24 @@
+{
+    "translation": {
+        "map": {
+            "loading": "Loading map data...",
+            "error": "Failed to load map data"
+        },
+        "category": {
+            "all": "All",
+            "activities": "Activities",
+            "restaurants": "Restaurants",
+            "accommodation": "Accommodation",
+            "shopping": "Shopping",
+            "services": "Services"
+        },
+        "popup": {
+            "readMore": "Read more >",
+            "navigate": "Navigate"
+        },
+        "ui": {
+            "language": "Language",
+            "search": "Search"
+        }
+    }
+}

@@ -14,14 +14,16 @@ interface CategoryFilterProps {
     showFavouritesRoute: boolean;
     setShowFavouritesRoute: (show: boolean) => void;
     isMyStayActive: boolean;
+    isVillageFocused: boolean;
 }
 
-const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, selectedCategory, onSelectCategory, showFavouritesRoute, setShowFavouritesRoute, isMyStayActive }) => {
+const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, selectedCategory, onSelectCategory, showFavouritesRoute, setShowFavouritesRoute, isMyStayActive, isVillageFocused }) => {
     const t = useTranslations();
-    
+
     const buttonsToDisplay = useMemo(() => {
         const categoryOrder = [
             'Attractions',
+            'Activities',
             'Food-And-Drink',
             'Shopping',
             'Accommodation', // This also serves as a positional placeholder for 'My Stay'
@@ -32,7 +34,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, sel
 
         // 1. Get a set of all unique category keys from the original KML places
         const existingKmlCategories = new Set(places.map(p => p.categoryKey));
-        
+
         const finalButtons: string[] = [];
 
         // 2. Iterate through the desired order to build the button list deterministically
@@ -44,14 +46,14 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, sel
                 } else if (existingKmlCategories.has('Accommodation')) {
                     finalButtons.push('Accommodation');
                 }
-            } 
+            }
             // Special handling for the master 'Love this' filter
             else if (key === 'Love this') {
                 const hasAnyFavourite = userPlaces.some(p => ['Love this', 'My Car', 'My Stay'].includes(p.categoryKey));
                 if (hasAnyFavourite) {
                     finalButtons.push('Love this');
                 }
-            } 
+            }
             // For all other standard categories
             else {
                 if (existingKmlCategories.has(key)) {
@@ -66,7 +68,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, sel
     const handleCategoryClick = (categoryKey: string) => {
         onSelectCategory(selectedCategory === categoryKey ? null : categoryKey);
     };
-    
+
     // Include My Car and My Stay in the count for enabling route toggle
     const routeCategories = ['Love this', 'My Car', 'My Stay'];
     const favouritesCount = userPlaces.filter(p => routeCategories.includes(p.categoryKey)).length;
@@ -77,7 +79,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, sel
     }
 
     return (
-        <div 
+        <div
             className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[calc(100%-0.5rem)] sm:w-auto sm:max-w-2xl px-0 pb-1 pt-8"
         >
             <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm py-1 px-4 rounded-full shadow-md flex items-center space-x-4 border border-amber-200">
@@ -101,11 +103,11 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, sel
                     </div>
                 )}
             </div>
-    
+
             <div className="bg-white/90 backdrop-blur-sm p-1 rounded-full shadow-lg flex items-start justify-center space-x-1 border border-amber-200">
                 <button
                     onClick={() => onSelectCategory(null)}
-                    className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 bg-gray-800 text-white ${selectedCategory ? 'opacity-25 hover:opacity-100' : 'ring-2 ring-offset-2 ring-white'}`}
+                    className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 ${isVillageFocused ? 'bg-amber-600 ring-2 ring-amber-400 ring-offset-2' : 'bg-gray-800'} text-white ${selectedCategory ? 'opacity-25 hover:opacity-100' : 'opacity-100'}`}
                     title={t.ui.showAllCategories}
                 >
                     <AllCategoriesIcon />

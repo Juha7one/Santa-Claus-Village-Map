@@ -6,6 +6,7 @@ import { foodAndDrinkKML } from './food-and-drink.kml';
 import { pathsKML } from './paths.kml';
 import { shoppingKML } from './shopping.kml';
 import { transportationKML } from './transportation.kml';
+import { activitiesKML } from './activities.kml';
 
 export const kmlDataString = `<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
@@ -589,6 +590,7 @@ export const kmlDataString = `<?xml version="1.0" encoding="UTF-8"?>
       </Pair>
     </StyleMap>
     ${attractionsKML}
+    ${activitiesKML}
     ${accommodationKML}
     ${foodAndDrinkKML}
     ${shoppingKML}

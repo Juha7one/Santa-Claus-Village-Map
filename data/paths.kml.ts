@@ -3,365 +3,961 @@ export const pathsKML = `
 <Folder id="Paths">
 <Placemark id="h68OM">
 <name> Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.837431,66.541758
-25.837821,66.541755
-25.838208,66.541749
-25.838438,66.541723
-25.838669,66.541696
-25.83891,66.541666
-25.839152,66.541638
-25.839286,66.541813
-25.839415,66.541988
-25.839549,66.542165
-25.839679,66.54234
-25.83766,66.542131</coordinates></LineString></Placemark>
-<Placemark id="MIsi1">
-<name>Path</name><ExtendedData>
-  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.844269,66.542718],[25.843215,66.542614],[25.843201,66.542556],[25.842922,66.542425],[25.842689,66.542385],[25.842174,66.542327],[25.841694,66.5423],[25.841514,66.542213],[25.841235,66.541831],[25.84097,66.541478],[25.842279,66.541272],[25.842778,66.541839],[25.842423,66.541917],[25.841981,66.542033],[25.841444,66.541408]]}}</value></Data></ExtendedData>
-  <LineString><coordinates>25.84427,66.542716
-25.843212,66.542621
-25.843211,66.542614
-25.843195,66.542556
-25.842919,66.542427
-25.842691,66.542382
-25.842175,66.542325
-25.841694,66.542301
-25.84157,66.542255
-25.841535,66.54221
-25.841237,66.541831
-25.840972,66.54148
-25.842273,66.541274
-25.84276,66.541841
-25.842778,66.541839
-25.842419,66.541915
-25.84242,66.541917
-25.842419,66.541915
-25.841979,66.542032
-25.84197,66.542035
-25.841438,66.541409</coordinates></LineString></Placemark>
-<Placemark id="dRSqb">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.842713,66.542387
-25.842432,66.541918
-25.841908,66.541329</coordinates></LineString></Placemark>
-<Placemark id="4wKVA">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.842177,66.542324
-25.841973,66.542034</coordinates></LineString></Placemark>
-<Placemark id="Y1MTB">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.842775,66.541838
-25.843083,66.541808
-25.844414,66.54174</coordinates></LineString></Placemark>
-<Placemark id="aCedM">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.839687,66.542336
-25.841575,66.542257</coordinates></LineString></Placemark>
-<Placemark id="L5F4U">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.842274,66.541275
-25.842635,66.541229
-25.842732,66.54133
-25.842871,66.54149
-25.843048,66.541684
-25.843148,66.541804</coordinates></LineString></Placemark>
-<Placemark id="faA4O">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.842636,66.541231
-25.842897,66.541223
-25.843144,66.541189
-25.843262,66.54133
-25.843391,66.541484
-25.843509,66.541627
-25.843626,66.541779</coordinates></LineString></Placemark>
-<Placemark id="IkQIn">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.843627,66.541781
-25.843582,66.541995
-25.843571,66.542106
-25.84356,66.542294
-25.842979,66.542453</coordinates></LineString></Placemark>
-<Placemark id="8uZeN">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.842775,66.541847
-25.842984,66.541986
-25.843016,66.542125
-25.843075,66.542247
-25.842962,66.542446</coordinates></LineString></Placemark>
-<Placemark id="s5KM1">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.837615,66.541936
-25.837404,66.541917
-25.836942,66.541875
-25.836475,66.541833
-25.836048,66.541802</coordinates></LineString></Placemark>
-<Placemark id="I3xGx">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.837666,66.542131
-25.837704,66.542013
-25.837431,66.541757
-25.837119,66.541736
-25.836808,66.541713
-25.836362,66.541683
-25.836142,66.541666
-25.835918,66.54165
-25.836208,66.542007
-25.837663,66.542131</coordinates></LineString></Placemark>
-<Placemark id="oTPc8">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.839677,66.542338
-25.840295,66.542402
-25.840584,66.542804
-25.840954,66.543032
-25.841325,66.543259
-25.842033,66.54334
-25.843284,66.543477
-25.844416,66.543599
-25.844405,66.543744</coordinates></LineString></Placemark>
-<Placemark id="zbGkG">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.844403,66.543761
-25.844418,66.543543
-25.844243,66.543126
-25.844221,66.542921
-25.844269,66.542716
-25.844548,66.542338
-25.844908,66.541982
-25.845058,66.541904
-25.845208,66.541872
-25.845361,66.541849
-25.845739,66.541825
-25.846166,66.541826
-25.846533,66.541906
-25.847099,66.542093
-25.847488,66.542086
-25.847944,66.542052
-25.848818,66.541978
-25.849076,66.541918
-25.849312,66.541897
-25.848534,66.541392
-25.848153,66.541151
-25.84719,66.540546</coordinates></LineString></Placemark>
-<Placemark id="3gCPx">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.840294,66.542402
-25.842274,66.542543
-25.844275,66.542716</coordinates></LineString></Placemark>
-<Placemark id="e6JIK">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.838033,66.542891
-25.841319,66.543259</coordinates></LineString></Placemark>
-<Placemark id="TAPEk">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.841339,66.543251
-25.840588,66.542793
-25.840309,66.542387
-25.837669,66.542148
-25.831584,66.541699
-25.830071,66.541592
-25.829394,66.541421
-25.827892,66.541011
-25.825381,66.540293
-25.824876,66.540126
-25.824425,66.539972
-25.823857,66.539793
-25.823116,66.539592
-25.822622,66.539446
-25.821691,66.539158
-25.81903,66.538432</coordinates></LineString></Placemark>
-<Placemark id="L3EEq">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.848238,66.544249
-25.847794,66.544252
-25.847208,66.544181
-25.845723,66.544008
-25.845482,66.543985
-25.845137,66.543912
-25.844645,66.543771
-25.844414,66.543731
-25.844409,66.543598</coordinates></LineString></Placemark>
-<Placemark id="JTAGt">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.847067,66.542113
-25.846112,66.542912
-25.846531,66.543532</coordinates></LineString></Placemark>
-<Placemark id="xSMWH">
-<name>Path</name><ExtendedData>
-  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.824885,66.540129],[25.824609,66.540245]]}}</value></Data></ExtendedData>
-  <LineString><coordinates>25.824888,66.540127
-25.824885,66.540126
-25.824648,66.540227</coordinates></LineString></Placemark>
-<Placemark id="fl0aI">
-<name>Path</name><ExtendedData>
-  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.827468,66.540891],[25.827276,66.541014]]}}</value></Data></ExtendedData>
-  <LineString><coordinates>25.827472,66.540889
-25.827466,66.540887
-25.827271,66.541011</coordinates></LineString></Placemark>
-<Placemark id="ZEWpS">
-<name>Path</name><ExtendedData>
-  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.844394,66.541755],[25.844255,66.542337],[25.844244,66.542696]]}}</value></Data></ExtendedData>
-  <LineString><coordinates>25.844397,66.541755
-25.844415,66.542085
-25.844271,66.542332</coordinates></LineString></Placemark>
-<Placemark id="EitIO">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.844269,66.542334
-25.844449,66.54247</coordinates></LineString></Placemark>
-<Placemark id="zzlgX">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.843561,66.542294
-25.844268,66.542333</coordinates></LineString></Placemark>
-<Placemark id="1kxp5">
-<name>Path</name><ExtendedData>
-  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.844453,66.542468],[25.844321,66.542455],[25.843627,66.542501],[25.84346,66.542525],[25.843388,66.542637]]}}</value></Data></ExtendedData>
-  <LineString><coordinates>25.844444,66.542467
-25.844446,66.542464
-25.844321,66.542455
-25.843627,66.542501
-25.843462,66.542525
+  <LineString><coordinates>25.84941,66.541956
+25.849406,66.541943
+25.849567,66.542045
+25.850953,66.542753
+25.850979,66.542752
+25.851064,66.542749
+25.851753,66.542584
+25.852052,66.542548
+25.852587,66.542379
+25.852766,66.542332
+25.853115,66.542297
+25.853388,66.542308
+25.853555,66.542314
+25.853905,66.542394
+25.854089,66.542504
+25.854339,66.542752
+25.854353,66.542749
+25.855157,66.542526
+25.855482,66.542437
+25.855948,66.542221
+25.856591,66.541845
+25.855948,66.542221
+25.855482,66.542437
+25.853337,66.543049
+25.852156,66.543515
+25.851822,66.543681
+25.853286,66.543846
+25.853885,66.543076
+25.854017,66.542976
+25.854143,66.542907
+25.854334,66.542837
+25.855469,66.542525
+25.855747,66.542422
+25.85609,66.542251
+25.856536,66.541986
+25.856707,66.541832
+25.85681,66.541856
+25.856998,66.541899
+25.857203,66.54198
+25.857832,66.542442
+25.858364,66.542833
+25.858491,66.542887
+25.85848,66.542882
+25.858707,66.542792
+25.859128,66.542502
+25.859254,66.54245
+25.860175,66.542304
+25.860335,66.542295
+25.86053,66.542309
+25.860674,66.542344
+25.860977,66.542469
+25.861226,66.542641
+25.862079,66.54324
+25.862319,66.543395
+25.862547,66.543504
+25.862961,66.543662
+25.863088,66.543713
+25.863138,66.543784
+25.86311,66.543931
+25.863159,66.543926
+25.86311,66.543931
+25.863028,66.544064
+25.863128,66.544425
+25.863137,66.544676
+25.863098,66.544922
+25.862989,66.545176
+25.862797,66.54542
+25.862788,66.545432
+25.861893,66.545272
+25.859432,66.544879
+25.858727,66.544751
+25.858282,66.54456
+25.857952,66.544352
+25.857801,66.544276
+25.857819,66.544262
+25.857801,66.544276
+25.857445,66.544259
+25.857116,66.544288
+25.856703,66.544343
+25.856349,66.54435
+25.855852,66.544304
+25.853705,66.543932
+25.853272,66.543845
+25.851822,66.543681
+25.851639,66.543758
+25.851122,66.544217
+25.850713,66.544684
+25.850693,66.544682
+25.850109,66.544628
+25.849132,66.544481
+25.84893,66.54436
+25.848925,66.544356
+25.848806,66.54436
+25.847201,66.544186
+25.848806,66.54436
+25.848925,66.544356
+25.84901,66.544318
+25.849231,66.5441
+25.849337,66.544041
+25.849212,66.543981
+25.848888,66.543889
+25.848777,66.543926
+25.847418,66.543863
+25.847273,66.543856
+25.846366,66.54361
+25.84562,66.543735
+25.845331,66.543759
+25.844973,66.543869
+25.84547,66.543981
+25.845713,66.544008
+25.845923,66.543967
+25.846435,66.543979
+25.846599,66.544038
+25.846692,66.544115
+25.846666,66.544093</coordinates></LineString></Placemark>
+<Placemark id="uqjEJ">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.8484,66.543197],[25.850015,66.542932],[25.850948,66.542759],[25.851839,66.543675]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.848393,66.543195
+25.848497,66.543117
+25.848682,66.543063
+25.84971,66.542985
+25.849987,66.542931
+25.849993,66.542927
+25.850111,66.542844
+25.850299,66.542797
+25.850953,66.542753
+25.850958,66.542756
+25.851268,66.542908
+25.85153,66.543135
+25.851822,66.543681
+25.851836,66.543674</coordinates></LineString></Placemark>
+<Placemark id="eeGf2">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.851817,66.543673],[25.848378,66.543205],[25.84613,66.542896],[25.844296,66.542721],[25.844408,66.543596]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.851817,66.543673
+25.851822,66.543681
+25.85002,66.543463
+25.848378,66.543205
+25.846853,66.542987
+25.846112,66.5429
+25.84612,66.542894
+25.846112,66.5429
+25.844298,66.542718
+25.844282,66.542717
+25.84423,66.542864
+25.844234,66.543055
+25.84442,66.543517
+25.844415,66.543598
+25.844407,66.543597</coordinates></LineString></Placemark>
+<Placemark id="4ZzQY">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.84634,66.543594],[25.848555,66.542704],[25.849205,66.542676],[25.849865,66.542806],[25.849988,66.542928]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.846816,66.542982
+25.846853,66.542987
+25.847771,66.542861
+25.847975,66.542809
+25.848554,66.542703
+25.848569,66.542701
+25.8487,66.542711
+25.849119,66.542669
+25.849205,66.542677
+25.849419,66.542696
+25.849665,66.542751
+25.849843,66.542816
+25.849987,66.542931
+25.849991,66.542929</coordinates></LineString></Placemark>
+<Placemark id="nZSBK">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.846114,66.542891],[25.847091,66.542093],[25.84884,66.541971],[25.849274,66.541896],[25.849425,66.541954],[25.84936,66.54201],[25.849119,66.542035],[25.84891,66.54198]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.846122,66.542893
+25.846435,66.542661
+25.847093,66.542093
+25.847097,66.54209
+25.847313,66.542092
+25.847819,66.542063
+25.84884,66.541971
+25.848842,66.54197
+25.849163,66.541909
+25.849275,66.541906
+25.849406,66.541943
+25.849424,66.541954
+25.849406,66.541943
+25.849415,66.541973
+25.849359,66.542009
+25.849118,66.542031
+25.848902,66.541985</coordinates></LineString></Placemark>
+<Placemark id="iW1Al">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.845352,66.541847],[25.84612,66.541819],[25.846549,66.541898],[25.848287,66.541649],[25.848631,66.541572],[25.848899,66.541856],[25.848845,66.541977]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.845359,66.541847
+25.845359,66.54185
+25.845606,66.54183
+25.84612,66.541828
+25.846173,66.541828
+25.846526,66.541904
+25.846549,66.541898
+25.846898,66.541808
+25.84743,66.541776
+25.847826,66.541733
+25.84828,66.541644
+25.848634,66.541574
+25.848636,66.541574
+25.848867,66.541858
+25.848885,66.541906
+25.848842,66.54197
+25.848852,66.541973</coordinates></LineString></Placemark>
+<Placemark id="Nc2iS">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.847617,66.541096],[25.84745,66.541544],[25.847225,66.541638],[25.846227,66.541693],[25.845894,66.541687],[25.845583,66.541642],[25.845358,66.54176]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.847621,66.541096
+25.847429,66.54154
+25.847325,66.541618
+25.847219,66.541631
+25.846882,66.541673
+25.846226,66.54169
+25.845894,66.541688
+25.845585,66.541647
+25.845366,66.541761
+25.845366,66.54176</coordinates></LineString></Placemark>
+<Placemark id="gEaQN">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.846324,66.541689],[25.846259,66.5416],[25.845905,66.541555],[25.845846,66.541518],[25.845906,66.541358],[25.846206,66.541298],[25.847269,66.541213],[25.847542,66.541311]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.846324,66.541686
+25.846316,66.541687
+25.846254,66.541607
+25.845991,66.541576
+25.845908,66.541553
+25.845858,66.54154
+25.845859,66.541518
+25.845865,66.541389
+25.845928,66.541369
+25.846205,66.541296
+25.846743,66.541246
+25.84727,66.541215
+25.84751,66.541304
+25.847509,66.54131</coordinates></LineString></Placemark>
+<Placemark id="g35bX">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.846941,66.54082],[25.84574,66.540901]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.846941,66.540821
+25.845743,66.540907
+25.845737,66.540901</coordinates></LineString></Placemark>
+<Placemark id="XntDK">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.846378,66.543611
+25.846872,66.542988</coordinates></LineString></Placemark>
+<Placemark id="mv24B">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.844404,66.543444
+25.845825,66.543045
+25.846437,66.543351
+25.848562,66.543829
+25.8495,66.543921
+25.850026,66.543466</coordinates></LineString></Placemark>
+<Placemark id="5StXd">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.847097,66.542093],[25.846517,66.541907]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.847094,66.542092
+25.847097,66.54209
+25.846522,66.541903</coordinates></LineString></Placemark>
+<Placemark id="N11zt">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.850391,66.541298],[25.851341,66.5416],[25.850734,66.541397]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.850358,66.541291
+25.850527,66.541167
+25.85059,66.541086
+25.850605,66.540969
+25.851579,66.541445
+25.851319,66.541595
+25.851333,66.541602
+25.850738,66.541399</coordinates></LineString></Placemark>
+<Placemark id="cbnha">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.853337,66.543052],[25.852199,66.542665],[25.852092,66.542543]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.853333,66.54305
+25.853337,66.543049
+25.853055,66.54298
+25.852757,66.542857
+25.852396,66.542748
+25.852195,66.542667
+25.852074,66.542545
+25.852086,66.54254</coordinates></LineString></Placemark>
+<Placemark id="BcTrY">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.852269,66.544777],[25.850708,66.544681],[25.849576,66.544542],[25.850032,66.544081],[25.851126,66.544215]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.852266,66.54478
+25.850706,66.544684
+25.850109,66.544628
+25.849571,66.544547
+25.849588,66.544549
+25.850036,66.544086
+25.850029,66.544085
+25.851128,66.54421
+25.851124,66.544215</coordinates></LineString></Placemark>
+<Placemark id="3Dfic">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.849243,66.544491],[25.849672,66.544047],[25.850032,66.544083]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.849244,66.544491
+25.849674,66.544047
+25.849677,66.544045
+25.850031,66.544085</coordinates></LineString></Placemark>
+<Placemark id="jnz9R">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.849329,66.544042],[25.849667,66.544042]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.849333,66.544043
+25.849337,66.544041
+25.849496,66.544024
+25.849666,66.544043</coordinates></LineString></Placemark>
+<Placemark id="jxuOr">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.85111,66.545783],[25.849924,66.54562]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.85111,66.545783
+25.849923,66.545618</coordinates></LineString></Placemark>
+<Placemark id="PTWxt">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.850777,66.545736],[25.851043,66.545431],[25.851228,66.545379]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.850781,66.545731
+25.850779,66.545731
+25.851042,66.54543
+25.851227,66.54538
+25.851226,66.54538</coordinates></LineString></Placemark>
+<Placemark id="WUf5p">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.848551,66.544832],[25.850305,66.54504],[25.850359,66.545057],[25.850332,66.545153],[25.850187,66.545133],[25.849989,66.545302],[25.84993,66.545625],[25.849608,66.545646],[25.849602,66.546039],[25.850563,66.546193],[25.851137,66.54578],[25.851405,66.54583],[25.850761,66.546357],[25.849972,66.546605],[25.84927,66.546246],[25.848256,66.545894],[25.847912,66.545663],[25.847928,66.545505],[25.848309,66.54524],[25.848368,66.54514],[25.848384,66.544993],[25.848524,66.544847]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.848553,66.54483
+25.84917,66.544913
+25.850008,66.544993
+25.850308,66.545039
+25.850357,66.545057
+25.850309,66.545152
+25.85033,66.545155
+25.850187,66.545133
+25.850164,66.54513
+25.849981,66.545301
+25.849927,66.545618
+25.849935,66.545619
+25.849598,66.545646
+25.849602,66.546039
+25.850571,66.546185
+25.850903,66.545971
+25.851098,66.545781
+25.851131,66.545786
+25.851386,66.545826
+25.851385,66.545826
+25.850957,66.5462
+25.850738,66.546352
+25.850141,66.546573
+25.849974,66.546619
+25.849956,66.546611
+25.849867,66.546572
+25.849615,66.546382
+25.849254,66.546253
+25.848252,66.545896
+25.848158,66.545862
+25.848018,66.545765
+25.847939,66.54566
+25.847869,66.545565
+25.847878,66.545516
+25.847912,66.5455
+25.848027,66.545446
+25.848279,66.545234
+25.848364,66.545163
+25.848358,66.54514
+25.848336,66.545051
+25.848379,66.544992
+25.848514,66.544845</coordinates></LineString></Placemark>
+<Placemark id="0FjPF">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.8578,66.544273],[25.859184,66.543171],[25.858498,66.542883]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.857804,66.544274
+25.858782,66.543535
+25.85918,66.543178
+25.859173,66.543175
+25.858489,66.542886</coordinates></LineString></Placemark>
+<Placemark id="1KUi0">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.843373,66.542684],[25.843462,66.542534],[25.843727,66.542489],[25.844344,66.542458],[25.844454,66.542467]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.843371,66.542688
+25.844147,66.54276
+25.844189,66.542708
 25.843387,66.542636
-25.843388,66.542636</coordinates></LineString></Placemark>
-<Placemark id="Phodd">
-<name>Path</name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.837434,66.541758
-25.83845,66.541871
-25.838772,66.54199
-25.838987,66.542059
-25.838878,66.542256</coordinates></LineString></Placemark>
-<Placemark id="j77Sx">
-<name> </name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.843786,66.542494
-25.843571,66.542291</coordinates></LineString></Placemark>
-<Placemark id="YbOnU">
+25.843457,66.542533
+25.843544,66.542506
+25.843729,66.542494
+25.844345,66.542457
+25.844446,66.542464
+25.844445,66.542466</coordinates></LineString></Placemark>
+<Placemark id="RKH0N">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.844309,66.54246],[25.844277,66.542331],[25.844309,66.54244]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.844307,66.542455
+25.844446,66.542464
+25.844943,66.541954
+25.845056,66.541905
+25.845359,66.54185
+25.845366,66.541761
+25.845369,66.541449
+25.845457,66.541188
+25.845614,66.540997
+25.845743,66.540907
+25.845538,66.540723
+25.845501,66.540603
+25.845576,66.540434
+25.844852,66.540631
+25.844342,66.540728
+25.844078,66.541204
+25.844109,66.541287
+25.844297,66.541452
+25.844388,66.541594
+25.844415,66.542085
+25.844272,66.542331
+25.844415,66.542085
+25.844388,66.541594
+25.844297,66.541452
+25.844109,66.541287
+25.844078,66.541204
+25.844342,66.540728
+25.844852,66.540631
+25.845576,66.540434
+25.845501,66.540603
+25.845538,66.540723
+25.845743,66.540907
+25.845614,66.540997
+25.845457,66.541188
+25.845369,66.541449
+25.845359,66.54185
+25.845056,66.541905
+25.844943,66.541954
+25.844446,66.542464
+25.844314,66.542455</coordinates></LineString></Placemark>
+<Placemark id="MMwjL">
 <ExtendedData></ExtendedData>
-  <LineString><coordinates>25.844424,66.543632
-25.845298,66.543737
-25.84591,66.543735
-25.84621,66.543566
-25.84644,66.543515
-25.846558,66.543538
-25.84725,66.543527
-25.848007,66.543775
-25.848945,66.543897
-25.849111,66.544006
-25.848806,66.544179
-25.847776,66.544181
-25.84724,66.54414
-25.847443,66.543829
-25.847358,66.543841
-25.847052,66.543786
-25.846435,66.543613
-25.846306,66.543594
-25.846188,66.543656
-25.847143,66.543938
-25.847765,66.543997
-25.84864,66.544014
-25.848731,66.543903</coordinates></LineString></Placemark>
-<Placemark id="LmibK">
+  <LineString><coordinates>25.848642,66.541575
+25.848907,66.541622</coordinates></LineString></Placemark>
+<Placemark id="goBTz">
 <ExtendedData></ExtendedData>
-  <LineString><coordinates>25.843308,66.543476
-25.8443,66.543263</coordinates></LineString></Placemark>
-<Placemark id="JYHRF">
+  <LineString><coordinates>25.850611,66.540972
+25.850637,66.540711</coordinates></LineString></Placemark>
+<Placemark id="ip5Wb">
 <ExtendedData></ExtendedData>
-  <LineString><coordinates>25.843072,66.542261
-25.843565,66.542295</coordinates></LineString></Placemark>
-<Placemark id="YqM9l">
-<name> </name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.847447,66.543833
-25.847592,66.543642</coordinates></LineString></Placemark>
-<Placemark id="CABpm">
-<name> </name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.846198,66.543659
-25.846088,66.543632</coordinates></LineString></Placemark>
-<Placemark id="DkmUa">
-<name>   </name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.848257,66.544244
-25.848257,66.54418</coordinates></LineString></Placemark>
-<Placemark id="T13ke">
-<name> </name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.843601,66.543418
-25.843231,66.543279
-25.843293,66.543219
-25.843499,66.543196
-25.843548,66.543114
-25.843344,66.543055
-25.843258,66.543121
-25.843349,66.543169
-25.843143,66.543263
-25.842512,66.54306
-25.842362,66.543006
-25.842014,66.543185
-25.842354,66.543291
-25.84248,66.543389</coordinates></LineString></Placemark>
-<Placemark id="WpFew">
+  <LineString><coordinates>25.861313,66.542699
+25.861914,66.542578</coordinates></LineString></Placemark>
+<Placemark id="3855J">
 <ExtendedData></ExtendedData>
-  <LineString><coordinates>25.840941,66.54302
-25.84167,66.543084
-25.842067,66.543199</coordinates></LineString></Placemark>
-<Placemark id="0LxTZ">
+  <LineString><coordinates>25.861142,66.54259
+25.861737,66.54246</coordinates></LineString></Placemark>
+<Placemark id="oGuZ1">
 <ExtendedData></ExtendedData>
-  <LineString><coordinates>25.848696,66.541501
-25.849223,66.541327
-25.849607,66.541312
-25.849703,66.541152
-25.849647,66.541047
-25.849781,66.540945
-25.849797,66.540778
-25.849674,66.540743
-25.849435,66.540704
-25.849735,66.540471
-25.849498,66.540289
-25.848543,66.540314
-25.848747,66.540549
-25.848715,66.540827
-25.848822,66.54093
-25.848693,66.541173
-25.849455,66.541079
-25.849723,66.541045</coordinates></LineString></Placemark>
-<Placemark id="w8bCW">
-<name> </name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.847228,66.540576
-25.848681,66.540466</coordinates></LineString></Placemark>
-<Placemark id="IZ0lV">
-<name> </name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.848811,66.540992
-25.848023,66.541047
-25.847618,66.541081
-25.847508,66.541301
-25.84747,66.541507
-25.847333,66.541613
-25.846886,66.541672
-25.846319,66.541685
-25.84606,66.541697
-25.845867,66.541685
-25.845588,66.541648
-25.845374,66.541764
-25.845363,66.541858</coordinates></LineString></Placemark>
-<Placemark id="i4mBU">
-<name> </name><ExtendedData></ExtendedData>
-  <LineString><coordinates>25.848896,66.541615
-25.84864,66.541575
-25.848177,66.541666
-25.847827,66.541733
-25.847432,66.541776
-25.8469,66.541807
-25.846517,66.541906</coordinates></LineString></Placemark>
-<Placemark id="lTqn5">
+  <LineString><coordinates>25.860975,66.542469
+25.861389,66.542387</coordinates></LineString></Placemark>
+<Placemark id="hSuhn">
 <ExtendedData></ExtendedData>
-  <LineString><coordinates>25.84428,66.543262
-25.844851,66.543331
-25.84576,66.543193
-25.84628,66.543155</coordinates></LineString></Placemark>
-<Placemark id="pRYtd">
+  <LineString><coordinates>25.84723,66.544192
+25.84745,66.543863</coordinates></LineString></Placemark>
+<Placemark id="GFhBO">
 <ExtendedData></ExtendedData>
-  <MultiGeometry>
-<LineString><coordinates>25.844545,66.543298
-25.844685,66.543127
-25.845052,66.543094
-25.845068,66.543028
-25.844636,66.542949
-25.844693,66.543137</coordinates></LineString>
-<LineString><coordinates>25.844269,66.54271
-25.846141,66.542915</coordinates></LineString></MultiGeometry></Placemark>
+  <LineString><coordinates>25.848705,66.543919
+25.848689,66.543989
+25.848587,66.544021
+25.847391,66.543972
+25.847123,66.543929
+25.846125,66.543656</coordinates></LineString></Placemark>
+<Placemark id="T7iZP">
+<name> Paths</name><ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.85868,66.54281],[25.860343,66.543171],[25.861137,66.543509],[25.861921,66.544021],[25.862065,66.544743],[25.861904,66.545274]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.858681,66.54281
+25.858673,66.542816
+25.859401,66.542956
+25.860316,66.543181
+25.861106,66.543514
+25.861134,66.543507
+25.861106,66.543514
+25.86148,66.543733
+25.861889,66.544028
+25.86204,66.544469
+25.862028,66.544742
+25.861893,66.545272
+25.861904,66.545274</coordinates></LineString></Placemark>
+<Placemark id="SWxcX">
+<name>  Paths</name><ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.859189,66.543188],[25.859607,66.543272],[25.86046,66.543509],[25.860863,66.543649],[25.861131,66.543991],[25.861533,66.54425],[25.861201,66.544647],[25.861458,66.544894],[25.861217,66.545008],[25.86104,66.544982],[25.861018,66.544649],[25.861324,66.544309],[25.860874,66.544047],[25.86068,66.543709],[25.859672,66.543453],[25.859522,66.543319]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.859198,66.543182
+25.8596,66.543283
+25.859617,66.543279
+25.859712,66.543259
+25.859838,66.543259
+25.859939,66.543283
+25.860318,66.543469
+25.860453,66.543513
+25.860821,66.543633
+25.86083,66.543652
+25.860949,66.543881
+25.861143,66.543988
+25.861402,66.544132
+25.861457,66.544192
+25.861464,66.544251
+25.861476,66.544355
+25.861442,66.544407
+25.861222,66.544569
+25.861197,66.544647
+25.861362,66.544775
+25.861421,66.544891
+25.861381,66.544966
+25.861219,66.544995
+25.861035,66.544985
+25.860958,66.54496
+25.860906,66.544851
+25.860931,66.544765
+25.86102,66.544649
+25.861292,66.544377
+25.861264,66.544313
+25.861252,66.544286
+25.860894,66.544089
+25.860872,66.544047
+25.860726,66.543771
+25.860653,66.543722
+25.860475,66.543665
+25.859715,66.543481
+25.85967,66.543454
+25.859529,66.54337
+25.859566,66.543325</coordinates></LineString></Placemark>
+<Placemark id="Tfssn">
+<name>   Paths</name><ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.849342,66.544042],[25.849505,66.543914],[25.850026,66.543462]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.849341,66.544041
+25.849337,66.544041
+25.84949,66.543911
+25.85002,66.543463
+25.850025,66.543463</coordinates></LineString></Placemark>
+<Placemark id="am4LX">
+<name>    Paths</name><ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.851754,66.545439],[25.851491,66.545385],[25.85126,66.545379],[25.851003,66.545245],[25.850348,66.545157]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.851751,66.545438
+25.85175,66.54544
+25.851481,66.545394
+25.85126,66.545381
+25.851227,66.54538
+25.850991,66.545257
+25.850347,66.545158</coordinates></LineString></Placemark>
+<Placemark id="3Ie0B">
+<name>    Paths</name><ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.846678,66.539966],[25.848143,66.541014]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.846393,66.540038
+25.847995,66.541051</coordinates></LineString></Placemark>
+<Placemark id="LAsZY">
+<ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.846614,66.542528],[25.847145,66.542475],[25.848588,66.542704]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.846607,66.542519
+25.846849,66.54249
+25.847139,66.542482
+25.847526,66.54253
+25.848589,66.542702</coordinates></LineString></Placemark>
+<Placemark id="Ch9sY">
+<name>Path</name><ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.843969,66.54476],[25.844258,66.544384],[25.844258,66.54419],[25.848561,66.54483],[25.848808,66.544529],[25.848776,66.544448],[25.848164,66.544358],[25.847912,66.544305],[25.847161,66.544207],[25.847177,66.544185],[25.845777,66.544012],[25.845165,66.54391],[25.844419,66.543735],[25.844419,66.543598],[25.842515,66.543395],[25.841362,66.543267],[25.840611,66.5428],[25.840316,66.542432],[25.837832,66.54215],[25.836196,66.54201],[25.835933,66.541655],[25.837468,66.541755],[25.837688,66.542016],[25.837666,66.542118],[25.83787,66.542136],[25.837956,66.541997],[25.837822,66.541755],[25.839168,66.541649],[25.838203,66.541753]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.84397,66.54476
+25.84425,66.544383
+25.844256,66.54419
+25.844255,66.544196
+25.845173,66.544317
+25.84856,66.544831
+25.848536,66.544827
+25.848789,66.544529
+25.848792,66.544482
+25.848746,66.544457
+25.848287,66.544384
+25.848173,66.544353
+25.847911,66.544306
+25.847158,66.544211
+25.847174,66.544184
+25.847176,66.544183
+25.846696,66.544118
+25.845775,66.544015
+25.84547,66.543981
+25.845163,66.543912
+25.844628,66.543766
+25.844428,66.543728
+25.844408,66.543724
+25.844415,66.543598
+25.844415,66.543598
+25.842516,66.543394
+25.842484,66.54339
+25.84136,66.543269
+25.840589,66.542803
+25.840314,66.542432
+25.840328,66.542456
+25.837828,66.542209
+25.837858,66.542153
+25.837832,66.54215
+25.836199,66.542005
+25.836211,66.542006
+25.83593,66.541655
+25.83744,66.541759
+25.837696,66.542016
+25.837661,66.542118
+25.837657,66.542131
+25.837858,66.542153
+25.837867,66.542136
+25.837941,66.541998
+25.837813,66.541756
+25.837942,66.542
+25.837858,66.542153
+25.839687,66.542338
+25.839166,66.541649
+25.839159,66.541639
+25.838204,66.54175</coordinates></LineString></Placemark>
+<Placemark id="OXxOi">
+<name>Paths</name><ExtendedData>
+  <Data name="_umap_options"><value>{"route":{"profile":"foot-walking","preference":"recommended","elevation":false,"coordinates":[[25.839689,66.542343],[25.840295,66.542396],[25.840343,66.542454],[25.842302,66.542586],[25.844265,66.542768],[25.844303,66.54271],[25.844914,66.541997],[25.84537,66.541849],[25.845435,66.541277],[25.845746,66.540895],[25.845499,66.540594],[25.845596,66.540425],[25.845986,66.540322],[25.846506,66.540414],[25.84698,66.540839],[25.847592,66.541083],[25.848015,66.541042],[25.849448,66.541935],[25.850113,66.541499],[25.850596,66.541108],[25.850612,66.540978],[25.851578,66.541441],[25.851336,66.541589],[25.852007,66.541958]]}}</value></Data></ExtendedData>
+  <LineString><coordinates>25.839692,66.542339
+25.840294,66.542399
+25.840292,66.542396
+25.840328,66.542456
+25.840341,66.542457
+25.842295,66.542601
+25.844264,66.54277
+25.844264,66.542768
+25.844288,66.542708
+25.844446,66.542464
+25.844902,66.541995
+25.844943,66.541954
+25.845056,66.541905
+25.84537,66.541849
+25.845359,66.54185
+25.845366,66.541761
+25.845369,66.541449
+25.845427,66.541277
+25.845457,66.541188
+25.845614,66.540997
+25.845743,66.540907
+25.845733,66.540897
+25.845538,66.540723
+25.845505,66.540594
+25.845576,66.540434
+25.8456,66.540427
+25.845823,66.540368
+25.84599,66.540365
+25.846129,66.540363
+25.846418,66.540412
+25.846447,66.540429
+25.846592,66.540517
+25.846984,66.540838
+25.847331,66.540998
+25.847601,66.541078
+25.847627,66.541086
+25.847995,66.541051
+25.847991,66.541048
+25.849406,66.541943
+25.849437,66.541931
+25.849539,66.54189
+25.850083,66.541492
+25.850527,66.541167
+25.850575,66.541105
+25.850604,66.540978
+25.850605,66.540969
+25.851574,66.541442
+25.851331,66.541588
+25.851319,66.541595
+25.852009,66.541957</coordinates></LineString></Placemark>
+<Placemark id="0OEys">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.843899,66.544856
+25.844833,66.544973
+25.845353,66.544882
+25.844811,66.544425
+25.844473,66.544361
+25.842295,66.544109
+25.842065,66.544378
+25.843105,66.544713
+25.843819,66.544847</coordinates></LineString></Placemark>
+<Placemark id="e8qwy">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.860116,66.543141
+25.861548,66.542821</coordinates></LineString></Placemark>
+<Placemark id="D2FQ0">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.860481,66.543257
+25.861698,66.542973</coordinates></LineString></Placemark>
+<Placemark id="Kofl9">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.862087,66.543244
+25.863251,66.542982
+25.863326,66.542993
+25.863544,66.543152
+25.863785,66.543353
+25.86374,66.543408
+25.862812,66.54361</coordinates></LineString></Placemark>
+<Placemark id="fLwUr">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.861111,66.543512
+25.86213,66.543278</coordinates></LineString></Placemark>
+<Placemark id="OZiyF">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.861296,66.543622
+25.863495,66.54312</coordinates></LineString></Placemark>
+<Placemark id="KFPAU">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.861473,66.543731
+25.862482,66.543487
+25.862541,66.543501
+25.863656,66.543243</coordinates></LineString></Placemark>
+<Placemark id="Ec8SD">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.859832,66.543069
+25.86121,66.542637</coordinates></LineString></Placemark>
+<Placemark id="R49po">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.859091,66.543286
+25.859628,66.542947
+25.859708,66.542966
+25.86098,66.542477</coordinates></LineString></Placemark>
+<Placemark id="dYhLZ">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.859354,66.542953
+25.860679,66.542323</coordinates></LineString></Placemark>
+<Placemark id="2nrEa">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.859075,66.542898
+25.860116,66.542313</coordinates></LineString></Placemark>
+<Placemark id="Yhymy">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.858136,66.544472
+25.861806,66.54397
+25.861816,66.543942
+25.862964,66.543679
+25.863093,66.543709
+25.863903,66.543534
+25.864016,66.543615
+25.863748,66.543869
+25.863131,66.543933</coordinates></LineString></Placemark>
+<Placemark id="xJlBm">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates></coordinates></LineString></Placemark>
+<Placemark id="CJA2M">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.861623,66.543846
+25.862771,66.54359</coordinates></LineString></Placemark>
+<Placemark id="t6w7B">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.859708,66.544924
+25.859837,66.544785
+25.859832,66.544753
+25.859917,66.544615
+25.859842,66.544514
+25.859928,66.544414
+25.85996,66.544346
+25.859778,66.544232
+25.859628,66.544121
+25.859553,66.54403
+25.859419,66.543944
+25.859236,66.543908
+25.859016,66.543784
+25.858893,66.543726
+25.858877,66.543667
+25.858979,66.543617
+25.85914,66.543637
+25.859338,66.543797
+25.859687,66.543859
+25.859773,66.543931
+25.859773,66.544074
+25.860041,66.544153
+25.860229,66.544271
+25.860277,66.544375
+25.860132,66.544474
+25.860234,66.544591
+25.860153,66.544687
+25.860218,66.544796
+25.860164,66.544845
+25.860019,66.54485
+25.859891,66.544817</coordinates></LineString></Placemark>
+<Placemark id="KIjBH">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.858973,66.544792
+25.858941,66.544655
+25.858963,66.544634
+25.859102,66.544556
+25.859027,66.544357
+25.858981,66.544296
+25.858764,66.544241
+25.858633,66.544167
+25.858512,66.544118
+25.858343,66.544133
+25.858203,66.544188
+25.858206,66.544263
+25.858284,66.544298
+25.858603,66.544318
+25.858769,66.544367
+25.858777,66.544409
+25.858705,66.544583
+25.858802,66.544634
+25.858928,66.544643</coordinates></LineString></Placemark>
+<Placemark id="XtT82">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.857992,66.544145
+25.857793,66.544091
+25.857096,66.544156
+25.856854,66.544104
+25.856806,66.544057
+25.858067,66.543938
+25.858201,66.54397</coordinates></LineString></Placemark>
+<Placemark id="3u0Sl">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.853738,66.542375
+25.85392,66.542251
+25.85436,66.542016
+25.854317,66.541819
+25.853963,66.541542
+25.853544,66.541294</coordinates></LineString></Placemark>
+<Placemark id="GyDly">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.853641,66.542366
+25.8523,66.542097
+25.851967,66.541935</coordinates></LineString></Placemark>
+<Placemark id="hfTx8">
+<name> </name><ExtendedData></ExtendedData>
+  <LineString><coordinates>25.852236,66.542511
+25.852557,66.542349
+25.852311,66.542101
+25.852311,66.542093</coordinates></LineString></Placemark>
+<Placemark id="no4Ny">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.851216,66.544444
+25.850455,66.544386
+25.849848,66.544335
+25.849478,66.544264</coordinates></LineString></Placemark>
+<Placemark id="CM5VT">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.840257,66.54239
+25.843207,66.54262
+25.843197,66.542573
+25.843143,66.542501
+25.842816,66.542398
+25.842183,66.542326
+25.841716,66.542298
+25.841517,66.542215
+25.841432,66.54199
+25.84126,66.541794
+25.841035,66.541548
+25.840949,66.541437
+25.842263,66.541275
+25.842767,66.541845
+25.843647,66.541777</coordinates></LineString></Placemark>
+<Placemark id="pyjNU">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.842708,66.542385
+25.842408,66.541905
+25.84192,66.541318</coordinates></LineString></Placemark>
+<Placemark id="QN5mA">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.842172,66.542321
+25.841968,66.54201
+25.842505,66.541892
+25.842783,66.541843</coordinates></LineString></Placemark>
+<Placemark id="ZrDB2">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.841426,66.541348
+25.841963,66.542007</coordinates></LineString></Placemark>
+<Placemark id="emseN">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.842483,66.543395
+25.842392,66.543261
+25.84192,66.543099
+25.841646,66.543084
+25.841196,66.543188
+25.840665,66.54324
+25.839967,66.543165
+25.837671,66.542928
+25.836899,66.542827</coordinates></LineString></Placemark>
+<Placemark id="OMifM">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.845822,66.543048
+25.846131,66.54289</coordinates></LineString></Placemark>
+<Placemark id="oChxo">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.846868,66.542985
+25.846989,66.542945
+25.84682,66.542888
+25.847182,66.542535
+25.84726,66.542496</coordinates></LineString></Placemark>
+<Placemark id="4VRRm">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.849551,66.543395
+25.849983,66.542928</coordinates></LineString></Placemark>
+<Placemark id="zXkl7">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.847244,66.543534
+25.847579,66.543368
+25.847668,66.543346
+25.847748,66.54337
+25.847829,66.543324
+25.847904,66.543314
+25.847963,66.543286
+25.848024,66.543283
+25.848403,66.543325
+25.848464,66.543361
+25.848419,66.543409
+25.848472,66.543474
+25.848617,66.543472
+25.848703,66.543433
+25.848684,66.543389
+25.848612,66.543371
+25.848569,66.543425</coordinates></LineString></Placemark>
+<Placemark id="w6ank">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.848016,66.543605
+25.847796,66.543448
+25.847426,66.543342
+25.847375,66.54333
+25.846925,66.543274</coordinates></LineString></Placemark>
+<Placemark id="thp5f">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.850197,66.544636
+25.850476,66.544346</coordinates></LineString></Placemark>
+<Placemark id="3xVpQ">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.850396,66.541226
+25.85076,66.541405</coordinates></LineString></Placemark>
+<Placemark id="MXYQE">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.837752,66.542204
+25.835263,66.54202
+25.831754,66.541798
+25.830435,66.541743
+25.827377,66.540905
+25.827194,66.541046
+25.827152,66.541439
+25.829297,66.542089</coordinates></LineString></Placemark>
+<Placemark id="9u9gS">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.837988,66.543114
+25.836378,66.5429
+25.834737,66.542926
+25.833707,66.542746
+25.832452,66.542674
+25.831368,66.542708
+25.831583,66.541623
+25.831486,66.541281
+25.831411,66.540201
+25.832816,66.540359
+25.833889,66.540256
+25.835863,66.540867
+25.837698,66.541508
+25.837795,66.541755</coordinates></LineString></Placemark>
+<Placemark id="Tr0xC">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.836518,66.5429
+25.833256,66.541952
+25.832945,66.541849</coordinates></LineString></Placemark>
+<Placemark id="ovnIG">
+<ExtendedData></ExtendedData>
+  <LineString><coordinates>25.855926,66.544903
+25.855599,66.544854
+25.855422,66.544721
+25.855384,66.544514
+25.855615,66.544264</coordinates></LineString></Placemark>
 </Folder>
 `;

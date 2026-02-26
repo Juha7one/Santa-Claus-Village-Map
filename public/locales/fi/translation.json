@@ -1,0 +1,24 @@
+{
+    "translation": {
+        "map": {
+            "loading": "Ladataan karttatietoja...",
+            "error": "Karttatietojen lataaminen epäonnistui"
+        },
+        "category": {
+            "all": "Kaikki",
+            "activities": "Aktiviteetit",
+            "restaurants": "Ravintolat",
+            "accommodation": "Majoitus",
+            "shopping": "Ostokset",
+            "services": "Palvelut"
+        },
+        "popup": {
+            "readMore": "Lue lisää >",
+            "navigate": "Reittiohjeet"
+        },
+        "ui": {
+            "language": "Kieli",
+            "search": "Hae"
+        }
+    }
+}
