@@ -66,10 +66,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
 
     const routeCategories = ['Love this', 'My Car', 'My Stay'];
 
-    // Defensive filtering: ensure places and their properties exist before processing
-    const places = userPlaces || [];
-    const favouritePlaces = places.filter(p => p && p.categoryKey && routeCategories.includes(p.categoryKey));
-    const otherPlaces = places.filter(p => p && p.categoryKey && !routeCategories.includes(p.categoryKey));
+    // EXTREMELY Defensive filtering to prevent white screen crashes
+    const places = (userPlaces || []).filter(p => p && p.id && p.categoryKey);
+    console.log("[AdminPanel] Rendering with valid places count:", places.length);
+
+    const favouritePlaces = places.filter(p => routeCategories.includes(p.categoryKey));
+    const otherPlaces = places.filter(p => !routeCategories.includes(p.categoryKey));
 
     const handleDragStart = (e: React.DragEvent<HTMLLIElement>, index: number) => {
         dragItem.current = index;

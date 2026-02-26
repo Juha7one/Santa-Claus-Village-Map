@@ -104,162 +104,158 @@ const PlacePopup: React.FC<PlacePopupProps> = ({
         );
     }, [place, localizedDescription, localizedOpeningHours, localizedAddress]);
 
-    const isUserPlace = place.id.startsWith('user_place_');
+    const isUserPlace = place.categoryKey === 'My Car' || place.categoryKey === 'My Stay' || place.categoryKey === 'Love this';
     const isFavourite = place.categoryKey === 'Love this';
 
-    // Logic for booking button
-    const bookingLink = place.bookingUrl || null;
+    // Helper for category label
+    const categoryLabel = (t.categories && t.categories[place.categoryKey]) || place.category || 'Place';
+
+    // Helper for booking info
     const isFoodCategory = place.categoryKey === 'Food-And-Drink';
-    const bookingLabel = isFoodCategory ? t.ui.bookTable : t.ui.book;
+    const bookingLink = place.bookingUrl || place.website;
+    const bookingLabel = isFoodCategory ? (t.ui && t.ui.bookTable) || 'Book Table' : (t.ui && t.ui.bookNow) || 'Book Now';
 
     return (
         <div className="popup-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="popup-title">
-            <div className="popup-modal" onClick={(e) => e.stopPropagation()}>
-                <button onClick={onClose} className="popup-close-button" aria-label={t.ui.closePopup}>
+            <div className="popup-modal" onClick={(e) => e.stopPropagation()} style={{ maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
+                <button onClick={onClose} className="popup-close-button" aria-label={(t.ui && t.ui.closePopup) || 'Close'}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
 
-                <div className="p-4 flex flex-col h-full">
-                    {/* Header */}
-                    <div className="flex-shrink-0">
-                        <span id="popup-title" className="text-xs font-semibold uppercase" style={{ color: getCategoryColor(place.categoryKey) }}>
-                            {t.categories[place.categoryKey] || place.category}
-                        </span>
-                        <h3 className="text-lg font-bold mt-1 text-gray-900">{localizedName}</h3>
-                    </div>
+                {/* 1. Sticky Header */}
+                <div className="p-4 flex-shrink-0 border-b border-amber-100">
+                    <span id="popup-title" className="text-xs font-semibold uppercase" style={{ color: getCategoryColor(place.categoryKey) }}>
+                        {categoryLabel}
+                    </span>
+                    <h3 className="text-lg font-bold mt-1 text-gray-900 leading-tight">{localizedName}</h3>
+                </div>
 
-                    {/* Scrollable Content - Only show if there are details */}
-                    {hasDetails && (
-                        <div className="flex-1 overflow-y-auto my-3 pr-2 min-h-0 relative">
-                            {/* 1. Base Content */}
-                            <div className="space-y-3">
-                                {!isUserPlace && place.imageUrl && (
-                                    <img src={place.imageUrl} alt={place.name} className="w-full h-auto object-cover rounded-lg mb-2 shadow-sm" loading="lazy" />
-                                )}
+                {/* 2. Scrollable Body */}
+                <div className="flex-1 overflow-y-auto px-4 py-3 min-h-0">
+                    {hasDetails ? (
+                        <div className="space-y-4">
+                            {!isUserPlace && place.imageUrl && (
+                                <img src={place.imageUrl} alt={place.name} className="w-full h-auto object-cover rounded-xl shadow-md border border-amber-100" />
+                            )}
 
-                                {localizedDescription && (
-                                    <div className="text-gray-600 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: localizedDescription }} />
-                                )}
+                            {localizedDescription && (
+                                <div className="text-gray-700 text-[15px] leading-relaxed" dangerouslySetInnerHTML={{ __html: localizedDescription }} />
+                            )}
 
-                                {isUserPlace && !localizedDescription && !isFavourite && !isMyStay && (
-                                    <div className="text-gray-500 text-sm italic mt-2">{t.ui.yourCustomPlace}</div>
-                                )}
-                            </div>
+                            {isUserPlace && !localizedDescription && !isFavourite && !isMyStay && (
+                                <div className="text-gray-500 text-sm italic">{(t.ui && t.ui.yourCustomPlace) || 'Your custom place.'}</div>
+                            )}
 
-                            {/* 2. Permanent Data from DB */}
                             {(localizedOpeningHours || place.phone || place.email || place.website || localizedAddress) && (
-                                <div className="mt-6 pt-4 border-t border-amber-100 space-y-4">
+                                <div className="pt-4 mt-6 border-t border-amber-100 space-y-4">
+                                    {localizedOpeningHours && (
+                                        <div className="bg-amber-50 rounded-xl p-4 border border-amber-100/50">
+                                            <h4 className="text-[11px] font-bold text-amber-800 uppercase tracking-wider mb-2">{(t.ui && t.ui.openingHours) || 'Opening Hours'}</h4>
+                                            <div className="text-gray-700 text-sm whitespace-pre-line leading-relaxed">{localizedOpeningHours}</div>
+                                        </div>
+                                    )}
+
                                     <div className="space-y-3">
-                                        {localizedOpeningHours && (
-                                            <div className="bg-amber-50 rounded-lg p-3 border border-amber-100 shadow-sm">
-                                                <h4 className="text-[10px] font-bold text-amber-800 uppercase mb-1 tracking-wider">{t.ui.openingHours || 'Opening Hours'}</h4>
-                                                <div className="text-gray-700 text-sm whitespace-pre-line leading-relaxed">{localizedOpeningHours}</div>
+                                        {localizedAddress && (
+                                            <div className="flex items-start text-sm text-gray-600">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3 mt-0.5 text-amber-600" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" /></svg>
+                                                <span>{localizedAddress}</span>
                                             </div>
                                         )}
+                                        {place.phone && (
+                                            <a href={`tel:${place.phone}`} className="flex items-center text-sm text-green-700 font-semibold hover:underline">
+                                                <PhoneIcon /> {place.phone}
+                                            </a>
+                                        )}
+                                        {place.email && (
+                                            <a href={`mailto:${place.email}`} className="flex items-center text-sm text-green-700 font-semibold hover:underline">
+                                                <EmailIcon /> {place.email}
+                                            </a>
+                                        )}
+                                        {place.website && (
+                                            <a href={place.website} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-green-700 font-semibold hover:underline">
+                                                <GlobeIcon /> {(t.ui && t.ui.visitWebsite) || 'Visit Website'}
+                                            </a>
+                                        )}
+                                    </div>
 
-                                        <div className="space-y-2 pt-1">
-                                            {localizedAddress && (
-                                                <div className="flex items-start text-sm text-gray-600">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 mt-0.5 text-amber-600" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" /></svg>
-                                                    <span>{localizedAddress}</span>
-                                                </div>
-                                            )}
-                                            {place.phone && (
-                                                <a href={`tel:${place.phone}`} className="flex items-center text-sm text-green-700 hover:text-green-800 font-medium transition-colors">
-                                                    <PhoneIcon /> {place.phone}
+                                    {(place.facebookUrl || place.instagramUrl) && (
+                                        <div className="flex space-x-4 pt-2">
+                                            {place.facebookUrl && (
+                                                <a href={place.facebookUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:scale-110 transition-transform">
+                                                    <FacebookIcon />
                                                 </a>
                                             )}
-                                            {place.email && (
-                                                <a href={`mailto:${place.email}`} className="flex items-center text-sm text-green-700 hover:text-green-800 font-medium transition-colors">
-                                                    <EmailIcon /> {place.email}
-                                                </a>
-                                            )}
-                                            {place.website && (
-                                                <a href={place.website} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-green-700 hover:text-green-800 font-medium transition-colors">
-                                                    <GlobeIcon /> {t.ui.visitWebsite || 'Visit Website'}
+                                            {place.instagramUrl && (
+                                                <a href={place.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-pink-600 hover:scale-110 transition-transform">
+                                                    <InstagramIcon />
                                                 </a>
                                             )}
                                         </div>
-
-                                        {(place.facebookUrl || place.instagramUrl) && (
-                                            <div className="flex space-x-4 pt-2">
-                                                {place.facebookUrl && (
-                                                    <a href={place.facebookUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 transition-transform active:scale-90">
-                                                        <FacebookIcon />
-                                                    </a>
-                                                )}
-                                                {place.instagramUrl && (
-                                                    <a href={place.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-pink-600 hover:text-pink-800 transition-transform active:scale-90">
-                                                        <InstagramIcon />
-                                                    </a>
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
+                                    )}
                                 </div>
                             )}
                         </div>
+                    ) : (
+                        <div className="py-10 text-center text-gray-400 italic">
+                            {(t.ui && t.ui.noDetailsAvailable) || 'No details available.'}
+                        </div>
+                    )}
+                </div>
+
+                {/* 3. Sticky Footer */}
+                <div className="p-4 flex-shrink-0 border-t border-amber-200 bg-amber-50/50 flex items-center gap-2">
+                    {isNavigatingTo ? (
+                        <button
+                            onClick={onStopNavigation}
+                            className="flex-1 bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 transition-colors shadow-sm flex items-center justify-center text-sm"
+                        >
+                            <StopIcon /> <span className="ml-2">{(t.ui && t.ui.stopNavigation) || 'Stop'}</span>
+                        </button>
+                    ) : (
+                        userLocation && (
+                            <button
+                                onClick={() => onGetDirections(place)}
+                                className="flex-1 bg-green-700 text-white font-bold py-3 rounded-xl hover:bg-green-800 transition-colors shadow-sm flex items-center justify-center text-sm disabled:bg-gray-400"
+                                disabled={isRouteLoading}
+                            >
+                                <GoThereIcon /> <span className="ml-2">{(t.ui && t.ui.goThere) || 'Directions'}</span>
+                            </button>
+                        )
                     )}
 
-                    {/* Sticky Footer */}
-                    <div className="flex-shrink-0 mt-auto border-t border-amber-200 pt-3 flex items-center space-x-2 flex-wrap gap-y-2">
-                        {isNavigatingTo ? (
+                    {bookingLink && (
+                        <a
+                            href={bookingLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`px-4 py-3 rounded-xl font-bold text-white shadow-sm flex items-center justify-center text-sm transition-colors ${isFoodCategory ? 'bg-amber-800 hover:bg-amber-900' : 'bg-green-600 hover:bg-green-700'}`}
+                        >
+                            <BookingIcon />
+                            <span className="hidden sm:inline ml-2">{bookingLabel}</span>
+                        </a>
+                    )}
+
+                    {(!isUserPlace || place.originalId) && (() => {
+                        const isAcc = place.categoryKey === 'Accommodation' || place.originalCategoryKey === 'Accommodation' || place.categoryKey === 'My Stay';
+                        const buttonTitle = isAcc
+                            ? (isMyStay ? (t.ui && t.ui.removeMyStay) : (t.ui && t.ui.setAsMyStay))
+                            : (isLoved ? (t.ui && t.ui.unlovePlace) : (t.ui && t.ui.lovePlace));
+
+                        return (
                             <button
-                                onClick={onStopNavigation}
-                                className="flex-grow flex items-center justify-center bg-red-600 text-white font-semibold py-2 rounded-lg hover:bg-red-700 transition-colors text-sm"
+                                onClick={() => { onToggleFavourite(place); onClose(); }}
+                                className={`w-[52px] h-[52px] flex-shrink-0 flex items-center justify-center rounded-xl shadow-sm border-2 transition-all ${isLoved || isMyStay ? 'bg-red-600 border-red-600 text-white' : 'bg-white border-red-500 text-red-600'}`}
+                                title={buttonTitle || 'Action'}
                             >
-                                <StopIcon /> {t.ui.stopNavigation}
+                                <FavouriteIcon />
                             </button>
-                        ) : (
-                            userLocation && (
-                                <button
-                                    onClick={() => onGetDirections(place)}
-                                    className="flex-grow flex items-center justify-center bg-green-700 text-white font-semibold py-2 rounded-lg hover:bg-green-800 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-wait"
-                                    disabled={isRouteLoading}
-                                >
-                                    <GoThereIcon /> {t.ui.goThere}
-                                </button>
-                            )
-                        )}
-
-                        {bookingLink && (
-                            <a
-                                href={bookingLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={`flex-shrink-0 flex items-center justify-center text-white font-semibold py-2 px-3 rounded-lg transition-colors text-sm ${isFoodCategory ? 'bg-amber-800 hover:bg-amber-900' : 'bg-green-600 hover:bg-green-700'}`}
-                                title={bookingLabel}
-                            >
-                                <BookingIcon />
-                                <span className="hidden sm:inline ml-2 whitespace-nowrap">{bookingLabel}</span>
-                            </a>
-                        )}
-                        {(!isUserPlace || place.originalId) && (() => {
-                            const isAcc = place.categoryKey === 'Accommodation' || place.originalCategoryKey === 'Accommodation' || place.categoryKey === 'My Stay';
-                            const buttonTitle = isAcc
-                                ? (isMyStay ? t.ui.removeMyStay : t.ui.setAsMyStay)
-                                : (isLoved ? t.ui.unlovePlace : t.ui.lovePlace);
-
-                            const handleClick = () => {
-                                onToggleFavourite(place);
-                                onClose();
-                            };
-
-                            return (
-                                <button
-                                    onClick={handleClick}
-                                    className="p-2 flex-shrink-0 flex items-center justify-center bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors"
-                                    title={buttonTitle}
-                                    aria-label={buttonTitle}
-                                >
-                                    <FavouriteIcon />
-                                </button>
-                            );
-                        })()}
-                    </div>
+                        );
+                    })()}
                 </div>
             </div >
         </div >
+
     );
 };
 

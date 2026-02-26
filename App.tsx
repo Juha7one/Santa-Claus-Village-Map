@@ -49,7 +49,7 @@ function App() {
 
   const routeCategoriesForCount = useMemo(() => ['Love this', 'My Car', 'My Stay'], []);
   const favouritePlacesCount = useMemo(() =>
-    userPlaces.filter(p => routeCategoriesForCount.includes(p.categoryKey)).length
+    (userPlaces || []).filter(p => p && routeCategoriesForCount.includes(p.categoryKey)).length
     , [userPlaces, routeCategoriesForCount]);
   const prevFavouritePlacesCount = useRef(favouritePlacesCount);
 
@@ -69,14 +69,14 @@ function App() {
   }, [favouritePlacesCount]);
 
   const lovedPlaceIds = useMemo(() =>
-    new Set(userPlaces.filter(p => (p.categoryKey === 'Love this' || p.categoryKey === 'My Stay') && p.originalId).map(p => p.originalId!))
+    new Set((userPlaces || []).filter(p => p && (p.categoryKey === 'Love this' || p.categoryKey === 'My Stay') && p.originalId).map(p => p.originalId!))
     , [userPlaces]);
 
   const myStayPlace = useMemo(() =>
-    userPlaces.find(p => p.categoryKey === 'My Stay')
+    (userPlaces || []).find(p => p && p.categoryKey === 'My Stay')
     , [userPlaces]);
 
-  const allPlaces = useMemo(() => [...places, ...userPlaces], [places, userPlaces]);
+  const allPlaces = useMemo(() => [...places, ...(userPlaces || []).filter(Boolean)], [places, userPlaces]);
 
   // Handle deep linking from URL parameter on initial load
   useEffect(() => {
