@@ -105,7 +105,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, sel
                 )}
             </div>
 
-            <div className="bg-white/90 backdrop-blur-sm p-1 rounded-full shadow-lg flex flex-col items-center border border-amber-200">
+            <div className="flex flex-col items-center space-y-2">
                 {/* Area Toggle (Village / All) */}
                 <div className="flex bg-gray-100 p-0.5 rounded-full mb-1 w-full max-w-[180px]">
                     <button
