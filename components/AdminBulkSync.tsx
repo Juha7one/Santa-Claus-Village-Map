@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import { supabase } from '../src/lib/supabase';
 import { syncPlaceFromWp, savePlaceToDb } from '../utils/wpSync';
 import { CATEGORIES } from '../constants';
+import { Place } from '../types';
 
-const AdminBulkSync: React.FC = () => {
+interface AdminBulkSyncProps {
+    allPlaces: Place[];
+}
+
+const AdminBulkSync: React.FC<AdminBulkSyncProps> = ({ allPlaces }) => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [progress, setProgress] = useState(0);
     const [total, setTotal] = useState(0);
@@ -14,51 +19,46 @@ const AdminBulkSync: React.FC = () => {
     const handleStartBulkSync = async () => {
         setShowConfirm(false);
         setIsProcessing(true);
-        setStatus("Fetching all places with WP links...");
+        setStatus("Filtering places with WordPress links...");
 
         try {
-            // 1. Fetch all places from database that have a linked_wp_url
-            const { data: places, error } = await supabase
-                .from('places')
-                .select('*')
-                .not('linked_wp_url', 'is', null);
+            // 1. Filter all places (KML + DB) that have a linkedWpUrl
+            const placesToSync = allPlaces.filter(p => p.linkedWpUrl && p.linkedWpUrl.trim() !== "");
 
-            if (error) throw error;
-            if (!places || places.length === 0) {
+            if (placesToSync.length === 0) {
                 setStatus("No places found with WordPress links.");
-                setIsProcessing(false);
+                setTimeout(() => setIsProcessing(false), 3000);
                 return;
             }
 
-            setTotal(places.length);
+            setTotal(placesToSync.length);
             setProgress(0);
 
             // 2. Process each place one by one
-            for (let i = 0; i < places.length; i++) {
-                const place = places[i];
-                setCurrentName(place.name?.en || place.name || "Unnamed Place");
+            for (let i = 0; i < placesToSync.length; i++) {
+                const place = placesToSync[i];
+                const displayName = typeof place.name === 'string' ? place.name : (place.name?.fi || place.name?.en || "Unnamed Place");
+                setCurrentName(displayName);
                 setProgress(i + 1);
-
-                if (!place.linked_wp_url) continue;
 
                 try {
                     setStatus(`Syncing from website...`);
                     // Sync from WP
-                    const results = await syncPlaceFromWp(place.linked_wp_url, (s) => setStatus(s));
+                    const results = await syncPlaceFromWp(place.linkedWpUrl!, (s) => setStatus(s));
 
                     // Format for DB
-                    const categoryLabel = CATEGORIES.find(c => c.key === place.category_key)?.label || place.category_key;
+                    const categoryLabel = CATEGORIES.find(c => c.key === place.categoryKey)?.label || place.categoryKey;
 
                     const placeData = {
                         name: results.name,
                         category: categoryLabel,
-                        category_key: place.category_key,
+                        category_key: place.categoryKey,
                         description: results.description,
                         image_url: results.imageUrl || null,
-                        location_lat: place.location_lat,
-                        location_lng: place.location_lng,
+                        location_lat: place.location.lat,
+                        location_lng: place.location.lng,
                         booking_url: results.website || null,
-                        linked_wp_url: place.linked_wp_url,
+                        linked_wp_url: place.linkedWpUrl,
                         address: results.address,
                         phone: results.phone || null,
                         email: results.email || null,
@@ -66,11 +66,30 @@ const AdminBulkSync: React.FC = () => {
                         opening_hours: results.openingHours,
                         facebook_url: results.facebookUrl || null,
                         instagram_url: results.instagramUrl || null,
-                        sub_category: place.sub_category || null
+                        sub_category: place.subCategory || null
                     };
 
                     setStatus("Saving to database...");
-                    await savePlaceToDb(place.id, placeData);
+
+                    // Check if this KML place already exists in DB to avoid duplicates
+                    // If it's already a UUID, we update by ID.
+                    // If it's a KML ID, we check if original_id matches.
+                    const isUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+                    let targetId = place.id;
+                    if (!isUUID(place.id)) {
+                        const { data: existing } = await supabase
+                            .from('places')
+                            .select('id')
+                            .eq('original_id', place.id)
+                            .single();
+
+                        if (existing) {
+                            targetId = existing.id;
+                        }
+                    }
+
+                    await savePlaceToDb(targetId, placeData);
 
                 } catch (err) {
                     console.error(`Failed to sync place ${place.id}:`, err);
@@ -84,7 +103,8 @@ const AdminBulkSync: React.FC = () => {
                 setProgress(0);
                 setTotal(0);
                 setStatus("");
-            }, 5000);
+                window.location.reload(); // Refresh to show new data
+            }, 3000);
 
         } catch (err: any) {
             console.error("Bulk sync error:", err);
