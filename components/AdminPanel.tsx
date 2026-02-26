@@ -6,7 +6,7 @@ import { getCategoryColor } from '../constants';
 
 const CarIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+        <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" />
     </svg>
 );
 const StayIcon = () => (
@@ -64,9 +64,19 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     const dragOverItem = useRef<number | null>(null);
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
+    // Safety check to prevent white screen crashes if translations fail to load
+    if (!t || !t.ui || !t.categories) {
+        return (
+            <div className="absolute top-0 right-0 h-full w-80 bg-white shadow-lg z-40 p-4">
+                <button onClick={onClose}>Close</button>
+                <p>Loading translations...</p>
+            </div>
+        );
+    }
+
     const routeCategories = ['Love this', 'My Car', 'My Stay'];
     // Include My Car and My Stay in the sortable list
-    const favouritePlaces = userPlaces.filter(p => routeCategories.includes(p.categoryKey));
+    const favouritePlaces = userPlaces.filter(p => routeCategories.includes(p.categoryKey || ''));
 
     const handleDragStart = (e: React.DragEvent<HTMLLIElement>, index: number) => {
         dragItem.current = index;
@@ -85,20 +95,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             const reorderedFavourites = [...favouritePlaces];
             const [draggedItem] = reorderedFavourites.splice(dragItem.current, 1);
             reorderedFavourites.splice(dragOverItem.current, 0, draggedItem);
-            
-            const nonRoutePlaces = userPlaces.filter(p => !routeCategories.includes(p.categoryKey));
+
+            const nonRoutePlaces = userPlaces.filter(p => !routeCategories.includes(p.categoryKey || ''));
             onUpdateUserPlaces([...nonRoutePlaces, ...reorderedFavourites]);
         }
         dragItem.current = null;
         dragOverItem.current = null;
     };
-    
+
     const canShowFavouritesRoute = favouritePlaces.length >= 2;
 
     const placeCategoriesToAdd = [
-        { key: 'My Car', label: t.categories['My Car'], icon: <CarIcon/> },
-        { key: 'My Stay', label: t.categories['My Stay'], icon: <StayIcon/> },
-        { key: 'Love this', label: t.categories['Love this'], icon: <LoveIcon/> },
+        { key: 'My Car', label: t.categories['My Car'] || 'My Car', icon: <CarIcon /> },
+        { key: 'My Stay', label: t.categories['My Stay'] || 'My Stay', icon: <StayIcon /> },
+        { key: 'Love this', label: t.categories['Love this'] || 'Love this', icon: <LoveIcon /> },
     ];
 
     const getIconForCategory = (categoryKey: string) => {
@@ -112,10 +122,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
 
     return (
         <div className="absolute top-0 right-0 h-full w-full sm:w-80 bg-amber-50 shadow-lg z-40 flex flex-col transform transition-transform"
-             style={{
-                 paddingTop: 'calc(1rem + var(--safe-area-inset-top))',
-                 paddingBottom: 'calc(1rem + var(--safe-area-inset-bottom))',
-             }}
+            style={{
+                paddingTop: 'calc(1rem + var(--safe-area-inset-top))',
+                paddingBottom: 'calc(1rem + var(--safe-area-inset-bottom))',
+            }}
         >
             <div className="p-4 border-b border-amber-200 flex justify-between items-center">
                 <h2 className="text-xl font-bold text-gray-800">{t.ui.myPlaces}</h2>
@@ -123,21 +133,21 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                     <CloseIcon />
                 </button>
             </div>
-            
+
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 <div className="bg-white p-3 rounded-lg border border-amber-200 shadow-sm">
                     <h3 className="text-sm font-semibold text-amber-800 mb-2">{t.ui.addNewPlace}</h3>
                     <div className="grid grid-cols-1 gap-2">
                         {placeCategoriesToAdd.map(cat => (
-                             <button 
-                                key={cat.key} 
-                                onClick={() => onStartPickingLocation(cat.key)} 
+                            <button
+                                key={cat.key}
+                                onClick={() => onStartPickingLocation(cat.key)}
                                 style={{ backgroundColor: getCategoryColor(cat.key) }}
                                 className="flex items-center justify-center text-sm text-white font-semibold py-2 px-3 rounded-lg hover:opacity-90 transition-opacity"
                             >
                                 {cat.icon}
                                 <span className="ml-2">{cat.label}</span>
-                             </button>
+                            </button>
                         ))}
                     </div>
                 </div>
@@ -156,16 +166,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 ) : (
                     <p className="text-center text-gray-500 text-sm mt-8">{t.ui.noPlacesAdded}</p>
                 )}
-                
+
                 <div className="pt-4 border-t border-amber-200">
                     <h3 className="text-lg font-semibold text-gray-800 mb-2">{t.ui.favouritesRoute}</h3>
                     {favouritePlaces.length < 2 && (
                         <p className="text-sm text-gray-500">{t.ui.addFavouritesForRoute}</p>
                     )}
                     {canShowFavouritesRoute && (
-                         <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-amber-200">
-                             <span className="font-medium text-gray-700">{t.ui.showRouteOnMap}</span>
-                             <button
+                        <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-amber-200">
+                            <span className="font-medium text-gray-700">{t.ui.showRouteOnMap}</span>
+                            <button
                                 id="show-route-toggle"
                                 onClick={() => setShowFavouritesRoute(!showFavouritesRoute)}
                                 className={`${showFavouritesRoute ? 'bg-red-600' : 'bg-gray-300'} relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none`}
@@ -174,14 +184,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                             >
                                 <span className={`${showFavouritesRoute ? 'translate-x-6' : 'translate-x-1'} inline-block w-4 h-4 transform bg-white rounded-full transition-transform`} />
                             </button>
-                         </div>
+                        </div>
                     )}
                     <p className="text-xs text-gray-500 mt-2">{t.ui.dragReorder}</p>
                     <ul className="mt-2 space-y-2">
                         {favouritePlaces.map((place, index) => (
-                            <li 
-                                key={place.id} 
-                                draggable 
+                            <li
+                                key={place.id}
+                                draggable
                                 onDragStart={(e) => handleDragStart(e, index)}
                                 onDragEnter={(e) => handleDragEnter(e, index)}
                                 onDragEnd={handleDragEnd}
@@ -190,13 +200,13 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                             >
                                 <div className="flex items-center space-x-2 min-w-0">
                                     <DragHandleIcon />
-                                    <div 
+                                    <div
                                         className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
                                         style={{ backgroundColor: getCategoryColor(place.categoryKey) }}
                                     >
-                                         <div className="text-white transform scale-75">
+                                        <div className="text-white transform scale-75">
                                             {getIconForCategory(place.categoryKey)}
-                                         </div>
+                                        </div>
                                     </div>
                                     <span className="font-medium text-gray-700 truncate">{place.name}</span>
                                 </div>

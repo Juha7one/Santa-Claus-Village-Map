@@ -323,5 +323,6 @@ export const fi = {
     'cancel': 'Peruuta',
     'setAsMyStay': 'Aseta majapaikaksi',
     'removeMyStay': 'Poista majapaikka',
+    'favouritesRoute': 'Suosikkien reitti',
   },
 };
