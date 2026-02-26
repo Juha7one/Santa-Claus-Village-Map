@@ -15,9 +15,10 @@ interface CategoryFilterProps {
     setShowFavouritesRoute: (show: boolean) => void;
     isMyStayActive: boolean;
     isVillageFocused: boolean;
+    setIsVillageFocused: (focused: boolean) => void;
 }
 
-const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, selectedCategory, onSelectCategory, showFavouritesRoute, setShowFavouritesRoute, isMyStayActive, isVillageFocused }) => {
+const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, selectedCategory, onSelectCategory, showFavouritesRoute, setShowFavouritesRoute, isMyStayActive, isVillageFocused, setIsVillageFocused }) => {
     const t = useTranslations();
 
     const buttonsToDisplay = useMemo(() => {
@@ -104,37 +105,56 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, sel
                 )}
             </div>
 
-            <div className="bg-white/90 backdrop-blur-sm p-1 rounded-full shadow-lg flex items-start justify-center space-x-1 border border-amber-200">
-                <button
-                    onClick={() => onSelectCategory(null)}
-                    className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 ${isVillageFocused ? 'bg-amber-600 ring-2 ring-amber-400 ring-offset-2' : 'bg-gray-800'} text-white ${selectedCategory ? 'opacity-25 hover:opacity-100' : 'opacity-100'}`}
-                    title={t.ui.showAllCategories}
-                >
-                    <AllCategoriesIcon />
-                </button>
-                <div className="flex space-x-1 overflow-x-auto pb-1">
-                    {buttonsToDisplay.map(categoryKey => {
-                        const isSelected = selectedCategory === categoryKey;
-                        const isAnySelected = selectedCategory !== null;
-                        const opacityClass = isAnySelected && !isSelected ? 'opacity-25 hover:opacity-100' : 'opacity-100';
-                        const color = getCategoryColor(categoryKey);
-                        const selectionClass = isSelected ? 'ring-2 ring-offset-2 ring-white' : '';
+            <div className="bg-white/90 backdrop-blur-sm p-1 rounded-full shadow-lg flex flex-col items-center border border-amber-200">
+                {/* Area Toggle (Village / All) */}
+                <div className="flex bg-gray-100 p-0.5 rounded-full mb-1 w-full max-w-[180px]">
+                    <button
+                        onClick={() => setIsVillageFocused(true)}
+                        className={`flex-1 py-1 px-3 rounded-full text-[10px] font-bold transition-all ${isVillageFocused ? 'bg-amber-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                    >
+                        {t.ui.village}
+                    </button>
+                    <button
+                        onClick={() => setIsVillageFocused(false)}
+                        className={`flex-1 py-1 px-3 rounded-full text-[10px] font-bold transition-all ${!isVillageFocused ? 'bg-amber-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                    >
+                        {t.ui.all}
+                    </button>
+                </div>
 
-                        return (
-                            <button
-                                key={categoryKey}
-                                onClick={() => handleCategoryClick(categoryKey)}
-                                style={{ backgroundColor: color }}
-                                className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 ${opacityClass} ${selectionClass}`}
-                                title={getTranslatedCategory(categoryKey)}
-                            >
-                                {getCategoryIcon(categoryKey)}
-                            </button>
-                        );
-                    })}
+                <div className="flex items-start justify-center space-x-1 w-full">
+                    <button
+                        onClick={() => onSelectCategory(null)}
+                        className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 bg-gray-800 text-white ${selectedCategory ? 'opacity-25 hover:opacity-100' : 'opacity-100'}`}
+                        title={t.ui.showAllCategories}
+                    >
+                        <AllCategoriesIcon />
+                    </button>
+                    <div className="flex space-x-1 overflow-x-auto pb-1">
+                        {buttonsToDisplay.map(categoryKey => {
+                            const isSelected = selectedCategory === categoryKey;
+                            const isAnySelected = selectedCategory !== null;
+                            const opacityClass = isAnySelected && !isSelected ? 'opacity-25 hover:opacity-100' : 'opacity-100';
+                            const color = getCategoryColor(categoryKey);
+                            const selectionClass = isSelected ? 'ring-2 ring-offset-2 ring-white' : '';
+
+                            return (
+                                <button
+                                    key={categoryKey}
+                                    onClick={() => handleCategoryClick(categoryKey)}
+                                    style={{ backgroundColor: color }}
+                                    className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 ${opacityClass} ${selectionClass}`}
+                                    title={getTranslatedCategory(categoryKey)}
+                                >
+                                    {getCategoryIcon(categoryKey)}
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
+
 export default CategoryFilter;

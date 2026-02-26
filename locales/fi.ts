@@ -483,5 +483,7 @@ export const fi = {
     'setAsMyStay': 'Aseta majapaikaksi',
     'removeMyStay': 'Poista majapaikka',
     'favouritesRoute': 'Suosikkien reitti',
+    'village': 'Pajakylä',
+    'all': 'Kaikki',
   },
 };

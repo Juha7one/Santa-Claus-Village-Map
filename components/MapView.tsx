@@ -291,6 +291,7 @@ interface MapViewProps {
     dbAdminClickedCoords?: Coordinates | null;
     selectedPlace?: Place | null;
     isVillageFocused: boolean;
+    setIsVillageFocused: (focused: boolean) => void;
 }
 
 interface PlaceMarkerProps {
@@ -420,7 +421,8 @@ const MapView: React.FC<MapViewProps> = ({
     isFollowingUser, setIsFollowingUser,
     isDbAdminMode, onMarkerDragEnd,
     dbAdminClickedCoords, selectedPlace,
-    isVillageFocused
+    isVillageFocused,
+    setIsVillageFocused
 }) => {
     const defaultZoom = 16;
     const t = useTranslations();
@@ -648,6 +650,7 @@ const MapView: React.FC<MapViewProps> = ({
                 setShowFavouritesRoute={setShowFavouritesRoute}
                 isMyStayActive={isMyStayActive}
                 isVillageFocused={isVillageFocused}
+                setIsVillageFocused={setIsVillageFocused}
             />
         </div>
     );

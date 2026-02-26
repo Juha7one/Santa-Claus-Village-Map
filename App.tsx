@@ -414,16 +414,8 @@ function App() {
     }
 
     if (category === null) {
-      // If we are already in "all categories", toggle village focus
-      if (selectedCategory === null) {
-        setIsVillageFocused(!isVillageFocused);
-      } else {
-        // If we are switching from a category back to all, we don't necessarily toggle focus
-        // But maybe we should keep it if it was previously set?
-        // Let's just set the viewState.
-        if (viewState !== 'route') {
-          setViewState('all-places');
-        }
+      if (viewState !== 'route') {
+        setViewState('all-places');
       }
     } else {
       // When a specific category is selected, set a dedicated view state.
@@ -431,7 +423,7 @@ function App() {
     }
 
     setSelectedCategory(category);
-  }
+  };
 
   return (
     <div className="h-full w-full bg-gray-100 flex flex-col font-sans">
@@ -461,6 +453,8 @@ function App() {
           setViewState={setViewState}
           selectedCategory={selectedCategory}
           onSelectCategory={handleSelectCategory}
+          isVillageFocused={isVillageFocused}
+          setIsVillageFocused={setIsVillageFocused}
           showFavouritesRoute={showFavouritesRoute}
           setShowFavouritesRoute={setShowFavouritesRoute}
           lovedPlaceIds={lovedPlaceIds}
@@ -479,7 +473,6 @@ function App() {
           }}
           dbAdminClickedCoords={dbAdminClickedCoords}
           selectedPlace={selectedPlace}
-          isVillageFocused={isVillageFocused}
         />
         {isAdminOpen && (
           <AdminPanel

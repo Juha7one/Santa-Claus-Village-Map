@@ -494,5 +494,7 @@ export const en = {
     'cancel': 'Cancel',
     'setAsMyStay': 'Set as My Stay',
     'removeMyStay': 'Remove My Stay',
+    'village': 'Village',
+    'all': 'All',
   },
 };
