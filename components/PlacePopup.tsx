@@ -135,7 +135,7 @@ const PlacePopup: React.FC<PlacePopupProps> = ({
                     {hasDetails ? (
                         <div className="space-y-4">
                             {!isUserPlace && place.imageUrl && (
-                                <img src={place.imageUrl} alt={place.name} className="w-full h-auto object-cover rounded-xl shadow-md border border-amber-100" />
+                                <img src={place.imageUrl} alt={localizedName} className="w-full h-auto object-cover rounded-xl shadow-md border border-amber-100" />
                             )}
 
                             {localizedDescription && (

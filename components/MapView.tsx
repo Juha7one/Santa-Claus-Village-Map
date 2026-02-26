@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MapContainer, TileLayer, Marker, useMap, useMapEvents, Polyline, Tooltip, Pane } from 'react-leaflet';
 import L from 'leaflet';
 import { Place, LineData, Coordinates, Bounds, RouteSegment } from '../types';
@@ -6,6 +7,7 @@ import { ViewState } from '../App';
 import { useTranslations } from '../hooks/useTranslations';
 import { getCategoryColor } from '../constants';
 import { placeMarkerIcon, userPlaceMarkerIcon, userMarkerIcon } from './MapIcons';
+import { getLangString } from '../utils/langUtils';
 import CategoryFilter from './CategoryFilter';
 import PulsatingAnimationMarker from './PulsatingAnimationMarker';
 
@@ -422,6 +424,8 @@ const MapView: React.FC<MapViewProps> = ({
 }) => {
     const defaultZoom = 16;
     const t = useTranslations();
+    const { i18n } = useTranslation();
+    const currentLang = i18n.language?.split('-')[0] || 'en';
     const [animationDetails, setAnimationDetails] = useState<{ location: Coordinates, color: string } | null>(null);
 
     const villageBounds = useMemo(() => {
@@ -542,33 +546,39 @@ const MapView: React.FC<MapViewProps> = ({
                     />
                 )}
 
-                {lines.filter(line => line.categoryKey !== 'Facilities' && line.categoryKey !== 'Paths').map(line => (
-                    <Polyline
-                        key={line.id}
-                        positions={line.coordinates}
-                        pathOptions={{
-                            color: line.color || "rgba(0, 181, 255, 0.19)",
-                            weight: 5
-                        }}
-                    >
-                        <Tooltip>{line.name}</Tooltip>
-                    </Polyline>
-                ))}
+                {lines.filter(line => line.categoryKey !== 'Facilities' && line.categoryKey !== 'Paths').map(line => {
+                    const displayName = getLangString(line.name, currentLang);
+                    return (
+                        <Polyline
+                            key={line.id}
+                            positions={line.coordinates}
+                            pathOptions={{
+                                color: line.color || "rgba(0, 181, 255, 0.19)",
+                                weight: 5
+                            }}
+                        >
+                            <Tooltip>{displayName}</Tooltip>
+                        </Polyline>
+                    );
+                })}
 
-                {lines.filter(line => line.categoryKey === 'Facilities' || line.categoryKey === 'Paths').map(line => (
-                    <Polyline
-                        key={line.id}
-                        positions={line.coordinates}
-                        pane="kmlPathPane"
-                        pathOptions={{
-                            color: '#FFFFFF',
-                            weight: 4,
-                            opacity: line.categoryKey === 'Paths' ? 0.1 : 0.2,
-                        }}
-                    >
-                        <Tooltip>{line.name}</Tooltip>
-                    </Polyline>
-                ))}
+                {lines.filter(line => line.categoryKey === 'Facilities' || line.categoryKey === 'Paths').map(line => {
+                    const displayName = getLangString(line.name, currentLang);
+                    return (
+                        <Polyline
+                            key={line.id}
+                            positions={line.coordinates}
+                            pane="kmlPathPane"
+                            pathOptions={{
+                                color: '#FFFFFF',
+                                weight: 4,
+                                opacity: line.categoryKey === 'Paths' ? 0.1 : 0.2,
+                            }}
+                        >
+                            <Tooltip>{displayName}</Tooltip>
+                        </Polyline>
+                    );
+                })}
 
                 {userLocation && (
                     <Marker position={userLocation} icon={userMarkerIcon} >

@@ -1,8 +1,9 @@
-
 import React, { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Place } from '../types';
 import { useTranslations } from '../hooks/useTranslations';
 import { getCategoryColor } from '../constants';
+import { getLangString } from '../utils/langUtils';
 
 const CarIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
@@ -59,6 +60,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     setShowFavouritesRoute,
 }) => {
     const t = useTranslations();
+    const { i18n } = useTranslation();
+    const currentLang = i18n.language?.split('-')[0] || 'en';
+
     const [isDragging, setIsDragging] = useState(false);
     const dragItem = useRef<number | null>(null);
     const dragOverItem = useRef<number | null>(null);
@@ -147,14 +151,17 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
 
                 {otherPlaces.length > 0 || favouritePlaces.length > 0 ? (
                     <div className="space-y-2">
-                        {otherPlaces.map(place => (
-                            <div key={place.id} className="bg-white p-3 rounded-lg shadow-sm flex justify-between items-center border border-amber-200">
-                                <span className="font-medium text-gray-700 truncate pr-2">{place.name}</span>
-                                <button onClick={() => onDelete(place.id)} className="text-red-500 hover:text-red-700 flex-shrink-0" aria-label={`${(t.ui && t.ui.delete) || 'Delete'} ${place.name}`}>
-                                    <TrashIcon />
-                                </button>
-                            </div>
-                        ))}
+                        {otherPlaces.map(place => {
+                            const displayName = getLangString(place.name, currentLang);
+                            return (
+                                <div key={place.id} className="bg-white p-3 rounded-lg shadow-sm flex justify-between items-center border border-amber-200">
+                                    <span className="font-medium text-gray-700 truncate pr-2">{displayName}</span>
+                                    <button onClick={() => onDelete(place.id)} className="text-red-500 hover:text-red-700 flex-shrink-0" aria-label={`${(t.ui && t.ui.delete) || 'Delete'} ${displayName}`}>
+                                        <TrashIcon />
+                                    </button>
+                                </div>
+                            );
+                        })}
                     </div>
                 ) : (
                     <p className="text-center text-gray-500 text-sm mt-8">{(t.ui && t.ui.noPlacesAdded) || 'No places added'}</p>
@@ -183,33 +190,36 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                         <p className="text-xs text-gray-500 mt-2">{(t.ui && t.ui.dragReorder) || 'Drag to reorder'}</p>
                     )}
                     <ul className="mt-2 space-y-2">
-                        {favouritePlaces.map((place, index) => (
-                            <li
-                                key={place.id}
-                                draggable
-                                onDragStart={(e) => handleDragStart(e, index)}
-                                onDragEnter={(e) => handleDragEnter(e, index)}
-                                onDragEnd={handleDragEnd}
-                                onDragOver={(e) => e.preventDefault()}
-                                className={`bg-white p-2 rounded-lg shadow-sm flex justify-between items-center transition-opacity border border-amber-200 ${isDragging ? 'cursor-grabbing' : ''} ${draggedIndex === index ? 'opacity-50' : ''}`}
-                            >
-                                <div className="flex items-center space-x-2 min-w-0">
-                                    <DragHandleIcon />
-                                    <div
-                                        className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
-                                        style={{ backgroundColor: getCategoryColor(place.categoryKey || 'Love this') }}
-                                    >
-                                        <div className="text-white transform scale-75">
-                                            {getIconForCategory(place.categoryKey || 'Love this')}
+                        {favouritePlaces.map((place, index) => {
+                            const displayName = getLangString(place.name, currentLang);
+                            return (
+                                <li
+                                    key={place.id}
+                                    draggable
+                                    onDragStart={(e) => handleDragStart(e, index)}
+                                    onDragEnter={(e) => handleDragEnter(e, index)}
+                                    onDragEnd={handleDragEnd}
+                                    onDragOver={(e) => e.preventDefault()}
+                                    className={`bg-white p-2 rounded-lg shadow-sm flex justify-between items-center transition-opacity border border-amber-200 ${isDragging ? 'cursor-grabbing' : ''} ${draggedIndex === index ? 'opacity-50' : ''}`}
+                                >
+                                    <div className="flex items-center space-x-2 min-w-0">
+                                        <DragHandleIcon />
+                                        <div
+                                            className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
+                                            style={{ backgroundColor: getCategoryColor(place.categoryKey || 'Love this') }}
+                                        >
+                                            <div className="text-white transform scale-75">
+                                                {getIconForCategory(place.categoryKey || 'Love this')}
+                                            </div>
                                         </div>
+                                        <span className="font-medium text-gray-700 truncate">{displayName}</span>
                                     </div>
-                                    <span className="font-medium text-gray-700 truncate">{place.name}</span>
-                                </div>
-                                <button onClick={() => onDelete(place.id)} className="flex-shrink-0 text-red-500 hover:text-red-700 ml-2" aria-label={`${(t.ui && t.ui.delete) || 'Delete'} ${place.name}`}>
-                                    <TrashIcon />
-                                </button>
-                            </li>
-                        ))}
+                                    <button onClick={() => onDelete(place.id)} className="flex-shrink-0 text-red-500 hover:text-red-700 ml-2" aria-label={`${(t.ui && t.ui.delete) || 'Delete'} ${displayName}`}>
+                                        <TrashIcon />
+                                    </button>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
 
