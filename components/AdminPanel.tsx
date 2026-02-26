@@ -64,19 +64,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     const dragOverItem = useRef<number | null>(null);
     const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
-    // Safety check to prevent white screen crashes if translations fail to load
-    if (!t || !t.ui || !t.categories) {
-        return (
-            <div className="absolute top-0 right-0 h-full w-80 bg-white shadow-lg z-40 p-4">
-                <button onClick={onClose}>Close</button>
-                <p>Loading translations...</p>
-            </div>
-        );
-    }
-
     const routeCategories = ['Love this', 'My Car', 'My Stay'];
-    // Include My Car and My Stay in the sortable list
-    const favouritePlaces = userPlaces.filter(p => routeCategories.includes(p.categoryKey || ''));
+
+    // Defensive filtering: ensure places and their properties exist before processing
+    const places = userPlaces || [];
+    const favouritePlaces = places.filter(p => p && p.categoryKey && routeCategories.includes(p.categoryKey));
+    const otherPlaces = places.filter(p => p && p.categoryKey && !routeCategories.includes(p.categoryKey));
 
     const handleDragStart = (e: React.DragEvent<HTMLLIElement>, index: number) => {
         dragItem.current = index;
@@ -95,9 +88,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             const reorderedFavourites = [...favouritePlaces];
             const [draggedItem] = reorderedFavourites.splice(dragItem.current, 1);
             reorderedFavourites.splice(dragOverItem.current, 0, draggedItem);
-
-            const nonRoutePlaces = userPlaces.filter(p => !routeCategories.includes(p.categoryKey || ''));
-            onUpdateUserPlaces([...nonRoutePlaces, ...reorderedFavourites]);
+            onUpdateUserPlaces([...otherPlaces, ...reorderedFavourites]);
         }
         dragItem.current = null;
         dragOverItem.current = null;
@@ -106,9 +97,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     const canShowFavouritesRoute = favouritePlaces.length >= 2;
 
     const placeCategoriesToAdd = [
-        { key: 'My Car', label: t.categories['My Car'] || 'My Car', icon: <CarIcon /> },
-        { key: 'My Stay', label: t.categories['My Stay'] || 'My Stay', icon: <StayIcon /> },
-        { key: 'Love this', label: t.categories['Love this'] || 'Love this', icon: <LoveIcon /> },
+        { key: 'My Car', label: (t.categories && t.categories['My Car']) || 'My Car', icon: <CarIcon /> },
+        { key: 'My Stay', label: (t.categories && t.categories['My Stay']) || 'My Stay', icon: <StayIcon /> },
+        { key: 'Love this', label: (t.categories && t.categories['Love this']) || 'Favorites', icon: <LoveIcon /> },
     ];
 
     const getIconForCategory = (categoryKey: string) => {
@@ -128,15 +119,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             }}
         >
             <div className="p-4 border-b border-amber-200 flex justify-between items-center">
-                <h2 className="text-xl font-bold text-gray-800">{t.ui.myPlaces}</h2>
-                <button onClick={onClose} className="text-gray-500 hover:text-gray-800" aria-label={t.ui.closePanel}>
+                <h2 className="text-xl font-bold text-gray-800">{(t.ui && t.ui.myPlaces) || 'My Places'}</h2>
+                <button onClick={onClose} className="text-gray-500 hover:text-gray-800" aria-label={(t.ui && t.ui.closePanel) || 'Close'}>
                     <CloseIcon />
                 </button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 <div className="bg-white p-3 rounded-lg border border-amber-200 shadow-sm">
-                    <h3 className="text-sm font-semibold text-amber-800 mb-2">{t.ui.addNewPlace}</h3>
+                    <h3 className="text-sm font-semibold text-amber-800 mb-2">{(t.ui && t.ui.addNewPlace) || 'Add new place'}</h3>
                     <div className="grid grid-cols-1 gap-2">
                         {placeCategoriesToAdd.map(cat => (
                             <button
@@ -152,29 +143,29 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                     </div>
                 </div>
 
-                {userPlaces.length > 0 ? (
+                {otherPlaces.length > 0 || favouritePlaces.length > 0 ? (
                     <div className="space-y-2">
-                        {userPlaces.filter(p => !routeCategories.includes(p.categoryKey)).map(place => (
+                        {otherPlaces.map(place => (
                             <div key={place.id} className="bg-white p-3 rounded-lg shadow-sm flex justify-between items-center border border-amber-200">
-                                <span className="font-medium text-gray-700">{place.name}</span>
-                                <button onClick={() => onDelete(place.id)} className="text-red-500 hover:text-red-700" aria-label={`${t.ui.delete} ${place.name}`}>
+                                <span className="font-medium text-gray-700 truncate pr-2">{place.name}</span>
+                                <button onClick={() => onDelete(place.id)} className="text-red-500 hover:text-red-700 flex-shrink-0" aria-label={`${(t.ui && t.ui.delete) || 'Delete'} ${place.name}`}>
                                     <TrashIcon />
                                 </button>
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <p className="text-center text-gray-500 text-sm mt-8">{t.ui.noPlacesAdded}</p>
+                    <p className="text-center text-gray-500 text-sm mt-8">{(t.ui && t.ui.noPlacesAdded) || 'No places added'}</p>
                 )}
 
                 <div className="pt-4 border-t border-amber-200">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">{t.ui.favouritesRoute}</h3>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2">{(t.ui && t.ui.favouritesRoute) || 'Favorites Route'}</h3>
                     {favouritePlaces.length < 2 && (
-                        <p className="text-sm text-gray-500">{t.ui.addFavouritesForRoute}</p>
+                        <p className="text-sm text-gray-500">{(t.ui && t.ui.addFavouritesForRoute) || 'Add two favorites for route'}</p>
                     )}
                     {canShowFavouritesRoute && (
                         <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-amber-200">
-                            <span className="font-medium text-gray-700">{t.ui.showRouteOnMap}</span>
+                            <span className="font-medium text-gray-700">{(t.ui && t.ui.showRouteOnMap) || 'Show route on map'}</span>
                             <button
                                 id="show-route-toggle"
                                 onClick={() => setShowFavouritesRoute(!showFavouritesRoute)}
@@ -186,7 +177,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                             </button>
                         </div>
                     )}
-                    <p className="text-xs text-gray-500 mt-2">{t.ui.dragReorder}</p>
+                    {favouritePlaces.length > 0 && (
+                        <p className="text-xs text-gray-500 mt-2">{(t.ui && t.ui.dragReorder) || 'Drag to reorder'}</p>
+                    )}
                     <ul className="mt-2 space-y-2">
                         {favouritePlaces.map((place, index) => (
                             <li
@@ -202,15 +195,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                                     <DragHandleIcon />
                                     <div
                                         className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
-                                        style={{ backgroundColor: getCategoryColor(place.categoryKey) }}
+                                        style={{ backgroundColor: getCategoryColor(place.categoryKey || 'Love this') }}
                                     >
                                         <div className="text-white transform scale-75">
-                                            {getIconForCategory(place.categoryKey)}
+                                            {getIconForCategory(place.categoryKey || 'Love this')}
                                         </div>
                                     </div>
                                     <span className="font-medium text-gray-700 truncate">{place.name}</span>
                                 </div>
-                                <button onClick={() => onDelete(place.id)} className="flex-shrink-0 text-red-500 hover:text-red-700 ml-2" aria-label={`${t.ui.delete} ${place.name}`}>
+                                <button onClick={() => onDelete(place.id)} className="flex-shrink-0 text-red-500 hover:text-red-700 ml-2" aria-label={`${(t.ui && t.ui.delete) || 'Delete'} ${place.name}`}>
                                     <TrashIcon />
                                 </button>
                             </li>

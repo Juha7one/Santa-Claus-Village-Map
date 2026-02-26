@@ -21,32 +21,27 @@ export function useTranslations() {
   const currentLang = langParam || i18nLang || 'en';
 
   return useMemo(() => {
-    const baseTranslations = translations[currentLang] || translations.en; // Get base translations for currentLang, fallback to en
-    const uiExtra = uiTranslations[currentLang];
+    // translations contains { en, fi }
+    // We use translations.en as the absolute fallback for any missing language or key
+    const en = translations.en;
+    const fi = translations.fi;
 
-    if (!uiExtra) {
-      return baseTranslations; // If no UI extras, return base
-    }
+    // Base is either fi or en
+    const base = (currentLang === 'fi') ? fi : en;
 
-    // Merge base with UI extras. Ensure all keys from base are present, then override/add from uiExtra.
-    // This assumes uiExtra might have top-level keys like 'categories' or 'ui'
-    // and also specific keys that might be at the root level of the translation object.
-    // A deep merge would be more robust, but for simplicity, we'll merge top-level objects.
-    const mergedTranslations = { ...baseTranslations };
+    // UI extra is what we added in uiTranslations.ts
+    const uiExtra = uiTranslations[currentLang] || {};
 
-    if (uiExtra.categories) {
-      mergedTranslations.categories = { ...baseTranslations.categories, ...uiExtra.categories };
-    }
-    if (uiExtra.ui) {
-      mergedTranslations.ui = { ...baseTranslations.ui, ...uiExtra.ui };
-    }
-    // Add any other top-level keys from uiExtra that are not 'categories' or 'ui'
-    for (const key in uiExtra) {
-      if (key !== 'categories' && key !== 'ui' && uiExtra.hasOwnProperty(key)) {
-        mergedTranslations[key] = uiExtra[key];
+    return {
+      ...base,
+      categories: {
+        ...(base.categories || {}),
+        ...(uiExtra.categories || {})
+      },
+      ui: {
+        ...(base.ui || {}),
+        ...(uiExtra.ui || {})
       }
-    }
-
-    return mergedTranslations;
+    };
   }, [currentLang]);
 }
