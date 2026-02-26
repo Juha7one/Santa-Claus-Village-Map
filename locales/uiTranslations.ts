@@ -36,6 +36,8 @@ export const uiTranslations: Record<string, any> = {
             searchPlaceholder: 'Etsi paikkoja...',
             cancel: 'Peruuta',
             mapTitle: 'Joulupukin Pajakylä',
+            village: 'Pajakylä',
+            all: 'Kaikki',
         }
     },
     de: {
@@ -70,6 +72,8 @@ export const uiTranslations: Record<string, any> = {
             searchPlaceholder: 'Orte suchen...',
             cancel: 'Abbrechen',
             mapTitle: 'Weihnachtsmann-Dorf',
+            village: 'Dorf',
+            all: 'Alle',
         }
     },
     fr: {
@@ -108,6 +112,8 @@ export const uiTranslations: Record<string, any> = {
             searchPlaceholder: 'Rechercher des lieux...',
             cancel: 'Annuler',
             mapTitle: 'Village du Père Noël',
+            village: 'Village',
+            all: 'Tout',
         }
     },
     es: {
@@ -146,6 +152,8 @@ export const uiTranslations: Record<string, any> = {
             searchPlaceholder: 'Buscar lugares...',
             cancel: 'Cancelar',
             mapTitle: 'Pueblo de Papá Noel',
+            village: 'Pueblo',
+            all: 'Todo',
         }
     },
     it: {
@@ -184,6 +192,8 @@ export const uiTranslations: Record<string, any> = {
             searchPlaceholder: 'Cerca luoghi...',
             cancel: 'Annulla',
             mapTitle: 'Villaggio di Babbo Natale',
+            village: 'Villaggio',
+            all: 'Tutto',
         }
     },
     sv: {
@@ -222,6 +232,8 @@ export const uiTranslations: Record<string, any> = {
             searchPlaceholder: 'Sök platser...',
             cancel: 'Avbryt',
             mapTitle: 'Tomtens Pajakyla',
+            village: 'Byn',
+            all: 'Alla',
         }
     },
     ja: {
@@ -260,6 +272,8 @@ export const uiTranslations: Record<string, any> = {
             searchPlaceholder: '場所を検索...',
             cancel: 'キャンセル',
             mapTitle: 'サンタクロース村',
+            village: '村',
+            all: '全て',
         }
     },
     zh: {
@@ -298,6 +312,8 @@ export const uiTranslations: Record<string, any> = {
             searchPlaceholder: '搜索地点...',
             cancel: '取消',
             mapTitle: '圣诞老人村',
+            village: '村庄',
+            all: '全部',
         }
     },
     ko: {
@@ -336,6 +352,8 @@ export const uiTranslations: Record<string, any> = {
             searchPlaceholder: '장소 검색...',
             cancel: '취소',
             mapTitle: '산타클로스 마을',
+            village: '마을',
+            all: '전체',
         }
     }
 };
