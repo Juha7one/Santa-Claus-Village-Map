@@ -140,27 +140,27 @@ function ViewManager({
         }
         zoomedCategoryRef.current = null;
 
-        if ((viewState === 'initial' && !hasSetInitialView.current) || isNewAllPlacesView) {
-            // Define interest points by routes/lines to focus on the village center
-            const linePoints = lines.flatMap(line => line.coordinates);
+        if ((viewState === 'initial' && !hasSetInitialView.current) ||
+            isNewAllPlacesView ||
+            (viewState === 'all-places' && focusChanged) ||
+            (viewState === 'category-view' && !selectedCategory && focusChanged)) {
+            const allAvailablePlaces = [...places, ...userPlaces];
+            const filteredPoints = allAvailablePlaces
+                .filter(p => {
+                    if (isVillageFocused && villageBounds) {
+                        return villageBounds.contains(p.location);
+                    }
+                    return true;
+                })
+                .map(p => p.location);
 
-            if (linePoints.length > 0) {
-                const boundsToFit = L.latLngBounds(linePoints);
-                map.flyToBounds(boundsToFit, { padding: [30, 30] });
+            if (filteredPoints.length > 0) {
+                const boundsToFit = L.latLngBounds(filteredPoints);
+                map.flyToBounds(boundsToFit, { padding: [50, 50] });
+            } else if (bounds) {
+                map.fitBounds(bounds, { padding: [50, 50] });
             } else {
-                // Fallback to places if no lines exist
-                const allInterestPoints = [
-                    ...places.map(p => p.location),
-                    ...userPlaces.map(p => p.location)
-                ];
-                if (allInterestPoints.length > 0) {
-                    const boundsToFit = L.latLngBounds(allInterestPoints);
-                    map.flyToBounds(boundsToFit, { padding: [50, 50] });
-                } else if (bounds) {
-                    map.fitBounds(bounds, { padding: [50, 50] });
-                } else {
-                    map.flyTo(center, zoom);
-                }
+                map.flyTo(center, zoom);
             }
 
             if (viewState === 'initial') {
@@ -332,15 +332,19 @@ const PlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onS
     }
 
     const isClickable = !selectedCategory || isVisible;
+    const baseZIndex = isSelected ? 1000 : 0;
+    // Boost z-index for visible markers when a category filter is active
+    const zIndex = (selectedCategory && isVisible && !isSelected) ? baseZIndex + 500 : baseZIndex;
 
     return (
         <Marker
             position={place.location}
             // We pass categoryKey to determine color from constant palette
             icon={placeMarkerIcon(place.categoryKey, isSelected, isLoved, place.id, place.subCategory)}
-            zIndexOffset={isSelected ? 1000 : 0}
+            zIndexOffset={zIndex}
             opacity={opacity}
             draggable={isDraggable}
+            interactive={isClickable}
             eventHandlers={{
                 ...(isClickable ? { click: () => onSelectPlace(place) } : {}),
                 ...(isDraggable && onDragEnd ? {
@@ -379,14 +383,18 @@ const UserPlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo,
     }
 
     const isClickable = !selectedCategory || isVisible;
+    const baseZIndex = isSelected ? 1000 : 500;
+    // Boost z-index for visible markers when a category filter is active
+    const zIndex = (selectedCategory && isVisible && !isSelected) ? baseZIndex + 500 : baseZIndex;
 
     return (
         <Marker
             position={place.location}
             icon={userPlaceMarkerIcon(place, isSelected, selectedCategory)}
-            zIndexOffset={isSelected ? 1000 : 500}
+            zIndexOffset={zIndex}
             opacity={opacity}
             draggable={isDraggable}
+            interactive={isClickable}
             eventHandlers={{
                 ...(isClickable ? { click: () => onSelectPlace(place) } : {}),
                 ...(isDraggable && onDragEnd ? {

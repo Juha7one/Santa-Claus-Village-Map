@@ -41,6 +41,10 @@ export function useTranslations() {
       ui: {
         ...(base.ui || {}),
         ...(uiExtra.ui || {})
+      },
+      onboarding: {
+        ...(base.onboarding || {}),
+        ...(uiExtra.onboarding || {})
       }
     };
   }, [currentLang]);

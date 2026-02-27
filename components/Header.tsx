@@ -172,6 +172,7 @@ const Header: React.FC<HeaderProps> = ({
                             </button>
                         )}
                         <button
+                            id="user-places-button"
                             onClick={onToggleAdmin}
                             className="bg-amber-50 text-[#B71C1C] font-semibold py-2 px-3 rounded-lg shadow hover:bg-amber-100 transition-colors flex items-center justify-center"
                             aria-label={t.ui.toggleUserPlacesPanel}

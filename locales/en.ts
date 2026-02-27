@@ -450,7 +450,7 @@ export const en = {
     'My Stay': 'My Stay',
     'My Car': 'My Car',
     'Love this': 'Love this',
-    'allServices': 'Santa Claus Village',
+    'allServices': 'All categories',
   },
   ui: {
     'calculatingRoute': 'Calculating the best route...',
@@ -464,7 +464,7 @@ export const en = {
     'showRoute': 'Show Route',
     'toggleFavouritesRoute': 'Toggle favourites route',
     'addFavouritesToShowRoute': 'Add at least two favourites to show a route',
-    'showAllCategories': 'Santa Claus Village',
+    'showAllCategories': 'All categories',
     'myPlaces': 'My Places',
     'closePanel': 'Close Panel',
     'addNewPlace': 'Add new place:',
@@ -495,6 +495,7 @@ export const en = {
     'setAsMyStay': 'Set as My Stay',
     'removeMyStay': 'Remove My Stay',
     'village': 'Village',
-    'all': 'All',
+    all: 'All',
   },
+  onboarding: {},
 };

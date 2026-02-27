@@ -12,7 +12,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Majoitus',
             'Facilities': 'Palvelut',
             'Transportation': 'Liikenne',
-            'allServices': 'Joulupukin Pajakylä',
+            'allServices': 'Kaikki kategoriat',
         },
         ui: {
             openingHours: 'Aukioloajat',
@@ -39,6 +39,22 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Joulupukin Pajakylä',
             village: 'Pajakylä',
             all: 'Kaikki',
+        },
+        onboarding: {
+            welcomeTitle: 'Tervetuloa Pajakylän Kartalle!',
+            welcomeText: 'Tämä on virallinen interaktiivinen karttapalvelu Joulupukin Pajakylään. Autamme sinua löytämään kaiken tarvitsemasi ja suunnittelemaan vierailusi.',
+            stepCategoriesTitle: 'Selaa kategorioita',
+            stepCategoriesText: 'Voit suodattaa kohteita alkunäytön alareunasta. Valitse esim. "Ostokset" tai "Majoitus" nähdäksesi vain ne.',
+            step1Title: 'Omat paikat',
+            step1Text: 'Klikkaa yläkulman +-nappia lisätäksesi omia tärkeitä paikkoja.',
+            step2Title: 'Auto ja Majapaikka',
+            step2Text: 'Voit merkitä autosi tai majapaikkasi sijainnin, jotta löydät ne myöhemmin helposti.',
+            step3Title: 'Suosikit',
+            step3Text: 'Klikkaa sydäntä minkä tahansa kohteen kohdalla lisätäksesi sen suosikkeihisi. Voit luoda reitin suosikkikohteidesi välille!',
+            next: 'Seuraava',
+            finish: 'Aloita seikkailu',
+            skip: 'Ohita',
+            restartTour: 'Käynnistä opastus uudelleen'
         }
     },
     de: {
@@ -53,7 +69,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Unterkunft',
             'Facilities': 'Einrichtungen',
             'Transportation': 'Verkehr',
-            'allServices': 'Weihnachtsmann-Dorf',
+            'allServices': 'Alle Kategorien',
         },
         ui: {
             openingHours: 'Öffnungszeiten',
@@ -76,6 +92,23 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Weihnachtsmann-Dorf',
             village: 'Dorf',
             all: 'Alle',
+        },
+        onboarding: {
+            welcomeTitle: 'Willkommen auf der Dorfkarte!',
+            welcomeText: 'Dies ist der offizielle interaktive Kartenhinweis für das Weihnachtsmanndorf. Wir helfen Ihnen, alles zu finden, was Sie brauchen, und Ihren Besuch zu planen.',
+            stepCategoriesTitle: 'Kategorien durchsuchen',
+            stepCategoriesText: 'Filtern Sie Orte über die Kategorienleiste unten. Wählen Sie "Shopping" oder "Essen", um nur diese Orte zu sehen.',
+            step1Title: 'Meine Orte',
+            step1Text: 'Klicken Sie auf die +-Schaltfläche im Header, um Ihre eigenen wichtigen Standorte hinzuzufügen.',
+            step2Title: 'Auto und Unterkunft',
+            step2Text: 'Markieren Sie den Standort Ihres Autos oder Ihrer Unterkunft, um sie später leicht wiederzufinden.',
+            step3Title: 'Favoriten',
+            step3Text: 'Klicken Sie auf das Herz an einem beliebigen Ort, um ihn zu Ihren Favoriten hinzuzufügen. Sie können sogar eine Route zwischen Ihren Lieblingsplätzen erstellen!',
+            next: 'Weiter',
+            finish: 'Erkundung starten',
+            skip: 'Überspringen',
+            back: 'Zurück',
+            restartTour: 'Tour neu starten'
         }
     },
     fr: {
@@ -90,7 +123,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Hébergement',
             'Facilities': 'Services',
             'Transportation': 'Transports',
-            'allServices': 'Village du Père Noël',
+            'allServices': 'Toutes les catégories',
         },
         ui: {
             openingHours: "Horaires d'ouverture",
@@ -117,6 +150,23 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Village du Père Noël',
             village: 'Village',
             all: 'Tout',
+        },
+        onboarding: {
+            welcomeTitle: 'Bienvenue sur la carte du Village !',
+            welcomeText: 'C\'est la carte interactive officielle du Village du Père Noël. Nous vous aidons à trouver tout ce dont vous avez besoin.',
+            stepCategoriesTitle: 'Parcourir les catégories',
+            stepCategoriesText: 'Filtrez les lieux à l\'aide de la barre de catégories en bas. Choisissez "Shopping" ou "Restauration".',
+            step1Title: 'Mes lieux',
+            step1Text: 'Cliquez sur le bouton + dans l\'en-tête pour ajouter vos propres lieux importants.',
+            step2Title: 'Voiture et Hébergement',
+            step2Text: 'Marquez l\'emplacement de votre voiture ou de votre séjour pour les retrouver facilement.',
+            step3Title: 'Favoris',
+            step3Text: 'Cliquez sur le cœur pour ajouter un lieu à vos favoris. Vous pouvez même créer un itinéraire entre vos spots préférés !',
+            next: 'Suivant',
+            finish: 'Commencer l\'exploration',
+            skip: 'Passer',
+            back: 'Retour',
+            restartTour: 'Redémarrer le tour'
         }
     },
     es: {
@@ -131,7 +181,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Alojamiento',
             'Facilities': 'Instalaciones',
             'Transportation': 'Transporte',
-            'allServices': 'Pueblo de Papá Noel',
+            'allServices': 'Todas las categorías',
         },
         ui: {
             openingHours: 'Horarios de apertura',
@@ -158,6 +208,23 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Pueblo de Papá Noel',
             village: 'Pueblo',
             all: 'Todo',
+        },
+        onboarding: {
+            welcomeTitle: '¡Bienvenido al mapa del pueblo!',
+            welcomeText: 'Este es el mapa interactivo oficial de Santa Claus Village. Te ayudamos a encontrar todo lo que necesitas.',
+            stepCategoriesTitle: 'Explorar categorías',
+            stepCategoriesText: 'Filtra lugares usando la barra de categorías en la parte inferior. Elige "Compras" o "Comida".',
+            step1Title: 'Mis lugares',
+            step1Text: 'Haz clic en el botón + en el encabezado para añadir tus propios lugares importantes.',
+            step2Title: 'Coche y Alojamiento',
+            step2Text: 'Marca la ubicación de tu coche o alojamiento para encontrarlos fácilmente más tarde.',
+            step3Title: 'Favoritos',
+            step3Text: 'Haz clic en el corazón para añadir un lugar a tus favoritos. ¡Incluso puedes crear una ruta entre tus sitios preferidos!',
+            next: 'Siguiente',
+            finish: 'Empezar a explorar',
+            skip: 'Omitir',
+            back: 'Atrás',
+            restartTour: 'Reiniciar recorrido'
         }
     },
     it: {
@@ -172,7 +239,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Alloggio',
             'Facilities': 'Servizi',
             'Transportation': 'Trasporti',
-            'allServices': 'Villaggio di Babbo Natale',
+            'allServices': 'Tutte le categorie',
         },
         ui: {
             openingHours: 'Orari di apertura',
@@ -199,6 +266,23 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Villaggio di Babbo Natale',
             village: 'Villaggio',
             all: 'Tutto',
+        },
+        onboarding: {
+            welcomeTitle: 'Benvenuto nella mappa del Villaggio!',
+            welcomeText: 'Questa è la mappa interattiva ufficiale di Santa Claus Village. Ti aiutiamo a trovare tutto ciò di cui hai bisogno.',
+            stepCategoriesTitle: 'Sfoglia le categorie',
+            stepCategoriesText: 'Filtra i luoghi utilizzando la barra delle categorie in basso. Scegli "Shopping" o "Cibo".',
+            step1Title: 'I miei luoghi',
+            step1Text: 'Clicca sul pulsante + nell\'intestazione per aggiungere i tuoi luoghi importanti.',
+            step2Title: 'Auto e Alloggio',
+            step2Text: 'Segna la posizione della tua auto o del tuo alloggio per ritrovarli facilmente.',
+            step3Title: 'Preferiti',
+            step3Text: 'Clicca sul cuore per aggiungere un luogo ai tuoi preferiti. Puoi anche creare un percorso tra i tuoi posti preferiti!',
+            next: 'Avanti',
+            finish: 'Inizia a esplorare',
+            skip: 'Salta',
+            back: 'Indietro',
+            restartTour: 'Ricomincia il tour'
         }
     },
     sv: {
@@ -213,7 +297,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': 'Boende',
             'Facilities': 'Tjänster',
             'Transportation': 'Transport',
-            'allServices': 'Tomtens Pajakyla',
+            'allServices': 'Alla kategorier',
         },
         ui: {
             openingHours: 'Öppettider',
@@ -240,6 +324,23 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Tomtens Pajakyla',
             village: 'Byn',
             all: 'Alla',
+        },
+        onboarding: {
+            welcomeTitle: 'Välkommen till bykartan!',
+            welcomeText: 'Detta är den officiella interaktiva kartan för Tomtens by. Vi hjälper dig att hitta allt du behöver.',
+            stepCategoriesTitle: 'Bläddra i kategorier',
+            stepCategoriesText: 'Filtrera platser med kategorifältet längst ner. Välj "Shopping" eller "Mat".',
+            step1Title: 'Mina platser',
+            step1Text: 'Klicka på +-knappen i rubriken för att lägga till dina egna viktiga platser.',
+            step2Title: 'Bil och Boende',
+            step2Text: 'Markera platsen för din bil eller ditt boende för att enkelt hitta dem senare.',
+            step3Title: 'Favoriter',
+            step3Text: 'Klicka på hjärtat för att lägga till en plats i dina favoriter. Du kan skapa en rutt mellan dina favoritställen!',
+            next: 'Nästa',
+            finish: 'Börja utforska',
+            skip: 'Hoppa över',
+            back: 'Bakåt',
+            restartTour: 'Starta om guiden'
         }
     },
     ja: {
@@ -254,7 +355,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': '宿泊施設',
             'Facilities': '施設',
             'Transportation': '交通機関',
-            'allServices': 'サンタクロース村',
+            'allServices': 'すべてのカテゴリ',
         },
         ui: {
             openingHours: '営業時間',
@@ -281,6 +382,23 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'サンタクロース村',
             village: '村',
             all: '全て',
+        },
+        onboarding: {
+            welcomeTitle: '村のマップへようこそ！',
+            welcomeText: 'これはサンタクロース村の公式インタラクティブマップです。必要なものをすべて見つけるお手伝いをします。',
+            stepCategoriesTitle: 'カテゴリを見る',
+            stepCategoriesText: '下のカテゴリバーを使って場所を絞り込めます。「ショッピング」や「グルメ」を選んでみましょう。',
+            step1Title: 'マイプレイス',
+            step1Text: 'ヘッダーの＋ボタンをクリックして、自分だけの重要な場所を追加できます。',
+            step2Title: '車と宿泊施設',
+            step2Text: '車や宿泊施設の場所をマークしておけば、後で簡単に見つけることができます。',
+            step3Title: 'お気に入り',
+            step3Text: 'ハートマークをクリックしてお気に入りに追加しましょう。お気に入りの場所を繋ぐルートも作成できます！',
+            next: '次へ',
+            finish: '探索を始める',
+            skip: 'スキップ',
+            back: '戻る',
+            restartTour: 'ガイドを再開'
         }
     },
     zh: {
@@ -295,7 +413,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': '住宿',
             'Facilities': '设施',
             'Transportation': '交通',
-            'allServices': '圣诞老人村',
+            'allServices': '所有类别',
         },
         ui: {
             openingHours: '营业时间',
@@ -322,6 +440,23 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: '圣诞老人村',
             village: '村庄',
             all: '全部',
+        },
+        onboarding: {
+            welcomeTitle: '欢迎来到村庄地图！',
+            welcomeText: '这是圣诞老人村的官方互动地图。我们可以帮助您找到所需的一切并计划您的行程。',
+            stepCategoriesTitle: '浏览类别',
+            stepCategoriesText: '使用底部的类别栏筛选地点。选择“购物”或“餐饮”以仅查看这些点。',
+            step1Title: '我的地点',
+            step1Text: '点击页眉中的 + 按钮以添加您自己的重要位置。',
+            step2Title: '车辆和住宿',
+            step2Text: '标记您的车或住宿位置，以便稍后轻松找到它们。',
+            step3Title: '收藏夹',
+            step3Text: '点击任何地点的爱心以将其添加到您的收藏中。您甚至可以在收藏地点之间创建路线！',
+            next: '下一步',
+            finish: '开始探索',
+            skip: '跳过',
+            back: '返回',
+            restartTour: '重新开始导览'
         }
     },
     ko: {
@@ -336,7 +471,7 @@ export const uiTranslations: Record<string, any> = {
             'Accommodation': '숙박',
             'Facilities': '편의 시설',
             'Transportation': '교통',
-            'allServices': '산타클로스 마을',
+            'allServices': '모든 카테고리',
         },
         ui: {
             openingHours: '영업 시간',
@@ -363,6 +498,23 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: '산타클로스 마을',
             village: '마을',
             all: '전체',
+        },
+        onboarding: {
+            welcomeTitle: '마을 지도에 오신 것을 환영합니다!',
+            welcomeText: '산타클로스 마을의 공식 인터랙티브 지도입니다. 필요한 모든 것을 찾고 방문을 계획할 수 있도록 도와드립니다.',
+            stepCategoriesTitle: '카테고리 탐색',
+            stepCategoriesText: '하단의 카테고리 바를 사용하여 장소를 필터링하세요. "쇼핑" 또는 "식당"을 선택해 보세요.',
+            step1Title: '내 장소',
+            step1Text: '헤더의 + 버튼을 눌러 나만의 중요한 장소를 추가할 수 있습니다.',
+            step2Title: '자동차 및 숙소',
+            step2Text: '자동차나 숙박 위치를 표시하여 나중에 쉽게 찾을 수 있습니다.',
+            step3Title: '즐겨찾기',
+            step3Text: '장소의 하트 아이콘을 눌러 즐겨찾기에 추가하세요. 즐겨찾는 장소 사이의 경로를 만들 수도 있습니다!',
+            next: '다음',
+            finish: '탐색 시작',
+            skip: '건너뛰기',
+            back: '뒤로',
+            restartTour: '가이드 다시 시작'
         }
     }
 };

@@ -6,6 +6,7 @@ import AdminPanel from './components/AdminPanel';
 import AdminMapSettings from './components/AdminMapSettings';
 import AdminBulkSync from './components/AdminBulkSync';
 import PlacePopup from './components/PlacePopup';
+import Onboarding from './components/Onboarding';
 import { usePlaces } from './hooks/usePlaces';
 import { useUserPlaces } from './hooks/useUserPlaces';
 import { useUserLocation } from './hooks/useUserLocation';
@@ -44,6 +45,7 @@ function App() {
   const [isDbAdminMode, setIsDbAdminMode] = useState(false);
   const [dbAdminClickedCoords, setDbAdminClickedCoords] = useState<Coordinates | null>(null);
   const [isVillageFocused, setIsVillageFocused] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const mapRef = useRef<L.Map | null>(null);
   const initialUrlCheckDone = useRef(false);
@@ -78,6 +80,20 @@ function App() {
     , [userPlaces]);
 
   const allPlaces = useMemo(() => [...places, ...(userPlaces || []).filter(Boolean)], [places, userPlaces]);
+
+  useEffect(() => {
+    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding_v1');
+    if (!hasSeenOnboarding && places.length > 0) {
+      // Delay slightly to ensure map is visible behind
+      const timer = setTimeout(() => setShowOnboarding(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [places.length]);
+
+  const handleCompleteOnboarding = () => {
+    setShowOnboarding(false);
+    localStorage.setItem('hasSeenOnboarding_v1', 'true');
+  };
 
   // Handle deep linking from URL parameter on initial load
   useEffect(() => {
@@ -425,55 +441,70 @@ function App() {
     setSelectedCategory(category);
   };
 
+  const handleStepChange = (step: number) => {
+    // Stage 3 is for "Car and Accommodation" which are inside AdminPanel
+    if (step === 3) {
+      setIsAdminOpen(true);
+    } else if (step === 2 || step === 4) {
+      // Keep it open or close it? Let's close it to focus on header/map
+      setIsAdminOpen(false);
+    }
+  };
+
+  const handleMarkerDragEnd = useCallback((place, newCoords) => {
+    if (isDbAdminMode) {
+      const updatedPlace = { ...place, location: newCoords };
+      setSelectedPlace(updatedPlace);
+      setDbAdminClickedCoords(null);
+    }
+  }, [isDbAdminMode, setSelectedPlace, setDbAdminClickedCoords]);
+
   return (
     <div className="h-full w-full bg-gray-100 flex flex-col font-sans">
       <Header
-        onToggleAdmin={toggleAdminPanel}
+        onToggleAdmin={() => setIsAdminOpen(!isAdminOpen)}
         isNavigating={!!route}
         onStopNavigation={handleStopNavigation}
         allPlaces={allPlaces}
         onSelectPlace={handleSelectPlace}
       />
-      <main className="flex-1 relative overflow-hidden">
-        <MapView
-          mapRef={mapRef}
-          places={places}
-          userPlaces={userPlaces}
-          lines={lines}
-          mapCenter={mapCenter}
-          bounds={bounds}
-          userLocation={userLocation}
-          onSelectPlace={handleSelectPlace}
-          route={route}
-          routeInfo={routeInfo}
-          favouriteRouteSegments={favouriteRouteSegments}
-          onMapClick={handleMapClick}
-          isLocationSelectMode={isPickingLocation}
-          viewState={viewState}
-          setViewState={setViewState}
-          selectedCategory={selectedCategory}
-          onSelectCategory={handleSelectCategory}
-          isVillageFocused={isVillageFocused}
-          setIsVillageFocused={setIsVillageFocused}
-          showFavouritesRoute={showFavouritesRoute}
-          setShowFavouritesRoute={setShowFavouritesRoute}
-          lovedPlaceIds={lovedPlaceIds}
-          animatedPlaceId={animatedPlaceId}
-          setAnimatedPlaceId={setAnimatedPlaceId}
-          isMyStayActive={!!myStayPlace}
-          isFollowingUser={isFollowingUser}
-          setIsFollowingUser={setIsFollowingUser}
-          isDbAdminMode={isDbAdminMode}
-          onMarkerDragEnd={(place, newCoords) => {
-            if (isDbAdminMode) {
-              const updatedPlace = { ...place, location: newCoords };
-              setSelectedPlace(updatedPlace);
-              setDbAdminClickedCoords(null);
-            }
-          }}
-          dbAdminClickedCoords={dbAdminClickedCoords}
-          selectedPlace={selectedPlace}
-        />
+      <main className="flex-1 relative overflow-hidden flex flex-col sm:flex-row">
+        <div className="flex-1 relative h-full">
+          <MapView
+            mapRef={mapRef}
+            places={places}
+            userPlaces={userPlaces}
+            lines={lines}
+            mapCenter={mapCenter}
+            bounds={bounds}
+            userLocation={userLocation}
+            onSelectPlace={handleSelectPlace}
+            route={route}
+            routeInfo={routeInfo}
+            favouriteRouteSegments={favouriteRouteSegments}
+            onMapClick={handleMapClick}
+            isLocationSelectMode={isPickingLocation}
+            viewState={viewState}
+            setViewState={setViewState}
+            selectedCategory={selectedCategory}
+            onSelectCategory={handleSelectCategory}
+            isVillageFocused={isVillageFocused}
+            setIsVillageFocused={setIsVillageFocused}
+            showFavouritesRoute={showFavouritesRoute}
+            setShowFavouritesRoute={setShowFavouritesRoute}
+            lovedPlaceIds={lovedPlaceIds}
+            animatedPlaceId={animatedPlaceId}
+            setAnimatedPlaceId={setAnimatedPlaceId}
+            isMyStayActive={!!myStayPlace}
+            isFollowingUser={isFollowingUser}
+            setIsFollowingUser={setIsFollowingUser}
+            isDbAdminMode={isDbAdminMode}
+            onMarkerDragEnd={handleMarkerDragEnd}
+            dbAdminClickedCoords={dbAdminClickedCoords}
+            selectedPlace={selectedPlace}
+          />
+        </div>
+
         {isAdminOpen && (
           <AdminPanel
             userPlaces={userPlaces}
@@ -483,6 +514,7 @@ function App() {
             onUpdateUserPlaces={updateUserPlaces}
             showFavouritesRoute={showFavouritesRoute}
             setShowFavouritesRoute={setShowFavouritesRoute}
+            onRestartOnboarding={() => setShowOnboarding(true)}
           />
         )}
       </main>
@@ -523,7 +555,7 @@ function App() {
           </div>
         </div>
       )}
-      {selectedPlace && !isDbAdminMode && (
+      {selectedPlace && (
         <PlacePopup
           place={selectedPlace}
           userLocation={userLocation}
@@ -535,6 +567,13 @@ function App() {
           isMyStay={selectedPlace.categoryKey === 'My Stay' || (!!myStayPlace && myStayPlace.originalId === selectedPlace.id)}
           isNavigatingTo={!!(route && route.end.lat === selectedPlace.location.lat && route.end.lng === selectedPlace.location.lng)}
           isRouteLoading={isRouteLoading}
+        />
+      )}
+
+      {showOnboarding && (
+        <Onboarding
+          onComplete={handleCompleteOnboarding}
+          onStepChange={handleStepChange}
         />
       )}
     </div>

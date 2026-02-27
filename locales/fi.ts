@@ -440,7 +440,7 @@ export const fi = {
     'My Stay': 'Oma majapaikka',
     'My Car': 'Oma auto',
     'Love this': 'Suosikit',
-    'allServices': 'Joulupukin Pajakylä',
+    'allServices': 'Kaikki kategoriat',
   },
   ui: {
     'calculatingRoute': 'Lasketaan parasta reittiä...',
@@ -454,7 +454,7 @@ export const fi = {
     'showRoute': 'Näytä reitti',
     'toggleFavouritesRoute': 'Näytä/piilota suosikkien reitti',
     'addFavouritesToShowRoute': 'Lisää vähintään kaksi suosikkia nähdäksesi reitin',
-    'showAllCategories': 'Joulupukin Pajakylä',
+    'showAllCategories': 'Kaikki kategoriat',
     'myPlaces': 'Omat paikkani',
     'closePanel': 'Sulje paneeli',
     'addNewPlace': 'Lisää uusi paikka:',
@@ -486,4 +486,5 @@ export const fi = {
     'village': 'Pajakylä',
     'all': 'Kaikki',
   },
+  onboarding: {},
 };

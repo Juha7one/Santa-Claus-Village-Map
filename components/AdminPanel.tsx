@@ -48,6 +48,7 @@ interface AdminPanelProps {
     onUpdateUserPlaces: (places: Place[]) => void;
     showFavouritesRoute: boolean;
     setShowFavouritesRoute: (show: boolean) => void;
+    onRestartOnboarding?: () => void;
 }
 
 const AdminPanel: React.FC<AdminPanelProps> = ({
@@ -58,6 +59,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     onUpdateUserPlaces,
     showFavouritesRoute,
     setShowFavouritesRoute,
+    onRestartOnboarding,
 }) => {
     const t = useTranslations();
     const { i18n } = useTranslation();
@@ -132,7 +134,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                <div className="bg-white p-3 rounded-lg border border-amber-200 shadow-sm">
+                <div id="admin-add-actions" className="bg-white p-3 rounded-lg border border-amber-200 shadow-sm">
                     <h3 className="text-sm font-semibold text-amber-800 mb-2">{(t.ui && t.ui.addNewPlace) || 'Add new place'}</h3>
                     <div className="grid grid-cols-1 gap-2">
                         {placeCategoriesToAdd.map(cat => (
@@ -224,6 +226,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 </div>
 
             </div>
+
+            {onRestartOnboarding && (
+                <div className="p-4 border-t border-amber-200 bg-white/50">
+                    <button
+                        onClick={onRestartOnboarding}
+                        className="w-full flex items-center justify-center space-x-2 py-2 px-4 rounded-xl text-amber-800 font-semibold hover:bg-amber-100 transition-colors border border-amber-200"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{t.onboarding?.restartTour || 'Restart Tour'}</span>
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

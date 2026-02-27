@@ -105,7 +105,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, sel
                 )}
             </div>
 
-            <div className="flex flex-col items-center space-y-2">
+            <div id="category-filter-bar" className="flex flex-col items-center w-full max-w-md mx-auto">
                 {/* Area Toggle (Village / All) */}
                 <div className="flex bg-gray-100 p-0.5 rounded-full mb-1 w-full max-w-[180px]">
                     <button
@@ -122,15 +122,15 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ places, userPlaces, sel
                     </button>
                 </div>
 
-                <div className="flex items-start justify-center space-x-1 w-full p-2">
+                <div className="flex items-center justify-center space-x-1 w-full p-2">
                     <button
                         onClick={() => onSelectCategory(null)}
                         className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 bg-gray-800 text-white ${selectedCategory ? 'opacity-25 hover:opacity-100' : 'border-[1.5px] border-white shadow-[0_2px_4px_rgba(0,0,0,0.3)] opacity-100'}`}
-                        title={t.ui.showAllCategories}
+                        title={t.ui.allCategories || t.ui.showAllCategories}
                     >
                         <AllCategoriesIcon />
                     </button>
-                    <div className="flex space-x-1 overflow-x-auto py-1 px-1">
+                    <div className="flex items-center space-x-1 overflow-x-auto">
                         {buttonsToDisplay.map(categoryKey => {
                             const isSelected = selectedCategory === categoryKey;
                             const isAnySelected = selectedCategory !== null;
