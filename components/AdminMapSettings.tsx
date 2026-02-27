@@ -235,7 +235,7 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
     }
 
     return (
-        <div className="absolute top-0 right-0 h-full w-full sm:w-80 bg-white shadow-xl z-50 flex flex-col transform transition-transform duration-300 translate-x-0 border-l border-gray-200">
+        <div className="absolute top-0 right-0 h-full w-full sm:w-80 bg-white shadow-xl z-[1200] flex flex-col transform transition-transform duration-300 translate-x-0 border-l border-gray-200">
             <div className="p-4 bg-gray-900 text-white flex justify-between items-center flex-shrink-0">
                 <h2 className="text-lg font-bold">{existingPlace ? 'Edit Map Marker' : 'Add New Marker'}</h2>
                 <button onClick={onClose} className="p-1 hover:bg-gray-800 rounded">

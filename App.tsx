@@ -555,7 +555,7 @@ function App() {
           </div>
         </div>
       )}
-      {selectedPlace && (
+      {selectedPlace && !isDbAdminMode && (
         <PlacePopup
           place={selectedPlace}
           userLocation={userLocation}
