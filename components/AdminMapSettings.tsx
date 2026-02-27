@@ -115,6 +115,7 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
             setPhone(results.phone);
             setEmail(results.email);
             setWebsite(results.website);
+            setBookingUrl(results.website);
             setFacebookUrl(results.facebookUrl);
             setInstagramUrl(results.instagramUrl);
             setFullTranslations({
@@ -137,7 +138,7 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
                 image_url: results.imageUrl || null,
                 location_lat: parseFloat(latInput),
                 location_lng: parseFloat(lngInput),
-                booking_url: (bookingUrl || results.website).trim() || null,
+                booking_url: results.website.trim() || null,
                 linked_wp_url: linkedWpUrl.trim() || null,
                 address: results.address,
                 phone: results.phone.trim() || null,

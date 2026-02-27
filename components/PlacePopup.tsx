@@ -112,7 +112,7 @@ const PlacePopup: React.FC<PlacePopupProps> = ({
 
     // Helper for booking info
     const isFoodCategory = place.categoryKey === 'Food-And-Drink';
-    const bookingLink = place.bookingUrl || place.website || place.linkedWpUrl;
+    const bookingLink = place.bookingUrl;
     const bookingLabel = isFoodCategory ? (t.ui && t.ui.bookTable) || 'Book Table' : (t.ui && t.ui.bookNow) || 'Book Now';
 
     return (
