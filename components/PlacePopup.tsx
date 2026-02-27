@@ -115,6 +115,8 @@ const PlacePopup: React.FC<PlacePopupProps> = ({
     const bookingLink = place.bookingUrl;
     const bookingLabel = isFoodCategory ? (t.ui && t.ui.bookTable) || 'Book Table' : (t.ui && t.ui.bookNow) || 'Book Now';
 
+    const [isImageLoading, setIsImageLoading] = React.useState(true);
+
     return (
         <div className="popup-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="popup-title">
             <div className="popup-modal" onClick={(e) => e.stopPropagation()} style={{ maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
@@ -132,10 +134,20 @@ const PlacePopup: React.FC<PlacePopupProps> = ({
 
                 {/* 2. Scrollable Body */}
                 <div className="flex-1 overflow-y-auto px-4 py-3 min-h-0">
-                    {hasDetails ? (
+                    {hasDetails && (
                         <div className="space-y-4">
                             {!isUserPlace && place.imageUrl && (
-                                <img src={place.imageUrl} alt={localizedName} className="w-full h-auto object-cover rounded-xl shadow-md border border-amber-100" />
+                                <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-md border border-amber-100 bg-gray-200">
+                                    {isImageLoading && (
+                                        <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200" />
+                                    )}
+                                    <img
+                                        src={place.imageUrl}
+                                        alt={localizedName}
+                                        className={`w-full h-full object-cover transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`}
+                                        onLoad={() => setIsImageLoading(false)}
+                                    />
+                                </div>
                             )}
 
                             {localizedDescription && (
@@ -195,10 +207,6 @@ const PlacePopup: React.FC<PlacePopupProps> = ({
                                     )}
                                 </div>
                             )}
-                        </div>
-                    ) : (
-                        <div className="py-10 text-center text-gray-400 italic">
-                            {(t.ui && t.ui.noDetailsAvailable) || 'No details available.'}
                         </div>
                     )}
                 </div>

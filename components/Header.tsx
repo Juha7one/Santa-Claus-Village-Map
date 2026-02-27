@@ -11,6 +11,8 @@ interface HeaderProps {
     onStopNavigation: () => void;
     allPlaces: Place[];
     onSelectPlace: (place: Place) => void;
+    searchQuery: string;
+    onSearchChange: (query: string) => void;
 }
 
 const StopNavigationIcon = () => (
@@ -31,14 +33,15 @@ const Header: React.FC<HeaderProps> = ({
     isNavigating,
     onStopNavigation,
     allPlaces,
-    onSelectPlace
+    onSelectPlace,
+    searchQuery,
+    onSearchChange
 }) => {
     const t = useTranslations();
     const { i18n } = useTranslation();
     const currentLang = i18n.language?.split('-')[0] || 'en';
 
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
     const searchInputRef = useRef<HTMLInputElement>(null);
     const searchContainerRef = useRef<HTMLDivElement>(null);
 
@@ -67,16 +70,31 @@ const Header: React.FC<HeaderProps> = ({
     const filteredPlaces = useMemo(() => {
         if (!searchQuery) return [];
         const lower = searchQuery.toLowerCase();
-        return allPlaces.filter(p => {
+
+        // Use a Map to deduplicate by originalId or ID
+        const uniqueMatches = new Map<string, Place>();
+
+        allPlaces.forEach(p => {
             const nameStr = getLangString(p.name, currentLang).toLowerCase();
-            return nameStr.includes(lower);
-        }).slice(0, 8);
+            if (nameStr.includes(lower)) {
+                const effectiveId = p.originalId || p.id;
+                // Prefer the original version over "User-specific copies" (like Favorites/Car/Stay) in search results
+                const isUserSpecificCopy = (p.categoryKey === 'Love this' || p.categoryKey === 'My Stay' || p.categoryKey === 'My Car') && !!p.originalId;
+
+                const existing = uniqueMatches.get(effectiveId);
+                if (!existing || !isUserSpecificCopy) {
+                    uniqueMatches.set(effectiveId, p);
+                }
+            }
+        });
+
+        return Array.from(uniqueMatches.values()).slice(0, 8);
     }, [allPlaces, searchQuery, currentLang]);
 
     const handlePlaceClick = (place: Place) => {
         onSelectPlace(place);
         setIsSearchOpen(false);
-        setSearchQuery('');
+        onSearchChange('');
     }
 
     const getResultColor = (place: Place): string => {
@@ -108,11 +126,11 @@ const Header: React.FC<HeaderProps> = ({
                             className="w-full bg-red-100 text-gray-800 placeholder-gray-500 rounded-lg py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-amber-500"
                             placeholder={t.ui.searchPlaceholder}
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => onSearchChange(e.target.value)}
                         />
                         {searchQuery && (
                             <button
-                                onClick={() => setSearchQuery('')}
+                                onClick={() => onSearchChange('')}
                                 className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 p-1"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -122,7 +140,7 @@ const Header: React.FC<HeaderProps> = ({
                         )}
                     </div>
                     <button
-                        onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
+                        onClick={() => { setIsSearchOpen(false); onSearchChange(''); }}
                         className="text-white font-medium whitespace-nowrap px-2"
                     >
                         {t.ui.cancel}

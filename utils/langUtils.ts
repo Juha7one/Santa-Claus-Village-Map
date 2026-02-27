@@ -1,5 +1,14 @@
-
 import { LocalizedString } from '../types';
+
+/**
+ * Decodes HTML entities using a temporary textarea element.
+ */
+function decodeHtml(html: string): string {
+    if (!html || !html.includes('&')) return html;
+    const txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+}
 
 /**
  * Extracts the correct string for the given language from a LocalizedString object or string.
@@ -7,8 +16,9 @@ import { LocalizedString } from '../types';
  */
 export const getLangString = (value: LocalizedString | undefined | null, lang: string): string => {
     if (!value) return '';
-    if (typeof value === 'string') return value;
+    const rawValue = typeof value === 'string'
+        ? value
+        : (value[lang] || value['en'] || Object.values(value)[0] || '');
 
-    // Default to English, then try to find any available string if English is also missing
-    return value[lang] || value['en'] || Object.values(value)[0] || '';
+    return decodeHtml(rawValue);
 };

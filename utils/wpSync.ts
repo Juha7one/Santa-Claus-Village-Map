@@ -123,8 +123,11 @@ export const syncPlaceFromWp = async (linkedWpUrl: string, onStatus?: (status: s
         const featured = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || "";
         const forceStr = (val: any) => (typeof val === 'string' ? val : (val ? String(val) : ""));
 
+        const nameDoc = new DOMParser().parseFromString(post.title?.rendered || "", 'text/html');
+        const cleanName = nameDoc.body.textContent || "";
+
         return {
-            name: forceStr(post.title?.rendered),
+            name: forceStr(cleanName),
             description: forceStr(desc).trim(),
             address: forceStr(acf.address),
             openingHours: forceStr(acf.opening_hours),

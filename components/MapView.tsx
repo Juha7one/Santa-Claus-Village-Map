@@ -65,7 +65,7 @@ const isPlaceVisibleInCategory = (place: Place, selectedCategory: string | null)
 };
 
 function ViewManager({
-    center, zoom, route, userLocation, bounds, viewState, places, userPlaces, lines, selectedCategory, isVillageFocused
+    center, zoom, route, userLocation, bounds, viewState, places, userPlaces, lines, selectedCategory, isVillageFocused, searchQuery, currentLang
 }: {
     center: Coordinates;
     zoom: number;
@@ -78,15 +78,20 @@ function ViewManager({
     selectedCategory: string | null;
     lines: LineData[];
     isVillageFocused: boolean;
+    searchQuery?: string;
+    currentLang: string;
 }) {
     const map = useMap();
     const zoomedRouteRef = useRef<string | null>(null);
     const zoomedCategoryRef = useRef<string | null>(null);
     const hasSetInitialView = useRef(false);
     const lastViewState = useRef<ViewState | null>(null);
+    const lastSearchRef = useRef<string>('');
 
     const villageBounds = useMemo(() => {
-        const points = lines.flatMap(line => line.coordinates);
+        // Village bounds should only include paths and facilities inside the village area
+        const villageLines = lines.filter(l => l.categoryKey === 'Paths' || l.categoryKey === 'Facilities');
+        const points = villageLines.flatMap(line => line.coordinates);
         if (points.length === 0) return null;
         return L.latLngBounds(points);
     }, [lines]);
@@ -109,6 +114,26 @@ function ViewManager({
             return;
         }
         zoomedRouteRef.current = null;
+
+        // --- Handle Real-time Search Zoom ---
+        if (searchQuery && searchQuery.length >= 2) {
+            if (searchQuery !== lastSearchRef.current) {
+                const lower = searchQuery.toLowerCase();
+                const allAvailablePlaces = [...places, ...userPlaces];
+                const matchingPoints = allAvailablePlaces
+                    .filter(p => getLangString(p.name, currentLang).toLowerCase().includes(lower))
+                    .map(p => p.location);
+
+                if (matchingPoints.length > 0) {
+                    const boundsToFit = L.latLngBounds(matchingPoints);
+                    map.flyToBounds(boundsToFit, { padding: [100, 100], maxZoom: 17 });
+                }
+                lastSearchRef.current = searchQuery;
+            }
+            return;
+        } else {
+            lastSearchRef.current = '';
+        }
 
         if (viewState === 'category-view' && selectedCategory) {
             if (selectedCategory !== zoomedCategoryRef.current || focusChanged) {
@@ -142,34 +167,31 @@ function ViewManager({
 
         if ((viewState === 'initial' && !hasSetInitialView.current) ||
             isNewAllPlacesView ||
-            (viewState === 'all-places' && focusChanged) ||
+            (viewState === 'all-places' && (focusChanged || !hasSetInitialView.current)) ||
             (viewState === 'category-view' && !selectedCategory && focusChanged)) {
-            const allAvailablePlaces = [...places, ...userPlaces];
-            const filteredPoints = allAvailablePlaces
-                .filter(p => {
-                    if (isVillageFocused && villageBounds) {
-                        return villageBounds.contains(p.location);
-                    }
-                    return true;
-                })
-                .map(p => p.location);
-
-            if (filteredPoints.length > 0) {
-                const boundsToFit = L.latLngBounds(filteredPoints);
-                map.flyToBounds(boundsToFit, { padding: [50, 50] });
-            } else if (bounds) {
-                map.fitBounds(bounds, { padding: [50, 50] });
+            if (isVillageFocused && bounds) {
+                // If Village is focused, zoom to the predefined village area
+                map.flyToBounds(bounds, { padding: [50, 50] });
             } else {
-                map.flyTo(center, zoom);
+                // Show everything or falling back
+                const allAvailablePlaces = [...places, ...userPlaces];
+                const points = allAvailablePlaces.map(p => p.location);
+
+                if (points.length > 0) {
+                    const boundsToFit = L.latLngBounds(points);
+                    map.flyToBounds(boundsToFit, { padding: [50, 50] });
+                } else if (bounds) {
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                } else {
+                    map.flyTo(center, zoom);
+                }
             }
 
-            if (viewState === 'initial') {
-                hasSetInitialView.current = true;
-            }
+            hasSetInitialView.current = true;
         }
 
         lastViewState.current = viewState;
-    }, [viewState, route, selectedCategory, userLocation, map, bounds, center, zoom, places, userPlaces, lines, isVillageFocused, villageBounds]);
+    }, [viewState, route, selectedCategory, userLocation, map, bounds, center, zoom, places, userPlaces, lines, isVillageFocused, villageBounds, searchQuery, currentLang]);
 
     return null;
 }
@@ -292,6 +314,7 @@ interface MapViewProps {
     selectedPlace?: Place | null;
     isVillageFocused: boolean;
     setIsVillageFocused: (focused: boolean) => void;
+    searchQuery?: string;
 }
 
 interface PlaceMarkerProps {
@@ -305,9 +328,11 @@ interface PlaceMarkerProps {
     onDragEnd?: (place: Place, newCoords: Coordinates) => void;
     isVillageFocused?: boolean;
     villageBounds?: L.LatLngBounds | null;
+    searchQuery?: string;
+    currentLang: string;
 }
 
-const PlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onSelectPlace, lovedPlaceIds, isDraggable, onDragEnd, isVillageFocused, villageBounds }: PlaceMarkerProps) => {
+const PlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onSelectPlace, lovedPlaceIds, isDraggable, onDragEnd, isVillageFocused, villageBounds, searchQuery, currentLang }: PlaceMarkerProps) => {
     const isSelected = route?.end.lat === place.location.lat && route?.end.lng === place.location.lng;
     const isLoved = lovedPlaceIds.has(place.id);
     const isVisible = isPlaceVisibleInCategory(place, selectedCategory);
@@ -325,6 +350,16 @@ const PlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onS
     if (routeInfo) {
         const isBestParking = place.id === routeInfo.bestParking?.id;
         if (!isSelected && !isBestParking) {
+            opacity = 0.2;
+        } else {
+            opacity = 1.0;
+        }
+    }
+
+    if (searchQuery && searchQuery.length >= 2) {
+        const lower = searchQuery.toLowerCase();
+        const matches = getLangString(place.name, currentLang).toLowerCase().includes(lower);
+        if (!matches) {
             opacity = 0.2;
         } else {
             opacity = 1.0;
@@ -359,7 +394,7 @@ const PlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onS
     );
 });
 
-const UserPlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onSelectPlace, isDraggable, onDragEnd, isVillageFocused, villageBounds }: PlaceMarkerProps) => {
+const UserPlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onSelectPlace, isDraggable, onDragEnd, isVillageFocused, villageBounds, searchQuery, currentLang }: PlaceMarkerProps) => {
     const isSelected = route?.end.lat === place.location.lat && route?.end.lng === place.location.lng;
 
     const isVisible = isPlaceVisibleInCategory(place, selectedCategory);
@@ -376,6 +411,16 @@ const UserPlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo,
 
     if (routeInfo) {
         if (!isSelected) {
+            opacity = 0.2;
+        } else {
+            opacity = 1.0;
+        }
+    }
+
+    if (searchQuery && searchQuery.length >= 2) {
+        const lower = searchQuery.toLowerCase();
+        const matches = getLangString(place.name, currentLang).toLowerCase().includes(lower);
+        if (!matches) {
             opacity = 0.2;
         } else {
             opacity = 1.0;
@@ -430,7 +475,8 @@ const MapView: React.FC<MapViewProps> = ({
     isDbAdminMode, onMarkerDragEnd,
     dbAdminClickedCoords, selectedPlace,
     isVillageFocused,
-    setIsVillageFocused
+    setIsVillageFocused,
+    searchQuery
 }) => {
     const defaultZoom = 16;
     const t = useTranslations();
@@ -439,7 +485,9 @@ const MapView: React.FC<MapViewProps> = ({
     const [animationDetails, setAnimationDetails] = useState<{ location: Coordinates, color: string } | null>(null);
 
     const villageBounds = useMemo(() => {
-        const points = lines.flatMap(line => line.coordinates);
+        // Village bounds should only include paths and facilities inside the village area
+        const villageLines = lines.filter(l => l.categoryKey === 'Paths' || l.categoryKey === 'Facilities');
+        const points = villageLines.flatMap(line => line.coordinates);
         if (points.length === 0) return null;
         return L.latLngBounds(points);
     }, [lines]);
@@ -482,7 +530,9 @@ const MapView: React.FC<MapViewProps> = ({
         isDraggable: isDbAdminMode,
         onDragEnd: onMarkerDragEnd,
         isVillageFocused,
-        villageBounds
+        villageBounds,
+        searchQuery,
+        currentLang
     };
 
     return (
@@ -511,6 +561,8 @@ const MapView: React.FC<MapViewProps> = ({
                     selectedCategory={selectedCategory}
                     lines={lines}
                     isVillageFocused={isVillageFocused}
+                    searchQuery={searchQuery}
+                    currentLang={currentLang}
                 />
                 <MapClickHandler onClick={onMapClick} isLocationSelectMode={isLocationSelectMode} />
                 <LocateControl

@@ -35,7 +35,7 @@ function App() {
   const [showFavouritesRoute, setShowFavouritesRoute] = useState(false);
   const [favouriteRouteSegments, setFavouriteRouteSegments] = useState<RouteSegment[] | null>(null);
 
-  const [viewState, setViewState] = useState<ViewState>('initial');
+  const [viewState, setViewState] = useState<ViewState>('all-places');
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [animatedPlaceId, setAnimatedPlaceId] = useState<string | null>(null);
@@ -46,6 +46,7 @@ function App() {
   const [dbAdminClickedCoords, setDbAdminClickedCoords] = useState<Coordinates | null>(null);
   const [isVillageFocused, setIsVillageFocused] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const mapRef = useRef<L.Map | null>(null);
   const initialUrlCheckDone = useRef(false);
@@ -467,6 +468,8 @@ function App() {
         onStopNavigation={handleStopNavigation}
         allPlaces={allPlaces}
         onSelectPlace={handleSelectPlace}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
       />
       <main className="flex-1 relative overflow-hidden flex flex-col sm:flex-row">
         <div className="flex-1 relative h-full">
@@ -502,6 +505,7 @@ function App() {
             onMarkerDragEnd={handleMarkerDragEnd}
             dbAdminClickedCoords={dbAdminClickedCoords}
             selectedPlace={selectedPlace}
+            searchQuery={searchQuery}
           />
         </div>
 
