@@ -120,7 +120,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     };
 
     return (
-        <div className="absolute top-0 right-0 h-full w-full sm:w-80 bg-amber-50 shadow-lg z-40 flex flex-col transform transition-transform"
+        <div className="absolute top-0 right-0 h-full w-full sm:w-80 bg-amber-50 shadow-lg z-[1100] flex flex-col transform transition-transform"
             style={{
                 paddingTop: 'calc(1rem + var(--safe-area-inset-top))',
                 paddingBottom: 'calc(1rem + var(--safe-area-inset-bottom))',
