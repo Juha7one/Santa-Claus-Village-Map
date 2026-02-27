@@ -74,6 +74,7 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
             setFacebookUrl(existingPlace.facebookUrl || '');
             setInstagramUrl(existingPlace.instagramUrl || '');
             setSubCategory(existingPlace.subCategory || '');
+            setBookingUrl(existingPlace.bookingUrl || '');
             setLatInput(existingPlace.location.lat.toString());
             setLngInput(existingPlace.location.lng.toString());
         } else if (clickedLocation) {
