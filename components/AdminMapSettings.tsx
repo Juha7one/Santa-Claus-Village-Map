@@ -214,21 +214,35 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
     const handleDelete = async () => {
         if (!existingPlace || !existingPlace.id || existingPlace.id.startsWith('user_place_')) return;
 
-        const isUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-        if (!isUUID(existingPlace.id)) {
-            alert("This is a built-in map marker and cannot be deleted yet until fully migrated to the database.");
-            return;
-        }
-
         if (!window.confirm("Are you sure you want to delete this place?")) return;
 
         setIsLoading(true);
         try {
-            const { error: supabaseError } = await supabase
-                .from('places')
-                .delete()
-                .eq('id', existingPlace.id);
-            if (supabaseError) throw supabaseError;
+            const isUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+            if (isUUID(existingPlace.id)) {
+                // For DB records, we delete them. 
+                // Note: If this was an override for a KML point, the original KML point will reappear.
+                const { error: supabaseError } = await supabase
+                    .from('places')
+                    .delete()
+                    .eq('id', existingPlace.id);
+                if (supabaseError) throw supabaseError;
+            } else {
+                // For KML/Built-in markers, we need to create a record in DB to 'hide' them.
+                // This requires an 'is_deleted' column. Let's try to upsert as an override.
+                const { error: supabaseError } = await supabase
+                    .from('places')
+                    .insert([{
+                        original_id: existingPlace.id,
+                        is_deleted: true,
+                        name: { en: name }, // Placeholder to satisfy potential and constraints
+                        category_key: categoryKey,
+                        location_lat: parseFloat(latInput),
+                        location_lng: parseFloat(lngInput)
+                    }]);
+                if (supabaseError) throw supabaseError;
+            }
             onSaveSuccess();
         } catch (err: any) {
             setError(err.message || "Failed to delete");

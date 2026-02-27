@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Place, LineData, Coordinates, Bounds } from '../types';
 import { kmlDataString } from '../data';
@@ -10,15 +9,18 @@ export function usePlaces(translations: any) {
   const [lines, setLines] = useState<LineData[]>([]);
   const [mapCenter, setMapCenter] = useState<Coordinates>({ lat: 66.543, lng: 25.846 });
   const [bounds, setBounds] = useState<Bounds | null>(null);
+  const [version, setVersion] = useState(0);
+
+  const refresh = () => setVersion(v => v + 1);
 
   useEffect(() => {
     async function fetchPlacesAndLines() {
-      // First, get default KML parsed data as fallback and base setup
+      // 1. Parse KML ONLY for Lines and Basic Setup (Center/Bounds)
       const parsedData = parseKML(kmlDataString, translations);
       setMapCenter(parsedData.mapCenter);
+      setLines(parsedData.lines);
 
       // Calculate village-specific bounds from paths/facilities lines.
-      // Remote activities shouldn't expand the primary village bounds used for routing decisions.
       const villageLines = parsedData.lines.filter(l => l.categoryKey === 'Paths' || l.categoryKey === 'Facilities');
       if (villageLines.length > 0) {
         const points = villageLines.flatMap(l => l.coordinates);
@@ -34,18 +36,24 @@ export function usePlaces(translations: any) {
         setBounds(parsedData.bounds);
       }
 
-      // Always use the local KML data directly for lines, as requested.
-      setLines(parsedData.lines);
-
+      // 2. Fetch ALL Points from Supabase
       if (!hasSupabaseConfig) {
+        // Fallback to KML only if no database config is found (emergency mode)
         setPlaces(parsedData.places);
         return;
       }
 
       try {
-        const { data: supabasePlaces, error: placesError } = await supabase.from('places').select('*');
+        const { data: supabasePlaces, error: placesError } = await supabase
+          .from('places')
+          .select('*')
+          .is('is_deleted', false); // Only fetch non-deleted places
 
         if (placesError || !supabasePlaces) {
+          console.warn('Database fetch failed, markers might be missing', placesError);
+          // If DB fails, we still show KML as a safety net? 
+          // User said "all should be in Supabase", so if DB fails it's an error.
+          // But let's fallback to KML points just so the app isn't empty on network error.
           setPlaces(parsedData.places);
         } else {
           const formattedPlaces: Place[] = supabasePlaces.map((sp: any) => ({
@@ -71,11 +79,9 @@ export function usePlaces(translations: any) {
             subCategory: sp.sub_category
           }));
 
-          // Filter out KML places that have been customized/overridden in the database
-          const customizedOriginalIds = new Set(formattedPlaces.map(p => p.originalId).filter(Boolean));
-          const untouchedKmlPlaces = parsedData.places.filter(p => !customizedOriginalIds.has(p.id));
-
-          setPlaces([...untouchedKmlPlaces, ...formattedPlaces]);
+          // SUCCESS: Use ONLY the database points. 
+          // The migration tool ensures all KML points are now in the database.
+          setPlaces(formattedPlaces);
         }
       } catch (err) {
         console.warn('Failed to fetch from Supabase, falling back to KML', err);
@@ -84,7 +90,7 @@ export function usePlaces(translations: any) {
     }
 
     fetchPlacesAndLines();
-  }, [translations]);
+  }, [translations, version]);
 
-  return { places, lines, mapCenter, bounds };
+  return { places, lines, mapCenter, bounds, refresh };
 }

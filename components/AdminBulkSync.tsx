@@ -42,7 +42,7 @@ const AdminBulkSync: React.FC<AdminBulkSyncProps> = ({ allPlaces }) => {
                 setProgress(i + 1);
 
                 try {
-                    setStatus(`Syncing from website...`);
+                    setStatus(`Syncing ${displayName} from website...`);
                     // Sync from WP
                     const results = await syncPlaceFromWp(place.linkedWpUrl!, (s) => setStatus(s));
 
@@ -72,8 +72,6 @@ const AdminBulkSync: React.FC<AdminBulkSyncProps> = ({ allPlaces }) => {
                     setStatus("Saving to database...");
 
                     // Check if this KML place already exists in DB to avoid duplicates
-                    // If it's already a UUID, we update by ID.
-                    // If it's a KML ID, we check if original_id matches.
                     const isUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
                     let targetId = place.id;
@@ -82,7 +80,7 @@ const AdminBulkSync: React.FC<AdminBulkSyncProps> = ({ allPlaces }) => {
                             .from('places')
                             .select('id')
                             .eq('original_id', place.id)
-                            .single();
+                            .maybeSingle(); // maybeSingle instead of single() to avoid error if 0
 
                         if (existing) {
                             targetId = existing.id;
@@ -93,7 +91,6 @@ const AdminBulkSync: React.FC<AdminBulkSyncProps> = ({ allPlaces }) => {
 
                 } catch (err) {
                     console.error(`Failed to sync place ${place.id}:`, err);
-                    // Continue to next place even if one fails
                 }
             }
 
@@ -103,11 +100,91 @@ const AdminBulkSync: React.FC<AdminBulkSyncProps> = ({ allPlaces }) => {
                 setProgress(0);
                 setTotal(0);
                 setStatus("");
-                window.location.reload(); // Refresh to show new data
+                window.location.reload();
             }, 3000);
 
         } catch (err: any) {
             console.error("Bulk sync error:", err);
+            setStatus(`Error: ${err.message}`);
+            setTimeout(() => setIsProcessing(false), 5000);
+        }
+    };
+
+    const handleMigrateKmlToDb = async () => {
+        setShowConfirm(false);
+        setIsProcessing(true);
+        setStatus("Preparing KML migration...");
+
+        try {
+            // Filter only non-UUID places (those from KML)
+            const isUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+            const kmlPlaces = allPlaces.filter(p => !isUUID(p.id) && !p.id.startsWith('user_place_'));
+
+            if (kmlPlaces.length === 0) {
+                setStatus("No KML markers found to migrate.");
+                setTimeout(() => setIsProcessing(false), 3000);
+                return;
+            }
+
+            setTotal(kmlPlaces.length);
+            setProgress(0);
+
+            for (let i = 0; i < kmlPlaces.length; i++) {
+                const place = kmlPlaces[i];
+                const displayName = typeof place.name === 'string' ? place.name : (place.name?.en || place.name?.fi || "Unnamed");
+                setCurrentName(displayName);
+                setProgress(i + 1);
+
+                try {
+                    // Check if already in DB
+                    const { data: existing } = await supabase
+                        .from('places')
+                        .select('id')
+                        .eq('original_id', place.id)
+                        .maybeSingle();
+
+                    if (!existing) {
+                        setStatus(`Importing ${displayName} to DB...`);
+                        const categoryLabel = CATEGORIES.find(c => c.key === place.categoryKey)?.label || place.categoryKey;
+
+                        const placeData = {
+                            name: place.name,
+                            category: categoryLabel,
+                            category_key: place.categoryKey,
+                            description: place.description,
+                            image_url: place.imageUrl || null,
+                            location_lat: place.location.lat,
+                            location_lng: place.location.lng,
+                            booking_url: place.bookingUrl || null,
+                            linked_wp_url: place.linkedWpUrl || null,
+                            address: place.address || {},
+                            phone: place.phone || null,
+                            email: place.email || null,
+                            website: place.website || null,
+                            opening_hours: place.openingHours || {},
+                            facebook_url: place.facebookUrl || null,
+                            instagram_url: place.instagramUrl || null,
+                            sub_category: place.subCategory || null,
+                            original_id: place.id,
+                            original_category_key: place.categoryKey
+                        };
+
+                        const { error: insertError } = await supabase.from('places').insert([placeData]);
+                        if (insertError) throw insertError;
+                    }
+                } catch (err) {
+                    console.error(`Failed to migrate ${place.id}:`, err);
+                }
+            }
+
+            setStatus("KML Migration Complete!");
+            setTimeout(() => {
+                setIsProcessing(false);
+                window.location.reload();
+            }, 3000);
+
+        } catch (err: any) {
+            console.error("Migration error:", err);
             setStatus(`Error: ${err.message}`);
             setTimeout(() => setIsProcessing(false), 5000);
         }
@@ -136,18 +213,24 @@ const AdminBulkSync: React.FC<AdminBulkSyncProps> = ({ allPlaces }) => {
                         This will go through every place on the map and update its info from the website.
                         It might take several minutes.
                     </p>
-                    <div className="flex space-x-3">
-                        <button
-                            onClick={() => setShowConfirm(false)}
-                            className="flex-1 px-4 py-2 border rounded font-bold hover:bg-gray-50"
-                        >
-                            Cancel
-                        </button>
+                    <div className="flex flex-col space-y-3">
                         <button
                             onClick={handleStartBulkSync}
-                            className="flex-1 px-4 py-2 bg-amber-600 text-white rounded font-bold hover:bg-amber-700"
+                            className="w-full px-4 py-3 bg-amber-600 text-white rounded-lg font-bold hover:bg-amber-700 shadow-md"
                         >
-                            Start Sync
+                            Sync WP Data (Updates existing)
+                        </button>
+                        <button
+                            onClick={handleMigrateKmlToDb}
+                            className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md"
+                        >
+                            Migrate KML to DB (First time setup)
+                        </button>
+                        <button
+                            onClick={() => setShowConfirm(false)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-600 font-bold hover:bg-gray-50"
+                        >
+                            Cancel
                         </button>
                     </div>
                 </div>

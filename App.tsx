@@ -18,7 +18,7 @@ export type ViewState = 'initial' | 'route' | 'all-places' | 'category-view' | '
 
 function App() {
   const t = useTranslations();
-  const { places, lines, mapCenter, bounds } = usePlaces(t);
+  const { places, lines, mapCenter, bounds, refresh } = usePlaces(t);
   const { userPlaces, addUserPlace, deleteUserPlace, updateUserPlaces } = useUserPlaces();
   const { location: userLocation } = useUserLocation();
 
@@ -547,7 +547,7 @@ function App() {
           onSaveSuccess={() => {
             setSelectedPlace(null);
             setDbAdminClickedCoords(null);
-            window.location.reload(); // Refresh to catch new db data
+            refresh();
           }}
           onLocationChange={(coords) => {
             if (selectedPlace) {
