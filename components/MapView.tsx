@@ -7,7 +7,7 @@ import { ViewState } from '../App';
 import { useTranslations } from '../hooks/useTranslations';
 import { getCategoryColor } from '../constants';
 import { placeMarkerIcon, userPlaceMarkerIcon, userMarkerIcon } from './MapIcons';
-import { getLangString } from '../utils/langUtils';
+import { getLangString, matchesSearch } from '../utils/langUtils';
 import CategoryFilter from './CategoryFilter';
 import PulsatingAnimationMarker from './PulsatingAnimationMarker';
 
@@ -65,7 +65,7 @@ const isPlaceVisibleInCategory = (place: Place, selectedCategory: string | null)
 };
 
 function ViewManager({
-    center, zoom, route, userLocation, bounds, viewState, places, userPlaces, lines, selectedCategory, isVillageFocused, searchQuery, currentLang
+    center, zoom, route, userLocation, bounds, viewState, places, userPlaces, lines, selectedCategory, isVillageFocused, searchQuery, currentLang, selectedPlace, viewVersion
 }: {
     center: Coordinates;
     zoom: number;
@@ -80,6 +80,8 @@ function ViewManager({
     isVillageFocused: boolean;
     searchQuery?: string;
     currentLang: string;
+    selectedPlace?: Place | null;
+    viewVersion: number;
 }) {
     const map = useMap();
     const zoomedRouteRef = useRef<string | null>(null);
@@ -87,6 +89,8 @@ function ViewManager({
     const hasSetInitialView = useRef(false);
     const lastViewState = useRef<ViewState | null>(null);
     const lastSearchRef = useRef<string>('');
+    const lastSelectedPlaceRef = useRef<Place | null>(null);
+    const lastViewVersionRef = useRef<number>(0);
 
     const villageBounds = useMemo(() => {
         // Village bounds should only include paths and facilities inside the village area
@@ -99,7 +103,20 @@ function ViewManager({
     useEffect(() => {
         const isNewAllPlacesView = (viewState === 'all-places' && lastViewState.current !== 'all-places');
         const focusChanged = lastViewState.current !== null && lastViewState.current === viewState && isVillageFocused !== (map as any)._lastVillageFocus;
+        const placeDeselected = lastSelectedPlaceRef.current !== null && selectedPlace === null;
+        const versionChanged = viewVersion !== lastViewVersionRef.current;
+
         (map as any)._lastVillageFocus = isVillageFocused;
+        lastSelectedPlaceRef.current = selectedPlace;
+        lastViewVersionRef.current = viewVersion;
+
+        // If a place is currently selected, we let App.tsx handle the zooming to that place
+        // and we don't want the ViewManager to override it with Village/All bounds.
+        // HOWEVER, if versionChanged is true (User clicked Village/All), we DO want to zoom to bounds (App.tsx should close the popup).
+        if (selectedPlace && !versionChanged) {
+            lastViewState.current = viewState;
+            return;
+        }
 
         if (viewState === 'route' && route) {
             const routeId = `${route.start.lat},${route.start.lng}-${route.end.lat},${route.end.lng}`;
@@ -118,10 +135,9 @@ function ViewManager({
         // --- Handle Real-time Search Zoom ---
         if (searchQuery && searchQuery.length >= 2) {
             if (searchQuery !== lastSearchRef.current) {
-                const lower = searchQuery.toLowerCase();
                 const allAvailablePlaces = [...places, ...userPlaces];
                 const matchingPoints = allAvailablePlaces
-                    .filter(p => getLangString(p.name, currentLang).toLowerCase().includes(lower))
+                    .filter(p => matchesSearch(p, searchQuery))
                     .map(p => p.location);
 
                 if (matchingPoints.length > 0) {
@@ -167,8 +183,8 @@ function ViewManager({
 
         if ((viewState === 'initial' && !hasSetInitialView.current) ||
             isNewAllPlacesView ||
-            (viewState === 'all-places' && (focusChanged || !hasSetInitialView.current)) ||
-            (viewState === 'category-view' && !selectedCategory && focusChanged)) {
+            (viewState === 'all-places' && (focusChanged || !hasSetInitialView.current || placeDeselected || versionChanged)) ||
+            (viewState === 'category-view' && (!selectedCategory || focusChanged || placeDeselected || versionChanged))) {
             if (isVillageFocused && bounds) {
                 // If Village is focused, zoom to the predefined village area
                 map.flyToBounds(bounds, { padding: [50, 50] });
@@ -191,7 +207,7 @@ function ViewManager({
         }
 
         lastViewState.current = viewState;
-    }, [viewState, route, selectedCategory, userLocation, map, bounds, center, zoom, places, userPlaces, lines, isVillageFocused, villageBounds, searchQuery, currentLang]);
+    }, [viewState, route, selectedCategory, userLocation, map, bounds, center, zoom, places, userPlaces, lines, isVillageFocused, villageBounds, searchQuery, currentLang, selectedPlace, viewVersion]);
 
     return null;
 }
@@ -313,8 +329,9 @@ interface MapViewProps {
     dbAdminClickedCoords?: Coordinates | null;
     selectedPlace?: Place | null;
     isVillageFocused: boolean;
-    setIsVillageFocused: (focused: boolean) => void;
+    onVillageFocusChange: (focused: boolean) => void;
     searchQuery?: string;
+    viewVersion: number;
 }
 
 interface PlaceMarkerProps {
@@ -357,9 +374,7 @@ const PlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onS
     }
 
     if (searchQuery && searchQuery.length >= 2) {
-        const lower = searchQuery.toLowerCase();
-        const matches = getLangString(place.name, currentLang).toLowerCase().includes(lower);
-        if (!matches) {
+        if (!matchesSearch(place, searchQuery)) {
             opacity = 0.2;
         } else {
             opacity = 1.0;
@@ -418,9 +433,7 @@ const UserPlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo,
     }
 
     if (searchQuery && searchQuery.length >= 2) {
-        const lower = searchQuery.toLowerCase();
-        const matches = getLangString(place.name, currentLang).toLowerCase().includes(lower);
-        if (!matches) {
+        if (!matchesSearch(place, searchQuery)) {
             opacity = 0.2;
         } else {
             opacity = 1.0;
@@ -475,8 +488,9 @@ const MapView: React.FC<MapViewProps> = ({
     isDbAdminMode, onMarkerDragEnd,
     dbAdminClickedCoords, selectedPlace,
     isVillageFocused,
-    setIsVillageFocused,
-    searchQuery
+    onVillageFocusChange,
+    searchQuery,
+    viewVersion
 }) => {
     const defaultZoom = 16;
     const t = useTranslations();
@@ -563,6 +577,8 @@ const MapView: React.FC<MapViewProps> = ({
                     isVillageFocused={isVillageFocused}
                     searchQuery={searchQuery}
                     currentLang={currentLang}
+                    selectedPlace={selectedPlace}
+                    viewVersion={viewVersion}
                 />
                 <MapClickHandler onClick={onMapClick} isLocationSelectMode={isLocationSelectMode} />
                 <LocateControl
@@ -710,7 +726,7 @@ const MapView: React.FC<MapViewProps> = ({
                 setShowFavouritesRoute={setShowFavouritesRoute}
                 isMyStayActive={isMyStayActive}
                 isVillageFocused={isVillageFocused}
-                setIsVillageFocused={setIsVillageFocused}
+                setIsVillageFocused={onVillageFocusChange}
             />
         </div>
     );

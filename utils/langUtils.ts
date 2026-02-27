@@ -22,3 +22,32 @@ export const getLangString = (value: LocalizedString | undefined | null, lang: s
 
     return decodeHtml(rawValue);
 };
+
+/**
+ * Checks if the place matches the search query across all languages and multiple fields.
+ */
+export const matchesSearch = (place: any, query: string): boolean => {
+    if (!query) return true;
+    const lower = query.toLowerCase();
+
+    // Fields to search in
+    const fields: (keyof any)[] = ['name', 'description', 'category', 'categoryKey', 'subCategory'];
+
+    return fields.some(field => {
+        const val = place[field];
+        if (!val) return false;
+
+        if (typeof val === 'string') {
+            return val.toLowerCase().includes(lower);
+        }
+
+        if (typeof val === 'object') {
+            // Search through all language versions in the Record<string, string>
+            return Object.values(val as Record<string, string>).some(text =>
+                text && typeof text === 'string' && decodeHtml(text).toLowerCase().includes(lower)
+            );
+        }
+
+        return false;
+    });
+};

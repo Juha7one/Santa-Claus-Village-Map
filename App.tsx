@@ -47,6 +47,7 @@ function App() {
   const [isVillageFocused, setIsVillageFocused] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [viewVersion, setViewVersion] = useState(0);
 
   const mapRef = useRef<L.Map | null>(null);
   const initialUrlCheckDone = useRef(false);
@@ -442,6 +443,17 @@ function App() {
     setSelectedCategory(category);
   };
 
+  const handleVillageFocusChange = (focused: boolean) => {
+    if (selectedPlace) {
+      handleClosePopup();
+    }
+    setIsVillageFocused(focused);
+    setViewVersion(v => v + 1);
+    if (viewState !== 'route') {
+      setViewState('all-places');
+    }
+  };
+
   const handleStepChange = (step: number) => {
     // Stage 3 is for "Car and Accommodation" which are inside AdminPanel
     if (step === 3) {
@@ -492,7 +504,7 @@ function App() {
             selectedCategory={selectedCategory}
             onSelectCategory={handleSelectCategory}
             isVillageFocused={isVillageFocused}
-            setIsVillageFocused={setIsVillageFocused}
+            onVillageFocusChange={handleVillageFocusChange}
             showFavouritesRoute={showFavouritesRoute}
             setShowFavouritesRoute={setShowFavouritesRoute}
             lovedPlaceIds={lovedPlaceIds}
@@ -506,6 +518,7 @@ function App() {
             dbAdminClickedCoords={dbAdminClickedCoords}
             selectedPlace={selectedPlace}
             searchQuery={searchQuery}
+            viewVersion={viewVersion}
           />
         </div>
 

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useTranslations } from '../hooks/useTranslations';
 import { Place } from '../types';
 import { getCategoryColor } from '../constants';
-import { getLangString } from '../utils/langUtils';
+import { getLangString, matchesSearch } from '../utils/langUtils';
 
 interface HeaderProps {
     onToggleAdmin: () => void;
@@ -69,14 +69,12 @@ const Header: React.FC<HeaderProps> = ({
 
     const filteredPlaces = useMemo(() => {
         if (!searchQuery) return [];
-        const lower = searchQuery.toLowerCase();
 
         // Use a Map to deduplicate by originalId or ID
         const uniqueMatches = new Map<string, Place>();
 
         allPlaces.forEach(p => {
-            const nameStr = getLangString(p.name, currentLang).toLowerCase();
-            if (nameStr.includes(lower)) {
+            if (matchesSearch(p, searchQuery)) {
                 const effectiveId = p.originalId || p.id;
                 // Prefer the original version over "User-specific copies" (like Favorites/Car/Stay) in search results
                 const isUserSpecificCopy = (p.categoryKey === 'Love this' || p.categoryKey === 'My Stay' || p.categoryKey === 'My Car') && !!p.originalId;
@@ -89,7 +87,7 @@ const Header: React.FC<HeaderProps> = ({
         });
 
         return Array.from(uniqueMatches.values()).slice(0, 8);
-    }, [allPlaces, searchQuery, currentLang]);
+    }, [allPlaces, searchQuery]);
 
     const handlePlaceClick = (place: Place) => {
         onSelectPlace(place);
