@@ -533,35 +533,59 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
-        // Find parking with shortest WALKING distance to destination
+        // Find parking with shortest REAL WALKING path distance to destination
         let nearestParking: Place | null = null;
         let minWalkDistance = Infinity;
 
+        // We check all parking spots to find the one that is truly closest on the map paths
         for (const parking of parkingSpots) {
-            const distance = calculateDistance(parking.location, end);
-            if (distance < minWalkDistance) {
-                minWalkDistance = distance;
+            const walkingSegments = await calculateWalkingRoute(parking.location, end, localPaths, signal);
+            const totalWalkDist = walkingSegments.reduce((sum, seg) => sum + seg.distance, 0);
+            
+            // If the walking path is valid and shorter, it's our new candidate
+            if (totalWalkDist > 0 && totalWalkDist < minWalkDistance) {
+                minWalkDistance = totalWalkDist;
                 nearestParking = parking;
+            }
+        }
+
+        // Fallback: if graph is disconnected, use straight line distance
+        if (!nearestParking) {
+            for (const parking of parkingSpots) {
+                const dist = calculateDistance(parking.location, end);
+                if (dist < minWalkDistance) {
+                    minWalkDistance = dist;
+                    nearestParking = parking;
+                }
             }
         }
 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // Define mandatory entry points
-            const southGateway = { lat: 66.5414, lng: 25.8362 }; // Roundabout/Myllymäentie
-            const northGateway = { lat: 66.5505, lng: 25.8480 }; // Pukinpolku entrance
+            // Bottleneck Entrances (The "Gateways")
+            const southGateway = { lat: 66.5414, lng: 25.8362 }; // Myllymäentie Roundabout
+            const northGateway = { lat: 66.5475, lng: 25.8485 }; // Pukinpolku Bridge over Highway
 
             const isSouthParking = nearestParking.subCategory === 'parking-south';
             const gateway = isSouthParking ? southGateway : northGateway;
 
-            // Route: Start -> Gateway -> Parking
-            // This ensures cars enter from the correct side (Joulumaantie vs Pukinpolku)
-            const drivingRoute = await fetchOSRMRoute(
-                [start, gateway, nearestParking.location], 
-                'driving', 
-                signal
-            );
+            const waypoints = [start];
+            
+            // "Past-Entrance" Detection:
+            // If the user is already past the gateway or closer to the parking than the entrance is, 
+            // do NOT force the gateway. This prevents the "Dead End Tour" loops / U-turns.
+            const distStartToParking = calculateDistance(start, nearestParking.location);
+            const distGatewayToParking = calculateDistance(gateway, nearestParking.location);
+            
+            if (distStartToParking > distGatewayToParking + 100) {
+                waypoints.push(gateway);
+            }
+            
+            waypoints.push(nearestParking.location);
+
+            // Fetch the shortest DRIVING route that respects our entrance constraint
+            const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal);
             
             segments.push({
                 type: 'road',
@@ -570,7 +594,7 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
                 duration: drivingRoute.duration,
             });
 
-            // Walking segment from parking lot to final destination
+            // Add the final walking leg from the chosen parking lot
             const walkingStart = nearestParking.location;
             const walkingSegments = await calculateWalkingRoute(walkingStart, end, localPaths, signal);
 
