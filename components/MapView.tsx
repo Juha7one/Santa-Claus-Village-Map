@@ -698,7 +698,7 @@ const MapView: React.FC<MapViewProps> = ({
                     })
                 )}
 
-                {/* TEST MODE: Visible Wonk Polygon */}
+                {/* TEST MODE: Visible Wonk Polygon (Shrunk Version) */}
                 <Polygon 
                     positions={RESTRICTED_WONK_POLYGON.map(p => [p.lat, p.lng] as [number, number])} 
                     pathOptions={{ color: 'red', weight: 1, fillOpacity: 0.1, dashArray: '5, 5' }} 

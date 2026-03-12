@@ -203,8 +203,8 @@ function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
  * Tilted Polygon (roughly 12°) to perfectly cover the houses without touching Joulumaantie.
  */
 export const RESTRICTED_WONK_POLYGON: Coordinates[] = [
-    { lat: 66.54228, lng: 25.8341 }, // NW (North-West)
-    { lat: 66.54260, lng: 25.8395 }, // NE (North-East)
+    { lat: 66.54215, lng: 25.8341 }, // NW (Lowered)
+    { lat: 66.54245, lng: 25.8395 }, // NE (Lowered)
     { lat: 66.54160, lng: 25.8404 }, // SE (South-East)
     { lat: 66.54125, lng: 25.8348 }  // SW (South-West)
 ];
