@@ -585,9 +585,17 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         }
 
         if (nearestParking) {
-            // Simple OSM driving: start -> parking (no extra points or rules)
+            const waypoints = [start];
+            
+            // Add the Roundabout of Pukinpolku Myllymäentie crossing only for South Zone parking
+            if (nearestParking.subCategory === 'parking-south') {
+                waypoints.push({ lat: 66.5414, lng: 25.8362 });
+            }
+            
+            waypoints.push(nearestParking.location);
+
             const drivingRoute = await fetchOSRMRoute(
-                [start, nearestParking.location], 
+                waypoints, 
                 'driving', 
                 signal
             );
