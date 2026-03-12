@@ -588,44 +588,20 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // High-Density "Asphalt Rail": One point every ~50m along Joulumaantie
-            const southSpine = [
-                { lat: 66.5414, lng: 25.8362 }, // Roundabout
-                { lat: 66.5416, lng: 25.8380 }, 
-                { lat: 66.5418, lng: 25.8400 },
-                { lat: 66.5420, lng: 25.8420 },
-                { lat: 66.5422, lng: 25.8435 },
-                { lat: 66.5424, lng: 25.8450 },
-                { lat: 66.5427, lng: 25.8465 },
-                { lat: 66.5432, lng: 25.8480 } // Tähtikuja junction
-            ];
-
+            // Forced Gateway for South approach
+            const southRoundabout = { lat: 66.5414, lng: 25.8362 };
             const isSouthParking = nearestParking.subCategory === 'parking-south';
-            const waypoints = [start];
-            const radiuses = ['unlimited']; 
             
-            if (isSouthParking) {
-                // Determine the direction of travel (East vs West)
-                const isWestToEast = start.lng < nearestParking.location.lng;
-                
-                southSpine.forEach(p => {
-                    // Inclusion Logic: 
-                    // 1. Point is further East than current position (if moving East)
-                    // 2. Point is further West than destination (if moving East)
-                    // This creates a "Forward-only" rail that doesn't cause U-turns.
-                    const isAhead = isWestToEast ? 
-                        (p.lng > start.lng + 0.0005 && p.lng < nearestParking.location.lng - 0.0005) :
-                        (p.lng < start.lng - 0.0005 && p.lng > nearestParking.location.lng + 0.0005);
+            const waypoints = [start];
+            const radiuses = ['unlimited'];
 
-                    if (isAhead) {
-                        waypoints.push(p);
-                        radiuses.push('50'); // Balanced 50m snap to block cottage paths but avoid failures
-                    }
-                });
+            if (isSouthParking) {
+                waypoints.push(southRoundabout);
+                radiuses.push('unlimited');
             }
             
             waypoints.push(nearestParking.location);
-            radiuses.push('unlimited'); 
+            radiuses.push('unlimited');
 
             const drivingRoute = await fetchOSRMRoute(
                 waypoints, 
