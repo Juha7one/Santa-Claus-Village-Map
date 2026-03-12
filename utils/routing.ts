@@ -416,10 +416,10 @@ async function fetchOSRMRoute(
     customRadiuses?: string[]
 ): Promise<{ geometry: Coordinates[], distance: number, duration: number, isRoute: boolean }> {
     const pointsStr = points.map(p => `${p.lng},${p.lat}`).join(';');
-    
-    // Default to 'null' (unlimited) for all points if no custom radiuses provided
-    const radiusStr = customRadiuses ? customRadiuses.join(';') : points.map(() => 'null').join(';');
-    const url = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson&radiuses=${radiusStr}`;
+    let url = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson`;
+    if (customRadiuses) {
+        url += `&radiuses=${customRadiuses.join(';')}`;
+    }
 
     try {
         const response = await fetch(url, { signal });
@@ -599,11 +599,11 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
             // Define snap radii: 
             // - Start point: null (allow snapping to nearest road)
-            // - Gateway points: 20 (strict road-pinning)
+            // - Gateway points: 50 (road-pinning with some tolerance)
             // - Parking point: null (allow snapping to parking)
             const snapRadiuses = [
                 'null', 
-                ...gatewayPath.map(() => '20'),
+                ...gatewayPath.map(() => '50'),
                 'null'
             ];
 
