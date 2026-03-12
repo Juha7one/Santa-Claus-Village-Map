@@ -533,31 +533,14 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
-        const southAnchor = { lat: 66.5414, lng: 25.8362 }; // Main Southern Roundabout
-        const northAnchor = { lat: 66.5505, lng: 25.8480 }; // Main Northern Entrance
-
-        // Determine arrival zone based on proximity to the main entrance bridges
-        const distToSouth = calculateDistance(start, southAnchor);
-        const distToNorth = calculateDistance(start, northAnchor);
-        const isApproachingFromSouth = distToSouth < distToNorth;
-
-        // CRITICAL: We only consider parking spots in the user's arrival zone.
-        // This is what prevents cars from driving through the village center.
-        const zoneParkingSpots = parkingSpots.filter(p => {
-            if (isApproachingFromSouth) return p.subCategory === 'parking-south';
-            return p.subCategory === 'parking-north';
-        });
-
-        // Fallback to all parking only if no zone-specific markers are found
-        const candidateParking = zoneParkingSpots.length > 0 ? zoneParkingSpots : parkingSpots;
-
+        // Find parking with shortest WALKING distance to destination
         let nearestParking: Place | null = null;
-        let minDistance = Infinity;
+        let minWalkDistance = Infinity;
 
-        for (const parking of candidateParking) {
+        for (const parking of parkingSpots) {
             const distance = calculateDistance(parking.location, end);
-            if (distance < minDistance) {
-                minDistance = distance;
+            if (distance < minWalkDistance) {
+                minWalkDistance = distance;
                 nearestParking = parking;
             }
         }
@@ -565,19 +548,20 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            const targetAnchor = isApproachingFromSouth ? southAnchor : northAnchor;
-            const distStartToAnchor = calculateDistance(start, targetAnchor);
+            // Define mandatory entry points
+            const southGateway = { lat: 66.5414, lng: 25.8362 }; // Roundabout/Myllymäentie
+            const northGateway = { lat: 66.5505, lng: 25.8480 }; // Pukinpolku entrance
 
-            // Waypoints: Start -> [Anchor] -> Parking
-            // We only include the 'Anchor' if the user is still > 1km away on the highway.
-            // This ensures they pick the right exit without micro-managing the final approach.
-            const waypoints = [start];
-            if (distStartToAnchor > 1000) {
-                waypoints.push(targetAnchor);
-            }
-            waypoints.push(nearestParking.location);
+            const isSouthParking = nearestParking.subCategory === 'parking-south';
+            const gateway = isSouthParking ? southGateway : northGateway;
 
-            const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal);
+            // Route: Start -> Gateway -> Parking
+            // This ensures cars enter from the correct side (Joulumaantie vs Pukinpolku)
+            const drivingRoute = await fetchOSRMRoute(
+                [start, gateway, nearestParking.location], 
+                'driving', 
+                signal
+            );
             
             segments.push({
                 type: 'road',
@@ -586,6 +570,7 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
                 duration: drivingRoute.duration,
             });
 
+            // Walking segment from parking lot to final destination
             const walkingStart = nearestParking.location;
             const walkingSegments = await calculateWalkingRoute(walkingStart, end, localPaths, signal);
 
