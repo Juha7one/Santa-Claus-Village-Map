@@ -533,20 +533,22 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
-        const southReference = { lat: 66.5414, lng: 25.8362 }; // Southern Roundabout
-        const northReference = { lat: 66.5505, lng: 25.8485 }; // Northern Ramp
+        const southAnchor = { lat: 66.5414, lng: 25.8362 }; // Main Southern Roundabout
+        const northAnchor = { lat: 66.5505, lng: 25.8480 }; // Main Northern Entrance
 
-        // Determine side based on proximity to highway exits
-        const distToSouth = calculateDistance(start, southReference);
-        const distToNorth = calculateDistance(start, northReference);
+        // Determine arrival zone based on proximity to the main entrance bridges
+        const distToSouth = calculateDistance(start, southAnchor);
+        const distToNorth = calculateDistance(start, northAnchor);
         const isApproachingFromSouth = distToSouth < distToNorth;
 
-        // Filter for zone-specific parking
+        // CRITICAL: We only consider parking spots in the user's arrival zone.
+        // This is what prevents cars from driving through the village center.
         const zoneParkingSpots = parkingSpots.filter(p => {
             if (isApproachingFromSouth) return p.subCategory === 'parking-south';
             return p.subCategory === 'parking-north';
         });
 
+        // Fallback to all parking only if no zone-specific markers are found
         const candidateParking = zoneParkingSpots.length > 0 ? zoneParkingSpots : parkingSpots;
 
         let nearestParking: Place | null = null;
@@ -563,44 +565,19 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // The "Asphalt Spine": Mandatory waypoints along main roads
-            const southSpine: Coordinates[] = [
-                { lat: 66.5414, lng: 25.8362 }, // Roundabout
-                { lat: 66.5422, lng: 25.8400 }, // Joulumaantie mid-west
-                { lat: 66.5428, lng: 25.8430 }, // Joulumaantie center (Bus stop area)
-                { lat: 66.5432, lng: 25.8465 }  // Joulumaantie/Tähtikuja junction
-            ];
-            const northSpine: Coordinates[] = [
-                { lat: 66.5505, lng: 25.8480 }, // North Ramp
-                { lat: 66.5480, lng: 25.8480 }, // Pukinpolku approach
-                { lat: 66.5455, lng: 25.8475 }  // Tähtikuja approach
-            ];
+            const targetAnchor = isApproachingFromSouth ? southAnchor : northAnchor;
+            const distStartToAnchor = calculateDistance(start, targetAnchor);
 
-            const isSouthParking = nearestParking.subCategory === 'parking-south';
-            const targetSpine = isSouthParking ? southSpine : northSpine;
-
-            // Only force the spine if we are coming from "outside"
-            const distToEntry = calculateDistance(start, targetSpine[0]);
-            
+            // Waypoints: Start -> [Anchor] -> Parking
+            // We only include the 'Anchor' if the user is still > 1km away on the highway.
+            // This ensures they pick the right exit without micro-managing the final approach.
             const waypoints = [start];
-            const radiuses = ['unlimited'];
-
-            if (distToEntry > 300) {
-                targetSpine.forEach(p => {
-                    waypoints.push(p);
-                    radiuses.push('50'); // Strict 50m road-pinning for spine
-                });
+            if (distStartToAnchor > 1000) {
+                waypoints.push(targetAnchor);
             }
-            
             waypoints.push(nearestParking.location);
-            radiuses.push('unlimited');
 
-            const drivingRoute = await fetchOSRMRoute(
-                waypoints, 
-                'driving', 
-                signal,
-                radiuses
-            );
+            const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal);
             
             segments.push({
                 type: 'road',
