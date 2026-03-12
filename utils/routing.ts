@@ -205,9 +205,26 @@ function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
     return point.lat >= min[0] && point.lat <= max[0] && point.lng >= min[1] && point.lng <= max[1];
 }
 
+/** Snaps a coordinate to the nearest road using OSRM. Ensured the car stays on asphalt. */
+async function snapToRoad(coord: Coordinates, signal: AbortSignal): Promise<Coordinates> {
+    const url = `https://router.project-osrm.org/nearest/v1/driving/${coord.lng},${coord.lat}`;
+    try {
+        const response = await fetch(url, { signal });
+        const data = await response.json();
+        if (data.code === 'Ok' && data.waypoints?.length > 0) {
+            const [lng, lat] = data.waypoints[0].location;
+            return { lat, lng };
+        }
+    } catch (e) {
+        console.warn("Snapping failed", e);
+    }
+    return coord;
+}
+
 /** Calculates a multi-modal route. Trusting OSM fully for cars. */
 export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: Place[], localPaths: LineData[], bounds: Bounds | null, signal: AbortSignal): Promise<{ segments: RouteSegment[], mode: 'walk' | 'car', bestParking: Place | null }> {
     if (signal.aborted) throw new DOMException('Aborted', 'AbortError');
+
     const isEndInside = bounds ? isInsideBounds(end, bounds) : true;
     const isStartInside = bounds ? isInsideBounds(start, bounds) : true;
 
@@ -218,19 +235,19 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
     }
 
     // 2. Already deep inside: Walk short distances only.
-    if (isStartInside && calculateDistance(start, end) < 100) {
+    if (isStartInside && calculateDistance(start, end) < 150) {
         const walkingSegments = await calculateWalkingRoute(start, end, localPaths, signal);
         if (walkingSegments.length > 0) return { segments: walkingSegments, mode: 'walk', bestParking: null };
     }
 
-    // 3. Multi-modal: Drive to Parking, then walk.
+    // 3. Multi-modal Mode: Drive to Parking, then walk.
     const parkingSpots = allPlaces.filter(p => {
         if (p.categoryKey !== 'Transportation') return false;
         const nameMatch = (name: any) => {
             const n = typeof name === 'object' ? Object.values(name).join(' ') : String(name);
             return n.toLowerCase().includes('parking') || n.toLowerCase().includes('pysäköinti');
         };
-        return nameMatch(p.name) || (p.id && p.id.toLowerCase().includes('parking'));
+        return nameMatch(p.name) || (p.id && (p.id.toLowerCase().includes('parking') || p.id.toLowerCase().includes('pysäköinti')));
     });
 
     if (parkingSpots.length > 0) {
@@ -244,8 +261,16 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
         if (nearestParking) {
             const waypoints = [start];
-            if (nearestParking.subCategory === 'parking-south') waypoints.push({ lat: 66.5414, lng: 25.8362 });
-            waypoints.push(nearestParking.location);
+            
+            // THE ONE AND ONLY ADDON: South Roundabout.
+            // Fixed to perfect asphalt coordinates (snapped to road center) to stop the detour.
+            if (nearestParking.subCategory === 'parking-south') {
+                waypoints.push({ lat: 66.541661, lng: 25.836085 });
+            }
+            
+            // Snapping the final car destination to the actual road.
+            const snappedParking = await snapToRoad(nearestParking.location, signal);
+            waypoints.push(snappedParking);
 
             const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal);
             const segments: RouteSegment[] = [{ type: 'road', geometry: drivingRoute.geometry, distance: drivingRoute.distance, duration: drivingRoute.duration }];
