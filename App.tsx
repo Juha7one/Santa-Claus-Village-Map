@@ -20,7 +20,7 @@ function App() {
   const t = useTranslations();
   const { places, lines, mapCenter, bounds, refresh } = usePlaces(t);
   const { userPlaces, addUserPlace, deleteUserPlace, updateUserPlaces } = useUserPlaces();
-  const { location: userLocation } = useUserLocation();
+  const { location: userLocation, requestLocation } = useUserLocation();
 
   const [route, setRoute] = useState<{ start: Coordinates, end: Coordinates } | null>(null);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -171,9 +171,10 @@ function App() {
     }
   };
 
+
   const handleGetDirections = (place: Place) => {
     if (!userLocation) {
-      alert("GPS location is not available. Please allow location access in your browser to use navigation from your current position.");
+      requestLocation();
       return;
     }
     if (place) {

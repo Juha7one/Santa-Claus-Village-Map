@@ -53,5 +53,26 @@ export function useUserLocation() {
     };
   }, []);
 
-  return { location, error };
+  const requestLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setError(null);
+      },
+      (err) => {
+        setError(err.message);
+      },
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+    );
+  };
+
+  return { location, error, requestLocation };
 }
