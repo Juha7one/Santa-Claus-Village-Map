@@ -111,7 +111,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
 
 
     // Check for Parking spots in Transportation category
-    const isParking = subCategory === 'parking' || 
+    const isParking = subCategory?.startsWith('parking') || 
                        placeId.toLowerCase().includes('parking') || 
                        (originalId && originalId.toLowerCase().includes('parking')) ||
                        (!subCategory && categoryKey === 'Transportation');
