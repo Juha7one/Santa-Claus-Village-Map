@@ -179,6 +179,19 @@ export async function calculateWalkingRoute(start: Coordinates, end: Coordinates
 
 // --- VIRTUAL FENCE LOGIC (SOLUTION 1 & 2) ---
 
+function isInsidePolygon(point: Coordinates, polygon: Coordinates[]): boolean {
+    let x = point.lng, y = point.lat;
+    let inside = false;
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        let xi = polygon[i].lng, yi = polygon[i].lat;
+        let xj = polygon[j].lng, yj = polygon[j].lat;
+        let intersect = ((yi > y) !== (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    return inside;
+}
+
 function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
     if (!bounds) return true;
     const [min, max] = bounds;
@@ -187,15 +200,17 @@ function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
 
 /** 
  * THE VIRTUAL FENCE: 
- * Made tighter and lower to stay strictly BELOW Joulumaantie.
+ * Tilted Polygon (roughly 12°) to perfectly cover the houses without touching Joulumaantie.
  */
-export const RESTRICTED_WONK_ZONE: Bounds = [
-    [66.54115, 25.8370], // South-West
-    [66.54165, 25.8405]  // North-East
+export const RESTRICTED_WONK_POLYGON: Coordinates[] = [
+    { lat: 66.54228, lng: 25.8341 }, // NW (North-West)
+    { lat: 66.54260, lng: 25.8395 }, // NE (North-East)
+    { lat: 66.54160, lng: 25.8404 }, // SE (South-East)
+    { lat: 66.54125, lng: 25.8348 }  // SW (South-West)
 ];
 
 function filterWonkyPoints(geometry: Coordinates[]): Coordinates[] {
-    const filtered = geometry.filter(p => !isInsideBounds(p, RESTRICTED_WONK_ZONE));
+    const filtered = geometry.filter(p => !isInsidePolygon(p, RESTRICTED_WONK_POLYGON));
     return filtered.length > 0 ? filtered : geometry;
 }
 

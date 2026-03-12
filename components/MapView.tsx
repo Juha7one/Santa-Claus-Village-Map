@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MapContainer, TileLayer, Marker, useMap, useMapEvents, Polyline, Tooltip, Pane, Rectangle } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents, Polyline, Tooltip, Pane, Polygon } from 'react-leaflet';
 import L from 'leaflet';
 import { Place, LineData, Coordinates, Bounds, RouteSegment } from '../types';
 import { ViewState } from '../App';
@@ -8,7 +8,7 @@ import { useTranslations } from '../hooks/useTranslations';
 import { getCategoryColor } from '../constants';
 import { placeMarkerIcon, userPlaceMarkerIcon, userMarkerIcon } from './MapIcons';
 import { getLangString, matchesSearch } from '../utils/langUtils';
-import { RESTRICTED_WONK_ZONE } from '../utils/routing';
+import { RESTRICTED_WONK_POLYGON } from '../utils/routing';
 import CategoryFilter from './CategoryFilter';
 import PulsatingAnimationMarker from './PulsatingAnimationMarker';
 
@@ -698,9 +698,9 @@ const MapView: React.FC<MapViewProps> = ({
                     })
                 )}
 
-                {/* TEST MODE: Visible Wonk Zone */}
-                <Rectangle 
-                    bounds={RESTRICTED_WONK_ZONE} 
+                {/* TEST MODE: Visible Wonk Polygon */}
+                <Polygon 
+                    positions={RESTRICTED_WONK_POLYGON.map(p => [p.lat, p.lng] as [number, number])} 
                     pathOptions={{ color: 'red', weight: 1, fillOpacity: 0.1, dashArray: '5, 5' }} 
                 />
 
