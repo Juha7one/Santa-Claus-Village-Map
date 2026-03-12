@@ -568,32 +568,44 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // Gateway Logic:
-            // We only force a gateway for SOUTHERN parking to prevent cars from driving through the village center.
-            // NORTH parking can be reached naturally via the most efficient route.
-            const southGateway = { lat: 66.5414, lng: 25.8362 }; // Myllymäentie Roundabout
+            // South Route "Asphalt Spine": Mandatory anchors on the main asphalt.
+            const southSpine = [
+                { lat: 66.5414, lng: 25.8362 }, // Roundabout
+                { lat: 66.5419, lng: 25.8395 }, // Joulumaantie (blocking first cottage shortcut)
+                { lat: 66.5424, lng: 25.8425 }, // Joulumaantie (center stretch)
+                { lat: 66.5429, lng: 25.8455 }  // Joulumaantie (near Information)
+            ];
+
             const isSouthParking = nearestParking.subCategory === 'parking-south';
-            
             const waypoints = [start];
+            const radiuses = ['unlimited']; // Start is always flexible
             
             if (isSouthParking) {
                 const distStartToParking = calculateDistance(start, nearestParking.location);
-                const distGatewayToParking = calculateDistance(southGateway, nearestParking.location);
                 
-                // Only force the southern roundabout if we are truly approaching from outside the village area
-                if (distStartToParking > distGatewayToParking + 50) {
-                    waypoints.push(southGateway);
-                }
+                // We only include spine points that are "ahead" of us to prevent backwards loops
+                southSpine.forEach(p => {
+                    const distPointToParking = calculateDistance(p, nearestParking.location);
+                    const distStartToPoint = calculateDistance(start, p);
+                    
+                    // 1. Point must be closer to destination than we are (forward movement)
+                    // 2. We must not be right on top of it yet (> 100m)
+                    if (distPointToParking < distStartToParking && distStartToPoint > 100) {
+                        waypoints.push(p);
+                        radiuses.push('20'); // Strict 20m snap to keep car ON asphalt
+                    }
+                });
             }
             
             waypoints.push(nearestParking.location);
+            radiuses.push('unlimited'); // Parking lot is flexible
 
-            // Fetch the shortest DRIVING route. 
+            // Fetch the route with our strict road-pinning anchors
             const drivingRoute = await fetchOSRMRoute(
                 waypoints, 
                 'driving', 
                 signal, 
-                waypoints.map(() => 'unlimited')
+                radiuses
             );
             
             segments.push({
