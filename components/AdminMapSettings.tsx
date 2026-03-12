@@ -294,53 +294,82 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
                 </div>
 
                 {categoryKey === 'Transportation' && (
-                    <div className="pt-1">
-                        <label className="block text-gray-700 font-bold mb-2 text-xs uppercase tracking-wider opacity-70">Marker Type</label>
-                        <div className="grid grid-cols-1 gap-2 bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
-                            <label className="flex items-center text-sm cursor-pointer group">
-                                <input
-                                    type="radio"
-                                    name="subCategory"
-                                    value="parking-south"
-                                    checked={subCategory === 'parking-south'}
-                                    onChange={(e) => setSubCategory(e.target.value)}
-                                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
-                                />
-                                <span className="text-gray-700 group-hover:text-blue-600 font-medium">Parking South (Myllymäentie access)</span>
-                            </label>
-                            <label className="flex items-center text-sm cursor-pointer group">
-                                <input
-                                    type="radio"
-                                    name="subCategory"
-                                    value="parking-north"
-                                    checked={subCategory === 'parking-north'}
-                                    onChange={(e) => setSubCategory(e.target.value)}
-                                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
-                                />
-                                <span className="text-gray-700 group-hover:text-blue-600 font-medium">Parking North (Pukinpolku access)</span>
-                            </label>
-                            <label className="flex items-center text-sm cursor-pointer group border-t pt-2 mt-1">
-                                <input
-                                    type="radio"
-                                    name="subCategory"
-                                    value="bus"
-                                    checked={subCategory === 'bus'}
-                                    onChange={(e) => setSubCategory(e.target.value)}
-                                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
-                                />
-                                <span className="text-gray-700 group-hover:text-blue-600 font-medium">Bus Stop</span>
-                            </label>
-                            <label className="flex items-center text-sm cursor-pointer group">
-                                <input
-                                    type="radio"
-                                    name="subCategory"
-                                    value="parking"
-                                    checked={!subCategory || subCategory === 'parking'}
-                                    onChange={(e) => setSubCategory(e.target.value)}
-                                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
-                                />
-                                <span className="text-gray-700 group-hover:text-blue-600 font-medium">General Parking (No forced route)</span>
-                            </label>
+                    <div className="space-y-4 pt-1">
+                        <div>
+                            <label className="block text-gray-700 font-bold mb-2 text-xs uppercase tracking-wider opacity-70">Marker Type</label>
+                            <div className="flex gap-4 bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
+                                <label className="flex items-center text-sm cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="markerType"
+                                        checked={!subCategory || subCategory.startsWith('parking')}
+                                        onChange={() => {
+                                            const currentZone = subCategory.includes('-') ? subCategory.split('-')[1] : '';
+                                            setSubCategory('parking' + (currentZone ? '-' + currentZone : ''));
+                                        }}
+                                        className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
+                                    />
+                                    <span className="text-gray-700 group-hover:text-blue-600 font-medium">Parking (P)</span>
+                                </label>
+                                <label className="flex items-center text-sm cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="markerType"
+                                        checked={subCategory.startsWith('bus')}
+                                        onChange={() => {
+                                            const currentZone = subCategory.includes('-') ? subCategory.split('-')[1] : '';
+                                            setSubCategory('bus' + (currentZone ? '-' + currentZone : ''));
+                                        }}
+                                        className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
+                                    />
+                                    <span className="text-gray-700 group-hover:text-blue-600 font-medium">Bus Stop</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-gray-700 font-bold mb-2 text-xs uppercase tracking-wider opacity-70">Routing Access Zone</label>
+                            <div className="grid grid-cols-1 gap-2 bg-white p-3 rounded-lg border border-gray-200 shadow-sm transition-all">
+                                <label className="flex items-center text-sm cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="accessZone"
+                                        checked={!subCategory.includes('-')}
+                                        onChange={() => {
+                                            const type = subCategory.split('-')[0] || 'parking';
+                                            setSubCategory(type);
+                                        }}
+                                        className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
+                                    />
+                                    <span className="text-gray-700 group-hover:text-blue-600 font-medium">None (Global access)</span>
+                                </label>
+                                <label className="flex items-center text-sm cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="accessZone"
+                                        checked={subCategory.endsWith('-south')}
+                                        onChange={() => {
+                                            const type = subCategory.split('-')[0] || 'parking';
+                                            setSubCategory(`${type}-south`);
+                                        }}
+                                        className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
+                                    />
+                                    <span className="text-gray-700 group-hover:text-blue-600 font-medium text-blue-700">South Zone (via Myllymäentie)</span>
+                                </label>
+                                <label className="flex items-center text-sm cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="accessZone"
+                                        checked={subCategory.endsWith('-north')}
+                                        onChange={() => {
+                                            const type = subCategory.split('-')[0] || 'parking';
+                                            setSubCategory(`${type}-north`);
+                                        }}
+                                        className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
+                                    />
+                                    <span className="text-gray-700 group-hover:text-blue-600 font-medium text-amber-700">North Zone (via Pukinpolku)</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 )}
