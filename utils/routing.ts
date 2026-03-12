@@ -190,7 +190,7 @@ function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
  * This box covers the entire residential detour zone (Pukinpolku).
  * We raised the north boundary to 66.5415 to ensure it catches even the 'slight' detours.
  */
-const RESTRICTED_WONK_ZONE: Bounds = [
+export const RESTRICTED_WONK_ZONE: Bounds = [
     [66.5390, 25.8320], // South-West
     [66.5415, 25.8420]  // North-East
 ];
