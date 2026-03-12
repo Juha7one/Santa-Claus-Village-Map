@@ -521,10 +521,33 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
+        // Define entrances/zones to prevent through-driving in the village center.
+        // We split parking into South (Main) and North (Igloo/Skyland) zones.
+        // South entrance is roughly near St1: 66.541, 25.836
+        // North entrance is roughly near Nova Skyland: 66.546, 25.848
+        
+        const southEntrance = { lat: 66.541, lng: 25.836 };
+        const northEntrance = { lat: 66.546, lng: 25.848 };
+
+        // Determine which entrance the user is approaching from
+        const distToSouthEntrance = calculateDistance(start, southEntrance);
+        const distToNorthEntrance = calculateDistance(start, northEntrance);
+        const isApproachingFromSouth = distToSouthEntrance < distToNorthEntrance;
+
+        // Filter parking spots to those reachable from the arrival side without crossing the village core.
+        // Latitude 66.5438 is the center line (Roosevelt area)
+        const zoneParkingSpots = parkingSpots.filter(p => {
+            const isNorthSide = p.location.lat > 66.5438;
+            return isApproachingFromSouth ? !isNorthSide : isNorthSide;
+        });
+
+        // Use filtered spots if available, else fallback to all
+        const candidateParking = zoneParkingSpots.length > 0 ? zoneParkingSpots : parkingSpots;
+
         let nearestParking: Place | null = null;
         let minDistance = Infinity;
 
-        for (const parking of parkingSpots) {
+        for (const parking of candidateParking) {
             const distance = calculateDistance(parking.location, end);
             if (distance < minDistance) {
                 minDistance = distance;
