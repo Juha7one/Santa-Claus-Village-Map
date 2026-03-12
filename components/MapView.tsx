@@ -632,7 +632,7 @@ const MapView: React.FC<MapViewProps> = ({
                         const midpoint = line.coordinates[Math.floor(line.coordinates.length / 2)];
                         if (!midpoint) return null;
 
-                        const tiltDegrees = 340.7; // User specified tilt
+                        const tiltDegrees = 339; // User specified tilt
                         const tiltRad = (tiltDegrees * Math.PI) / 180;
                         const totalLengthMeters = 800; // Total visible length
                         const segmentCount = 40; // Number of segments for the gradient
