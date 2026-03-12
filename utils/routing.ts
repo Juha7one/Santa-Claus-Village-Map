@@ -590,16 +590,19 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
         if (nearestParking) {
             const waypoints = [start];
+            const radiuses = ['unlimited'];
             
             // The "One Waypoint" Roundabout rule for South parking
             if (nearestParking.subCategory === 'parking-south') {
                 waypoints.push({ lat: 66.5414, lng: 25.8362 });
+                radiuses.push('30'); // Strict snap to roundabout
             }
             
             waypoints.push(nearestParking.location);
+            radiuses.push('40'); // snap to main road near parking
 
-            // Fetch the DRIVING leg using OSRM ONLY.
-            const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal);
+            // Fetch the DRIVING leg using OSRM ONLY with strict snapping to prevent residential detours.
+            const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal, radiuses);
             
             const segments: RouteSegment[] = [{
                 type: 'road',
