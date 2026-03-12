@@ -557,13 +557,11 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         const directRoute = await calculateDirectRoute(start, end, localPaths, signal);
         return { ...directRoute, bestParking: null };
     }
-
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
         // Find parking with shortest REAL WALKING path distance to destination
         let nearestParking: Place | null = null;
         let minWalkDistance = Infinity;
-
         // We check all parking spots to find the one that is truly closest on the map paths
         for (const parking of parkingSpots) {
             const walkingSegments = await calculateWalkingRoute(parking.location, end, localPaths, signal);
@@ -590,39 +588,45 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // South Route "Asphalt Spine": Mandatory anchors on the main asphalt.
+            // High-Density "Asphalt Rail": One point every ~50m along Joulumaantie
             const southSpine = [
                 { lat: 66.5414, lng: 25.8362 }, // Roundabout
-                { lat: 66.5419, lng: 25.8395 }, // Joulumaantie (blocking first cottage shortcut)
-                { lat: 66.5424, lng: 25.8425 }, // Joulumaantie (center stretch)
-                { lat: 66.5429, lng: 25.8455 }  // Joulumaantie (near Information)
+                { lat: 66.5416, lng: 25.8380 }, 
+                { lat: 66.5418, lng: 25.8400 },
+                { lat: 66.5420, lng: 25.8420 },
+                { lat: 66.5422, lng: 25.8435 },
+                { lat: 66.5424, lng: 25.8450 },
+                { lat: 66.5427, lng: 25.8465 },
+                { lat: 66.5432, lng: 25.8480 } // Tähtikuja junction
             ];
 
             const isSouthParking = nearestParking.subCategory === 'parking-south';
             const waypoints = [start];
-            const radiuses = ['unlimited']; // Start is always flexible
+            const radiuses = ['unlimited']; 
             
             if (isSouthParking) {
-                const distStartToParking = calculateDistance(start, nearestParking.location);
+                // Determine the direction of travel (East vs West)
+                const isWestToEast = start.lng < nearestParking.location.lng;
                 
-                // We only include spine points that are "ahead" of us to prevent backwards loops
                 southSpine.forEach(p => {
-                    const distPointToParking = calculateDistance(p, nearestParking.location);
-                    const distStartToPoint = calculateDistance(start, p);
-                    
-                    // 1. Point must be closer to destination than we are (forward movement)
-                    // 2. We must not be right on top of it yet (> 50m)
-                    if (distPointToParking < distStartToParking && distStartToPoint > 50) {
+                    // Inclusion Logic: 
+                    // 1. Point is further East than current position (if moving East)
+                    // 2. Point is further West than destination (if moving East)
+                    // This creates a "Forward-only" rail that doesn't cause U-turns.
+                    const isAhead = isWestToEast ? 
+                        (p.lng > start.lng + 0.0005 && p.lng < nearestParking.location.lng - 0.0005) :
+                        (p.lng < start.lng - 0.0005 && p.lng > nearestParking.location.lng + 0.0005);
+
+                    if (isAhead) {
                         waypoints.push(p);
-                        radiuses.push('50'); // Balanced 50m snap to keep car ON asphalt but avoid failures
+                        radiuses.push('50'); // Balanced 50m snap to block cottage paths but avoid failures
                     }
                 });
             }
             
             waypoints.push(nearestParking.location);
-            radiuses.push('unlimited'); // Parking lot is flexible
+            radiuses.push('unlimited'); 
 
-            // Fetch the route with our strict road-pinning anchors
             const drivingRoute = await fetchOSRMRoute(
                 waypoints, 
                 'driving', 
