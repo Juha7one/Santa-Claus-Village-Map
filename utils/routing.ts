@@ -562,19 +562,18 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         // Find parking with shortest REAL WALKING path distance to destination
         let nearestParking: Place | null = null;
         let minWalkDistance = Infinity;
-        // We check all parking spots to find the one that is truly closest on the map paths
+        
         for (const parking of parkingSpots) {
             const walkingSegments = await calculateWalkingRoute(parking.location, end, localPaths, signal);
             const totalWalkDist = walkingSegments.reduce((sum, seg) => sum + seg.distance, 0);
             
-            // If the walking path is valid and shorter, it's our new candidate
             if (totalWalkDist > 0 && totalWalkDist < minWalkDistance) {
                 minWalkDistance = totalWalkDist;
                 nearestParking = parking;
             }
         }
 
-        // Fallback: if graph is disconnected, use straight line distance
+        // Fallback: use straight line distance to parking if no path found
         if (!nearestParking) {
             for (const parking of parkingSpots) {
                 const dist = calculateDistance(parking.location, end);
@@ -586,61 +585,30 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         }
 
         if (nearestParking) {
-            const segments: RouteSegment[] = [];
-            
-            const isSouthParking = nearestParking.subCategory === 'parking-south';
-            
-            const waypoints = [start];
-            const radiuses = ['unlimited'];
-
-            if (isSouthParking) {
-                // THE ASPHALT RAILS: Forces the car onto the main Joulumaantie asphalt.
-                // Strict 30m snapping prevents the engine from jumping to backyard service paths.
-                const asphaltRails = [
-                    { lat: 66.5414, lng: 25.8362 }, // Roundabout
-                    { lat: 66.5420, lng: 25.8400 }, // Joulumaantie Start-ish
-                    { lat: 66.5425, lng: 25.8435 }  // Joulumaantie Middle
-                ];
-
-                const distToParking = calculateDistance(start, nearestParking.location);
-
-                asphaltRails.forEach(p => {
-                    const distGateToParking = calculateDistance(p, nearestParking.location);
-                    if (distToParking > distGateToParking + 150) {
-                        waypoints.push(p);
-                        radiuses.push('30'); // Strict snapping to main road
-                    }
-                });
-            }
-            
-            waypoints.push(nearestParking.location);
-            radiuses.push('unlimited');
-
+            // Simple OSM driving: start -> parking (no extra points or rules)
             const drivingRoute = await fetchOSRMRoute(
-                waypoints, 
+                [start, nearestParking.location], 
                 'driving', 
-                signal, 
-                radiuses
+                signal
             );
             
-            segments.push({
+            const segments: RouteSegment[] = [{
                 type: 'road',
                 geometry: drivingRoute.geometry,
                 distance: drivingRoute.distance,
                 duration: drivingRoute.duration,
-            });
+            }];
 
-            // Add the final walking leg from the chosen parking lot
-            const walkingStart = nearestParking.location;
-            const walkingSegments = await calculateWalkingRoute(walkingStart, end, localPaths, signal);
+            // Walking leg from parking to destination
+            const walkingSegments = await calculateWalkingRoute(nearestParking.location, end, localPaths, signal);
 
             if (walkingSegments.length > 0) {
                 segments.push(...walkingSegments);
             } else {
-                const dist = calculateDistance(walkingStart, end);
+                const dist = calculateDistance(nearestParking.location, end);
                 segments.push({
                     type: 'path',
-                    geometry: [walkingStart, end],
+                    geometry: [nearestParking.location, end],
                     distance: dist,
                     duration: dist / 1.4
                 });
