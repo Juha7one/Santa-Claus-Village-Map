@@ -172,7 +172,11 @@ function App() {
   };
 
   const handleGetDirections = (place: Place) => {
-    if (userLocation && place) {
+    if (!userLocation) {
+      alert("GPS location is not available. Please allow location access in your browser to use navigation from your current position.");
+      return;
+    }
+    if (place) {
       handleClosePopup(); // Closes popup and clears URL
       setRoute({ start: userLocation, end: place.location });
       setViewState('route');

@@ -221,15 +221,13 @@ const PlacePopup: React.FC<PlacePopupProps> = ({
                             <StopIcon /> <span className="ml-2">{(t.ui && t.ui.stopNavigation) || 'Stop'}</span>
                         </button>
                     ) : (
-                        userLocation && (
-                            <button
-                                onClick={() => onGetDirections(place)}
-                                className="flex-1 bg-green-700 text-white font-bold py-3 rounded-xl hover:bg-green-800 transition-colors shadow-sm flex items-center justify-center text-sm disabled:bg-gray-400"
-                                disabled={isRouteLoading}
-                            >
-                                <GoThereIcon /> <span className="ml-2">{(t.ui && t.ui.goThere) || 'Directions'}</span>
-                            </button>
-                        )
+                        <button
+                            onClick={() => onGetDirections(place)}
+                            className="flex-1 bg-green-700 text-white font-bold py-3 rounded-xl hover:bg-green-800 transition-colors shadow-sm flex items-center justify-center text-sm disabled:bg-gray-400"
+                            disabled={isRouteLoading}
+                        >
+                            <GoThereIcon /> <span className="ml-2">{(t.ui && t.ui.goThere) || 'Directions'}</span>
+                        </button>
                     )}
 
                     {bookingLink && (
