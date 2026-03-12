@@ -177,21 +177,43 @@ export async function calculateWalkingRoute(start: Coordinates, end: Coordinates
     return [{ type: 'path', geometry: cleanGeometry, distance: totalDist, duration: totalDist / 1.4 }];
 }
 
+// --- VIRTUAL FENCE LOGIC (SOLUTION 1 & 2) ---
+
+function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
+    if (!bounds) return true;
+    const [min, max] = bounds;
+    return point.lat >= min[0] && point.lat <= max[0] && point.lng >= min[1] && point.lng <= max[1];
+}
+
+/** 
+ * THE VIRTUAL FENCE: 
+ * This box covers the entire residential detour zone (Pukinpolku).
+ * We raised the north boundary to 66.5415 to ensure it catches even the 'slight' detours.
+ */
+const RESTRICTED_WONK_ZONE: Bounds = [
+    [66.5390, 25.8320], // South-West
+    [66.5415, 25.8420]  // North-East
+];
+
+function filterWonkyPoints(geometry: Coordinates[]): Coordinates[] {
+    if (geometry.length <= 2) return geometry;
+    const filtered = geometry.filter(p => !isInsideBounds(p, RESTRICTED_WONK_ZONE));
+    if (filtered.length < 2) return geometry;
+    return filtered;
+}
+
+// --- ROUTE FETCHING ---
+
 function handleRouteData(data: any, mode: 'driving' | 'foot'): { geometry: Coordinates[], distance: number, duration: number, isRoute: boolean } {
     const route = data.routes[0];
     let geometry = route.geometry.coordinates.map(([lng, lat]: [number, number]) => ({ lat, lng }));
     
-    // APPLY THE VIRTUAL FENCE: If driving, remove points from the 'Wonk Zone'
+    // APPLY VIRTUAL FENCE: Solution 1 & 2
     if (mode === 'driving') {
         geometry = filterWonkyPoints(geometry);
     }
 
-    return {
-        geometry,
-        distance: route.distance,
-        duration: route.duration,
-        isRoute: true
-    };
+    return { geometry, distance: route.distance, duration: route.duration, isRoute: true };
 }
 
 /** Pure Routing Helper (Trusting OSM servers natively) */
@@ -217,37 +239,6 @@ async function fetchOSRMRoute(
         const start = points[0], end = points[points.length - 1], dist = calculateDistance(start, end);
         return { geometry: [start, end], distance: dist, duration: mode === 'driving' ? dist / 5.5 : dist / 1.4, isRoute: false };
     }
-}
-
-function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
-    if (!bounds) return true;
-    const [min, max] = bounds;
-    return point.lat >= min[0] && point.lat <= max[0] && point.lng >= min[1] && point.lng <= max[1];
-}
-
-/** 
- * THE VIRTUAL FENCE: Solution 2 implementation.
- * This box covers the residential area (Pukinpolku) where the detours happen.
- */
-const RESTRICTED_WONK_ZONE: Bounds = [
-    [66.5404, 25.8330], // South-West
-    [66.5413, 25.8365]  // North-East
-];
-
-/** 
- * Solution 1 implementation: Deletes 'wonky' points from the array.
- * This naturally results in a straight line between the points outside the restricted zone.
- */
-function filterWonkyPoints(geometry: Coordinates[]): Coordinates[] {
-    // If we only have 2 points, don't break the line.
-    if (geometry.length <= 2) return geometry;
-
-    const filtered = geometry.filter(p => !isInsideBounds(p, RESTRICTED_WONK_ZONE));
-    
-    // Ensure we don't return an empty array or just one point
-    if (filtered.length < 2) return geometry;
-    
-    return filtered;
 }
 
 /** Calculates a multi-modal route. Match official OSM behavior exactly. */
