@@ -568,30 +568,27 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // Bottleneck Entrances (The "Gateways")
+            // Gateway Logic:
+            // We only force a gateway for SOUTHERN parking to prevent cars from driving through the village center.
+            // NORTH parking can be reached naturally via the most efficient route.
             const southGateway = { lat: 66.5414, lng: 25.8362 }; // Myllymäentie Roundabout
-            const northGateway = { lat: 66.5475, lng: 25.8485 }; // Pukinpolku Bridge over Highway
-
             const isSouthParking = nearestParking.subCategory === 'parking-south';
-            const gateway = isSouthParking ? southGateway : northGateway;
-
+            
             const waypoints = [start];
             
-            // "On-the-way" Gateholding:
-            // Only force the gateway if we are truly approaching from the outside.
-            // If the user's distance to the parking is shorter than the gateway-to-parking distance,
-            // they are already "inside" the gateway. Forcing it then causes artificial loops/U-turns.
-            const distStartToParking = calculateDistance(start, nearestParking.location);
-            const distGatewayToParking = calculateDistance(gateway, nearestParking.location);
-            
-            if (distStartToParking > distGatewayToParking + 50) {
-                waypoints.push(gateway);
+            if (isSouthParking) {
+                const distStartToParking = calculateDistance(start, nearestParking.location);
+                const distGatewayToParking = calculateDistance(southGateway, nearestParking.location);
+                
+                // Only force the southern roundabout if we are truly approaching from outside the village area
+                if (distStartToParking > distGatewayToParking + 50) {
+                    waypoints.push(southGateway);
+                }
             }
             
             waypoints.push(nearestParking.location);
 
             // Fetch the shortest DRIVING route. 
-            // We use 'unlimited' for all points to prevent OSRM from suggesting loops to satisfy strict snapping.
             const drivingRoute = await fetchOSRMRoute(
                 waypoints, 
                 'driving', 
