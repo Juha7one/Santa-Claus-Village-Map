@@ -502,16 +502,15 @@ async function calculateDirectRoute(start: Coordinates, end: Coordinates, localP
     }
 }
 
-/** Helper function to check if a point is within the map bounds with a buffer. */
+/** Helper function to check if a point is within the map bounds. No buffers. */
 function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
     if (!bounds) return true;
-    const buffer = 0.0002; // Reduced buffer to ~20m. Prevents hijacking navigation on approach roads.
-    const [[minLat, minLng], [maxLat, maxLng]] = bounds;
+    const [min, max] = bounds;
     return (
-        point.lat >= minLat - buffer &&
-        point.lat <= maxLat + buffer &&
-        point.lng >= minLng - buffer &&
-        point.lng <= maxLng + buffer
+        point.lat >= min[0] &&
+        point.lat <= max[0] &&
+        point.lng >= min[1] &&
+        point.lng <= max[1]
     );
 }
 
@@ -519,10 +518,10 @@ function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
 export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: Place[], localPaths: LineData[], bounds: Bounds | null, signal: AbortSignal): Promise<{ segments: RouteSegment[], mode: 'walk' | 'car', bestParking: Place | null }> {
     if (signal.aborted) throw new DOMException('Aborted', 'AbortError');
 
-    // 1. Check if destination is inside the Village bounds
     const isEndInside = bounds ? isInsideBounds(end, bounds) : true;
+    const isStartInside = bounds ? isInsideBounds(start, bounds) : true;
 
-    // 2. If destination is OUTSIDE, standard driving only.
+    // 1. If destination is OUTSIDE, simple driving only (Pure OSM)
     if (!isEndInside) {
         const remoteRoute = await fetchOSRMRoute([start, end], 'driving', signal);
         return {
@@ -537,41 +536,29 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         };
     }
 
-    // 3. Find parking spots if the user is driving (i.e. start is outside or far away)
-    const parkingSpots = allPlaces.filter(p => {
-        if (p.categoryKey !== 'Transportation') return false;
-        const nameMatch = (name: any) => {
-            if (typeof name === 'string') return name.toLowerCase().includes('parking') || name.toLowerCase().includes('pysäköinti');
-            if (typeof name === 'object') return Object.values(name).some((v: any) => v.toLowerCase().includes('parking') || v.toLowerCase().includes('pysäköinti'));
-            return false;
-        };
-        return (
-            (p.id && p.id.toLowerCase().includes('parking')) || 
-            (p.originalId && p.originalId.toLowerCase().includes('parking')) ||
-            nameMatch(p.name)
-        );
-    });
-
-    const isStartInside = bounds ? isInsideBounds(start, bounds) : true;
-
-    // 4. If we are already deep INSIDE the village, use simple walking/direct routing. 
-    // This is for pedestrians already at the shops.
-    if (isStartInside && parkingSpots.every(p => calculateDistance(start, p.location) > 0.1)) {
+    // 2. If start is INSIDE, simple walking only
+    if (isStartInside) {
         const directRoute = await calculateDirectRoute(start, end, localPaths, signal);
         return { ...directRoute, bestParking: null };
     }
 
-    // 5. If we need to park (Car Mode), force OSRM for the driving stage.
-    // NEVER use localPaths/calculateWalkingRoute for the car segment.
+    // 3. Driving to the Village (Start Outside, End Inside)
+    const parkingSpots = allPlaces.filter(p => {
+        if (p.categoryKey !== 'Transportation') return false;
+        const nameMatch = (name: any) => {
+            const n = typeof name === 'object' ? Object.values(name).join(' ') : String(name);
+            return n.toLowerCase().includes('parking') || n.toLowerCase().includes('pysäköinti');
+        };
+        return nameMatch(p.name) || (p.id && p.id.toLowerCase().includes('parking'));
+    });
+
     if (parkingSpots.length > 0) {
         let nearestParking: Place | null = null;
         let minWalkDistance = Infinity;
         
         for (const parking of parkingSpots) {
-            // We use walking graph ONLY to evaluate which parking spot is best for the PEDESTRIAN leg.
             const walkingSegments = await calculateWalkingRoute(parking.location, end, localPaths, signal);
             const totalWalkDist = walkingSegments.reduce((sum, seg) => sum + seg.distance, 0);
-            
             if (totalWalkDist > 0 && totalWalkDist < minWalkDistance) {
                 minWalkDistance = totalWalkDist;
                 nearestParking = parking;
@@ -579,30 +566,21 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         }
 
         if (!nearestParking) {
-            for (const parking of parkingSpots) {
-                const dist = calculateDistance(parking.location, end);
-                if (dist < minWalkDistance) {
-                    minWalkDistance = dist;
-                    nearestParking = parking;
-                }
-            }
+            nearestParking = parkingSpots.sort((a,b) => calculateDistance(a.location, end) - calculateDistance(b.location, end))[0];
         }
 
         if (nearestParking) {
             const waypoints = [start];
-            const radiuses = ['unlimited'];
             
-            // The "One Waypoint" Roundabout rule for South parking
+            // THE ONE AND ONLY ADDON Rule: South side roundabout
             if (nearestParking.subCategory === 'parking-south') {
                 waypoints.push({ lat: 66.5414, lng: 25.8362 });
-                radiuses.push('30'); // Strict snap to roundabout
             }
             
             waypoints.push(nearestParking.location);
-            radiuses.push('40'); // snap to main road near parking
 
-            // Fetch the DRIVING leg using OSRM ONLY with strict snapping to prevent residential detours.
-            const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal, radiuses);
+            // Fetch the DRIVING leg (Pure OSM, no radiuses, no strict snapping)
+            const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal);
             
             const segments: RouteSegment[] = [{
                 type: 'road',
@@ -611,9 +589,8 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
                 duration: drivingRoute.duration,
             }];
 
-            // Now, and ONLY now, add the walking leg from the parking to the shop.
+            // Walking leg (Our facility paths)
             const walkingSegments_Final = await calculateWalkingRoute(nearestParking.location, end, localPaths, signal);
-
             if (walkingSegments_Final.length > 0) {
                 segments.push(...walkingSegments_Final);
             } else {
@@ -630,6 +607,16 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         }
     }
 
-    const directRoute = await calculateDirectRoute(start, end, localPaths, signal);
-    return { ...directRoute, bestParking: null };
+    // Fallback: Standard Drive
+    const fallbackRoute = await fetchOSRMRoute([start, end], 'driving', signal);
+    return {
+        segments: [{
+            type: 'road',
+            geometry: fallbackRoute.geometry,
+            distance: fallbackRoute.distance,
+            duration: fallbackRoute.duration
+        }],
+        mode: 'car',
+        bestParking: null,
+    };
 }
