@@ -462,7 +462,12 @@ async function calculateDirectRoute(start: Coordinates, end: Coordinates, localP
     if (walkingSegments.length > 0) {
         return { segments: walkingSegments, mode: 'walk' };
     } else {
-        const roadRouteResult = await fetchOSRMRoute([start, end], 'driving', signal);
+        const roadRouteResult = await fetchOSRMRoute(
+            [start, end], 
+            'driving', 
+            signal, 
+            ['unlimited', 'unlimited']
+        );
         return {
             segments: [{
                 type: 'road',
@@ -572,20 +577,27 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
             const waypoints = [start];
             
-            // "Past-Entrance" Detection:
-            // If the user is already past the gateway or closer to the parking than the entrance is, 
-            // do NOT force the gateway. This prevents the "Dead End Tour" loops / U-turns.
+            // "On-the-way" Gateholding:
+            // Only force the gateway if we are truly approaching from the outside.
+            // If the user's distance to the parking is shorter than the gateway-to-parking distance,
+            // they are already "inside" the gateway. Forcing it then causes artificial loops/U-turns.
             const distStartToParking = calculateDistance(start, nearestParking.location);
             const distGatewayToParking = calculateDistance(gateway, nearestParking.location);
             
-            if (distStartToParking > distGatewayToParking + 100) {
+            if (distStartToParking > distGatewayToParking + 50) {
                 waypoints.push(gateway);
             }
             
             waypoints.push(nearestParking.location);
 
-            // Fetch the shortest DRIVING route that respects our entrance constraint
-            const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal);
+            // Fetch the shortest DRIVING route. 
+            // We use 'unlimited' for all points to prevent OSRM from suggesting loops to satisfy strict snapping.
+            const drivingRoute = await fetchOSRMRoute(
+                waypoints, 
+                'driving', 
+                signal, 
+                waypoints.map(() => 'unlimited')
+            );
             
             segments.push({
                 type: 'road',
