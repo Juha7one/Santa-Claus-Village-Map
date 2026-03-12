@@ -411,7 +411,9 @@ export async function calculateWalkingRoute(
 /** Fetches a route from the OSRM API with support for multiple waypoints. */
 async function fetchOSRMRoute(points: Coordinates[], mode: 'driving' | 'foot', signal: AbortSignal): Promise<{ geometry: Coordinates[], distance: number, duration: number, isRoute: boolean }> {
     const pointsStr = points.map(p => `${p.lng},${p.lat}`).join(';');
-    const url = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson`;
+    // Set a strict 10m snap radius for all waypoints to prevent snapping to parallel cottage paths
+    const radiusStr = points.map(() => '10').join(';');
+    const url = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson&radiuses=${radiusStr}`;
 
     try {
         const response = await fetch(url, { signal });
@@ -524,18 +526,16 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
-        // Highway Gateways: Dense "Road Railing" to keep cars on main asphalt.
-        // We provide points every ~100m to prevent OSRM from finding 'shortcuts' through cottage paths.
+        // Highway Gateways: Refined to be perfectly on the main Joulumaantie asphalt.
         const southGateway: Coordinates[] = [
-            { lat: 66.5414, lng: 25.8362 }, // Roundabout entry
-            { lat: 66.5418, lng: 25.8390 }, // Joulumaantie (past first cottage entrance)
-            { lat: 66.5423, lng: 25.8415 }, // Joulumaantie (past second cottage entrance)
-            { lat: 66.5428, lng: 25.8450 }  // Joulumaantie (near Information center)
+            { lat: 66.5415, lng: 25.8363 }, // Main Roundabout center
+            { lat: 66.5422, lng: 25.8410 }, // Joulumaantie (midway, slightly north of center)
+            { lat: 66.5429, lng: 25.8450 }  // Joulumaantie (near Information)
         ]; 
         const northGateway: Coordinates[] = [
             { lat: 66.5505, lng: 25.8485 }, // North Highway exit
-            { lat: 66.5475, lng: 25.8485 }, // Pukinpolku start
-            { lat: 66.5458, lng: 25.8475 }  // Tähtikuja approach
+            { lat: 66.5475, lng: 25.8485 }, // Pukinpolku entry
+            { lat: 66.5458, lng: 25.8475 }  // Tähtikuja intersection
         ];
 
         // Determine side based on first gateway point
