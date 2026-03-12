@@ -588,23 +588,24 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // Forced Gateway for South approach
-            const southRoundabout = { lat: 66.5414, lng: 25.8362 };
             const isSouthParking = nearestParking.subCategory === 'parking-south';
             
             const waypoints = [start];
             const radiuses = ['unlimited'];
 
             if (isSouthParking) {
-                // THE "ASPHALT LOCK": We force the car to stay on the main Joulumaantie asphalt
-                // by placing pillars with strict 20m snapping. 
-                // The cottage paths are >30m away, so OSRM is forced to stay on the big road.
-                const pillar1 = { lat: 66.5414, lng: 25.8362 }; // Roundabout
-                const pillar2 = { lat: 66.5423, lng: 25.8420 }; // Joulumaantie Middle
-                const pillar3 = { lat: 66.5430, lng: 25.8465 }; // Joulumaantie East Pillar
+                // The "South Gate": Highway exit ramp and Roundabout
+                const hwyExit = { lat: 66.5405, lng: 25.8335 };
+                const roundabout = { lat: 66.5414, lng: 25.8362 };
 
-                waypoints.push(pillar1, pillar2, pillar3);
-                radiuses.push('50', '20', '20'); // Lock it to the center line
+                const distToParking = calculateDistance(start, nearestParking.location);
+                const distGateToParking = calculateDistance(roundabout, nearestParking.location);
+
+                // Only force the gates if the user is truly approaching from outside
+                if (distToParking > distGateToParking + 200) {
+                    waypoints.push(hwyExit, roundabout);
+                    radiuses.push('unlimited', 'unlimited');
+                }
             }
             
             waypoints.push(nearestParking.location);
