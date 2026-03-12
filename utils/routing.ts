@@ -191,8 +191,8 @@ function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
  * We raised the north boundary to 66.5415 to ensure it catches even the 'slight' detours.
  */
 export const RESTRICTED_WONK_ZONE: Bounds = [
-    [66.5390, 25.8320], // South-West
-    [66.5415, 25.8420]  // North-East
+    [66.5411, 25.8360], // South-West (Moved North/East)
+    [66.5422, 25.8440]  // North-East (Moved North/East)
 ];
 
 function filterWonkyPoints(geometry: Coordinates[]): Coordinates[] {
