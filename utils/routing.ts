@@ -409,10 +409,16 @@ export async function calculateWalkingRoute(
 
 
 /** Fetches a route from the OSRM API with support for multiple waypoints. */
-async function fetchOSRMRoute(points: Coordinates[], mode: 'driving' | 'foot', signal: AbortSignal): Promise<{ geometry: Coordinates[], distance: number, duration: number, isRoute: boolean }> {
+async function fetchOSRMRoute(
+    points: Coordinates[], 
+    mode: 'driving' | 'foot', 
+    signal: AbortSignal, 
+    customRadiuses?: string[]
+): Promise<{ geometry: Coordinates[], distance: number, duration: number, isRoute: boolean }> {
     const pointsStr = points.map(p => `${p.lng},${p.lat}`).join(';');
-    // Set a strict 10m snap radius for all waypoints to prevent snapping to parallel cottage paths
-    const radiusStr = points.map(() => '10').join(';');
+    
+    // Default to 'null' (unlimited) for all points if no custom radiuses provided
+    const radiusStr = customRadiuses ? customRadiuses.join(';') : points.map(() => 'null').join(';');
     const url = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson&radiuses=${radiusStr}`;
 
     try {
@@ -591,8 +597,23 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
             const isSouthParking = nearestParking.subCategory === 'parking-south';
             const gatewayPath = isSouthParking ? southGateway : northGateway;
 
+            // Define snap radii: 
+            // - Start point: null (allow snapping to nearest road)
+            // - Gateway points: 20 (strict road-pinning)
+            // - Parking point: null (allow snapping to parking)
+            const snapRadiuses = [
+                'null', 
+                ...gatewayPath.map(() => '20'),
+                'null'
+            ];
+
             // FORCE the driving route to pass through the entire Gateway Sequence
-            const drivingRoute = await fetchOSRMRoute([start, ...gatewayPath, nearestParking.location], 'driving', signal);
+            const drivingRoute = await fetchOSRMRoute(
+                [start, ...gatewayPath, nearestParking.location], 
+                'driving', 
+                signal,
+                snapRadiuses
+            );
             
             segments.push({
                 type: 'road',
