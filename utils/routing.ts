@@ -524,17 +524,20 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
-        // Highway Gateways: Force OSRM to exit the highway at the correct spot 
-        // to prevent it from finding 'shortcuts' through the village core.
-        // Highway Gateways: Refined to major transit bottlenecks.
-        // South: The southern roundabout (Myllymäentie / Pajakyläntie)
-        // North: The northern highway exit / Pukinpolku line
-        const southGateway = { lat: 66.5414, lng: 25.8362 }; 
-        const northGateway = { lat: 66.5475, lng: 25.8485 };
+        // Highway Gateways: Multi-point sequences to 'glue' the route to main roads.
+        // This prevents zig-zags through cottage/residential areas.
+        const southGateway: Coordinates[] = [
+            { lat: 66.5414, lng: 25.8362 }, // Roundabout
+            { lat: 66.5428, lng: 25.8425 }  // Joulumaantie main stretch
+        ]; 
+        const northGateway: Coordinates[] = [
+            { lat: 66.5475, lng: 25.8485 }, // North Highway exit
+            { lat: 66.5455, lng: 25.8475 }  // Pukinpolku approach
+        ];
 
-        // Determine which side of the village the user is arriving at
-        const distToSouthGateway = calculateDistance(start, southGateway);
-        const distToNorthGateway = calculateDistance(start, northGateway);
+        // Determine side based on first gateway point
+        const distToSouthGateway = calculateDistance(start, southGateway[0]);
+        const distToNorthGateway = calculateDistance(start, northGateway[0]);
         const isApproachingFromSouth = distToSouthGateway < distToNorthGateway;
 
         // Filter parking spots based on their explicit North/South tagging
@@ -543,7 +546,6 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
             const isNorthTagged = p.subCategory === 'parking-north';
             
             if (isApproachingFromSouth) {
-                // If coming from South, prefer south parkings, but allow north if they are the only option
                 return isSouthTagged;
             } else {
                 return isNorthTagged;
@@ -582,13 +584,12 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // Determine the correct gateway for THIS specific parking spot
+            // Determine the correct gateway sequence for THIS specific parking spot
             const isSouthParking = nearestParking.subCategory === 'parking-south';
-            const gateway = isSouthParking ? southGateway : northGateway;
+            const gatewayPath = isSouthParking ? southGateway : northGateway;
 
-            // FORCE the driving route to pass through the Highway Gateway
-            // This prevents OSRM from routing through the village center.
-            const drivingRoute = await fetchOSRMRoute([start, gateway, nearestParking.location], 'driving', signal);
+            // FORCE the driving route to pass through the entire Gateway Sequence
+            const drivingRoute = await fetchOSRMRoute([start, ...gatewayPath, nearestParking.location], 'driving', signal);
             
             segments.push({
                 type: 'road',
