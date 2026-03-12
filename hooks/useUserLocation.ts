@@ -9,7 +9,7 @@ export function useUserLocation() {
     let watchId: number;
 
     if (navigator.geolocation) {
-      // Set initial location quickly
+      // 1. Try to get a cached location immediately (very fast)
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setLocation({
@@ -17,9 +17,11 @@ export function useUserLocation() {
             lng: position.coords.longitude,
           });
         },
-        () => {}
+        () => {},
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 } // 10 min old cache is fine for start
       );
 
+      // 2. Start watching for real-time updates
       watchId = navigator.geolocation.watchPosition(
         (position) => {
           setLocation({
@@ -34,7 +36,7 @@ export function useUserLocation() {
         },
         {
           enableHighAccuracy: true,
-          timeout: 5000,
+          timeout: 15000, // Increased timeout
           maximumAge: 0,
         }
       );
@@ -55,6 +57,7 @@ export function useUserLocation() {
       return;
     }
 
+    // Force prompt or fresh lookup
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLocation({
@@ -64,9 +67,11 @@ export function useUserLocation() {
         setError(null);
       },
       (err) => {
+        console.warn("Manual location request failed:", err.message);
         setError(err.message);
       },
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      // More relaxed options for faster response
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   };
 

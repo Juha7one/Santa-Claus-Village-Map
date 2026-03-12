@@ -20,7 +20,7 @@ function App() {
   const t = useTranslations();
   const { places, lines, mapCenter, bounds, refresh } = usePlaces(t);
   const { userPlaces, addUserPlace, deleteUserPlace, updateUserPlaces } = useUserPlaces();
-  const { location: userLocation, requestLocation } = useUserLocation();
+  const { location: userLocation, error: locationError, requestLocation } = useUserLocation();
 
   const [route, setRoute] = useState<{ start: Coordinates, end: Coordinates } | null>(null);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -193,6 +193,14 @@ function App() {
       handleGetDirections(pendingNavPlace);
     }
   }, [userLocation, pendingNavPlace]);
+
+  useEffect(() => {
+    if (locationError && pendingNavPlace) {
+      console.warn("Location error while waiting for navigation:", locationError);
+      alert(`Could not get your location: ${locationError}. Please check your browser's location settings.`);
+      setPendingNavPlace(null);
+    }
+  }, [locationError, pendingNavPlace]);
 
   const handleStopNavigation = () => {
     handleClosePopup();
