@@ -654,12 +654,12 @@ const MapView: React.FC<MapViewProps> = ({
                                     const opacity = Math.max(0, 1 - normalizedPos);
                                     
                                     const p1 = {
-                                        lat: midpoint.lat + (distFromCenter * Math.cos(tiltRad)) / R_LAT,
-                                        lng: midpoint.lng + (distFromCenter * Math.sin(tiltRad)) / R_LNG
+                                        lat: midpoint.lat + (distFromCenter * Math.sin(tiltRad)) / R_LAT,
+                                        lng: midpoint.lng + (distFromCenter * Math.cos(tiltRad)) / R_LNG
                                     };
                                     const p2 = {
-                                        lat: midpoint.lat + (nextDistFromCenter * Math.cos(tiltRad)) / R_LAT,
-                                        lng: midpoint.lng + (nextDistFromCenter * Math.sin(tiltRad)) / R_LNG
+                                        lat: midpoint.lat + (nextDistFromCenter * Math.sin(tiltRad)) / R_LAT,
+                                        lng: midpoint.lng + (nextDistFromCenter * Math.cos(tiltRad)) / R_LNG
                                     };
 
                                     return (
@@ -680,12 +680,12 @@ const MapView: React.FC<MapViewProps> = ({
                                 <Polyline
                                     positions={[
                                         {
-                                            lat: midpoint.lat - (totalLengthMeters/2 * Math.cos(tiltRad)) / R_LAT,
-                                            lng: midpoint.lng - (totalLengthMeters/2 * Math.sin(tiltRad)) / R_LNG
+                                            lat: midpoint.lat - (totalLengthMeters/2 * Math.sin(tiltRad)) / R_LAT,
+                                            lng: midpoint.lng - (totalLengthMeters/2 * Math.cos(tiltRad)) / R_LNG
                                         },
                                         {
-                                            lat: midpoint.lat + (totalLengthMeters/2 * Math.cos(tiltRad)) / R_LAT,
-                                            lng: midpoint.lng + (totalLengthMeters/2 * Math.sin(tiltRad)) / R_LNG
+                                            lat: midpoint.lat + (totalLengthMeters/2 * Math.sin(tiltRad)) / R_LAT,
+                                            lng: midpoint.lng + (totalLengthMeters/2 * Math.cos(tiltRad)) / R_LNG
                                         }
                                     ]}
                                     pane="routePane"
