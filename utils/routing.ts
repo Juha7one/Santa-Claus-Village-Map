@@ -202,7 +202,7 @@ function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
  * THE VIRTUAL FENCE: 
  * Tilted Polygon (roughly 12°) to perfectly cover the houses without touching Joulumaantie.
  */
-export const RESTRICTED_WONK_POLYGON: Coordinates[] = [
+const RESTRICTED_WONK_POLYGON: Coordinates[] = [
     { lat: 66.54225, lng: 25.8345 }, // NW (Yellow Box Position)
     { lat: 66.54245, lng: 25.8385 }, // NE (Yellow Box Position)
     { lat: 66.54175, lng: 25.8388 }, // SE (Yellow Box Position)
