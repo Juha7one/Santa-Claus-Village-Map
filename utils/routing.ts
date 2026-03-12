@@ -412,14 +412,10 @@ export async function calculateWalkingRoute(
 async function fetchOSRMRoute(
     points: Coordinates[], 
     mode: 'driving' | 'foot', 
-    signal: AbortSignal, 
-    customRadiuses?: string[]
+    signal: AbortSignal
 ): Promise<{ geometry: Coordinates[], distance: number, duration: number, isRoute: boolean }> {
     const pointsStr = points.map(p => `${p.lng},${p.lat}`).join(';');
-    let url = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson`;
-    if (customRadiuses) {
-        url += `&radiuses=${customRadiuses.join(';')}`;
-    }
+    const url = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson`;
 
     try {
         const response = await fetch(url, { signal });
@@ -532,36 +528,20 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
-        // Highway Gateways: Refined to be perfectly on the main Joulumaantie asphalt.
-        const southGateway: Coordinates[] = [
-            { lat: 66.5415, lng: 25.8363 }, // Main Roundabout center
-            { lat: 66.5422, lng: 25.8410 }, // Joulumaantie (midway, slightly north of center)
-            { lat: 66.5429, lng: 25.8450 }  // Joulumaantie (near Information)
-        ]; 
-        const northGateway: Coordinates[] = [
-            { lat: 66.5505, lng: 25.8485 }, // North Highway exit
-            { lat: 66.5475, lng: 25.8485 }, // Pukinpolku entry
-            { lat: 66.5458, lng: 25.8475 }  // Tähtikuja intersection
-        ];
+        const southReference = { lat: 66.5395, lng: 25.8285 };
+        const northReference = { lat: 66.5505, lng: 25.8485 };
 
-        // Determine side based on first gateway point
-        const distToSouthGateway = calculateDistance(start, southGateway[0]);
-        const distToNorthGateway = calculateDistance(start, northGateway[0]);
-        const isApproachingFromSouth = distToSouthGateway < distToNorthGateway;
+        // Determine side based on proximity to highway exits
+        const distToSouth = calculateDistance(start, southReference);
+        const distToNorth = calculateDistance(start, northReference);
+        const isApproachingFromSouth = distToSouth < distToNorth;
 
-        // Filter parking spots based on their explicit North/South tagging
+        // Filter for zone-specific parking
         const zoneParkingSpots = parkingSpots.filter(p => {
-            const isSouthTagged = p.subCategory === 'parking-south';
-            const isNorthTagged = p.subCategory === 'parking-north';
-            
-            if (isApproachingFromSouth) {
-                return isSouthTagged;
-            } else {
-                return isNorthTagged;
-            }
+            if (isApproachingFromSouth) return p.subCategory === 'parking-south';
+            return p.subCategory === 'parking-north';
         });
 
-        // Use filtered spots if available, else fallback to all
         const candidateParking = zoneParkingSpots.length > 0 ? zoneParkingSpots : parkingSpots;
 
         let nearestParking: Place | null = null;
@@ -575,44 +555,17 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
             }
         }
 
-        // Handle remote destinations outside the village
-        if (nearestParking && minDistance > 1500) {
-            const directDrive = await fetchOSRMRoute([start, end], 'driving', signal);
-            return {
-                segments: [{
-                    type: 'road',
-                    geometry: directDrive.geometry,
-                    distance: directDrive.distance,
-                    duration: directDrive.duration
-                }],
-                mode: 'car',
-                bestParking: null
-            };
-        }
-
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // Determine the correct gateway sequence for THIS specific parking spot
+            // Forces correct entrance ramp without micro-managing waypoints
             const isSouthParking = nearestParking.subCategory === 'parking-south';
-            const gatewayPath = isSouthParking ? southGateway : northGateway;
+            const gateway = isSouthParking ? southReference : northReference;
 
-            // Define snap radii: 
-            // - Start point: unlimited (allow snapping to nearest road)
-            // - Gateway points: 100 (road-pinning with high reliability)
-            // - Parking point: unlimited (allow snapping to parking)
-            const snapRadiuses = [
-                'unlimited', 
-                ...gatewayPath.map(() => '100'),
-                'unlimited'
-            ];
-
-            // FORCE the driving route to pass through the entire Gateway Sequence
             const drivingRoute = await fetchOSRMRoute(
-                [start, ...gatewayPath, nearestParking.location], 
+                [start, gateway, nearestParking.location], 
                 'driving', 
-                signal,
-                snapRadiuses
+                signal
             );
             
             segments.push({
