@@ -176,7 +176,6 @@ function App() {
 
   const handleGetDirections = (place: Place) => {
     if (!userLocation) {
-      alert("Please check your browser and Allow GPS access to start navigation.");
       setPendingNavPlace(place);
       requestLocation();
       return;
@@ -600,6 +599,7 @@ function App() {
           isMyStay={selectedPlace.categoryKey === 'My Stay' || (!!myStayPlace && myStayPlace.originalId === selectedPlace.id)}
           isNavigatingTo={!!(route && route.end.lat === selectedPlace.location.lat && route.end.lng === selectedPlace.location.lng)}
           isRouteLoading={isRouteLoading}
+          isWaitingForGps={!!pendingNavPlace}
         />
       )}
 

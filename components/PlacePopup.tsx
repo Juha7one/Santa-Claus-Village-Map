@@ -74,11 +74,12 @@ interface PlacePopupProps {
     isMyStay: boolean;
     isNavigatingTo: boolean;
     isRouteLoading: boolean;
+    isWaitingForGps?: boolean;
 }
 
 const PlacePopup: React.FC<PlacePopupProps> = ({
     place, userLocation, onClose, onGetDirections, onStopNavigation,
-    onToggleFavourite, isLoved, isMyStay, isNavigatingTo, isRouteLoading
+    onToggleFavourite, isLoved, isMyStay, isNavigatingTo, isRouteLoading, isWaitingForGps
 }) => {
     const t = useTranslations();
     const { i18n } = useTranslation();
@@ -224,9 +225,13 @@ const PlacePopup: React.FC<PlacePopupProps> = ({
                         <button
                             onClick={() => onGetDirections(place)}
                             className="flex-1 bg-green-700 text-white font-bold py-3 rounded-xl hover:bg-green-800 transition-colors shadow-sm flex items-center justify-center text-sm disabled:bg-gray-400"
-                            disabled={isRouteLoading}
+                            disabled={isRouteLoading || isWaitingForGps}
                         >
-                            <GoThereIcon /> <span className="ml-2">{(t.ui && t.ui.goThere) || 'Directions'}</span>
+                            {isWaitingForGps ? (
+                                <><span className="animate-pulse">Locating...</span></>
+                            ) : (
+                                <><GoThereIcon /> <span className="ml-2">{(t.ui && t.ui.goThere) || 'Directions'}</span></>
+                            )}
                         </button>
                     )}
 

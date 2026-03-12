@@ -12,16 +12,12 @@ export function useUserLocation() {
       // Set initial location quickly
       navigator.geolocation.getCurrentPosition(
         (position) => {
-           if (!location) {
-             setLocation({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            });
-           }
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
         },
-        () => {
-          // Fail silently if initial position isn't available
-        }
+        () => {}
       );
 
       watchId = navigator.geolocation.watchPosition(
