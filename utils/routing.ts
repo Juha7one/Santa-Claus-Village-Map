@@ -408,9 +408,10 @@ export async function calculateWalkingRoute(
 }
 
 
-/** Fetches a route from the OSRM API. */
-async function fetchOSRMRoute(start: Coordinates, end: Coordinates, mode: 'driving' | 'foot', signal: AbortSignal): Promise<{ geometry: Coordinates[], distance: number, duration: number, isRoute: boolean }> {
-    const url = `https://router.project-osrm.org/route/v1/${mode}/${start.lng},${start.lat};${end.lng},${end.lat}?overview=full&geometries=geojson`;
+/** Fetches a route from the OSRM API with support for multiple waypoints. */
+async function fetchOSRMRoute(points: Coordinates[], mode: 'driving' | 'foot', signal: AbortSignal): Promise<{ geometry: Coordinates[], distance: number, duration: number, isRoute: boolean }> {
+    const pointsStr = points.map(p => `${p.lng},${p.lat}`).join(';');
+    const url = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson`;
 
     try {
         const response = await fetch(url, { signal });
@@ -424,7 +425,7 @@ async function fetchOSRMRoute(start: Coordinates, end: Coordinates, mode: 'drivi
 
         const route = data.routes[0];
         return {
-            geometry: route.geometry.coordinates.map(([lng, lat]) => ({ lat, lng })),
+            geometry: route.geometry.coordinates.map(([lng, lat]: [number, number]) => ({ lat, lng })),
             distance: route.distance,
             duration: route.duration,
             isRoute: true
@@ -433,6 +434,8 @@ async function fetchOSRMRoute(start: Coordinates, end: Coordinates, mode: 'drivi
         if ((error as Error).name !== 'AbortError') {
             console.warn("OSRM fetch failed, falling back to straight line", error);
         }
+        const start = points[0];
+        const end = points[points.length - 1];
         const dist = calculateDistance(start, end);
         return {
             geometry: [start, end],
@@ -450,7 +453,7 @@ async function calculateDirectRoute(start: Coordinates, end: Coordinates, localP
     if (walkingSegments.length > 0) {
         return { segments: walkingSegments, mode: 'walk' };
     } else {
-        const roadRouteResult = await fetchOSRMRoute(start, end, 'driving', signal);
+        const roadRouteResult = await fetchOSRMRoute([start, end], 'driving', signal);
         return {
             segments: [{
                 type: 'road',
@@ -482,7 +485,7 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 1. If destination is outside the main area, calculate a simple driving route.
     if (bounds && !isInsideBounds(end, bounds)) {
-        const remoteRoute = await fetchOSRMRoute(start, end, 'driving', signal);
+        const remoteRoute = await fetchOSRMRoute([start, end], 'driving', signal);
         return {
             segments: [{
                 type: 'road',
@@ -521,26 +524,27 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
-        // Define entrances/zones to prevent through-driving in the village center.
-        // We split parking into South (Main) and North (Igloo/Skyland) zones.
-        // South entrance is roughly near St1: 66.541, 25.836
-        // North entrance is roughly near Nova Skyland: 66.546, 25.848
-        
-        // South entrance: Intersection of Myllymäentie and Joulumaantie approaches (South-West)
-        const southEntrance = { lat: 66.540, lng: 25.834 };
-        // North entrance: Approaches from the North-East side (Pukinpolku/Tähtikuja area)
-        const northEntrance = { lat: 66.546, lng: 25.848 };
+        // Highway Gateways: Force OSRM to exit the highway at the correct spot 
+        // to prevent it from finding 'shortcuts' through the village core.
+        const southGateway = { lat: 66.5395, lng: 25.8285 }; // Sodankyläntie / Myllymäentie exit
+        const northGateway = { lat: 66.5505, lng: 25.8485 }; // Sodankyläntie / Pukinpolku exit
 
         // Determine which side of the village the user is arriving at
-        const distToSouthEntrance = calculateDistance(start, southEntrance);
-        const distToNorthEntrance = calculateDistance(start, northEntrance);
-        const isApproachingFromSouth = distToSouthEntrance < distToNorthEntrance;
+        const distToSouthGateway = calculateDistance(start, southGateway);
+        const distToNorthGateway = calculateDistance(start, northGateway);
+        const isApproachingFromSouth = distToSouthGateway < distToNorthGateway;
 
-        // The 'split' point is near Roosevelt Cottage/Santa Claus Office (approx 66.5435)
-        // This 'invisible wall' prevents routing from driving through the village core.
+        // Filter parking spots based on their explicit North/South tagging
         const zoneParkingSpots = parkingSpots.filter(p => {
-            const isNorthSide = p.location.lat > 66.5435;
-            return isApproachingFromSouth ? !isNorthSide : isNorthSide;
+            const isSouthTagged = p.subCategory === 'parking-south';
+            const isNorthTagged = p.subCategory === 'parking-north';
+            
+            if (isApproachingFromSouth) {
+                // If coming from South, prefer south parkings, but allow north if they are the only option
+                return isSouthTagged;
+            } else {
+                return isNorthTagged;
+            }
         });
 
         // Use filtered spots if available, else fallback to all
@@ -557,10 +561,9 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
             }
         }
 
-        // If the nearest parking is more than 1.5km from the destination, 
-        // it's probably better to drive directly to the destination (remote activity).
+        // Handle remote destinations outside the village
         if (nearestParking && minDistance > 1500) {
-            const directDrive = await fetchOSRMRoute(start, end, 'driving', signal);
+            const directDrive = await fetchOSRMRoute([start, end], 'driving', signal);
             return {
                 segments: [{
                     type: 'road',
@@ -575,8 +578,15 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
+            
+            // Determine the correct gateway for THIS specific parking spot
+            const isSouthParking = nearestParking.subCategory === 'parking-south';
+            const gateway = isSouthParking ? southGateway : northGateway;
 
-            const drivingRoute = await fetchOSRMRoute(start, nearestParking.location, 'driving', signal);
+            // FORCE the driving route to pass through the Highway Gateway
+            // This prevents OSRM from routing through the village center.
+            const drivingRoute = await fetchOSRMRoute([start, gateway, nearestParking.location], 'driving', signal);
+            
             segments.push({
                 type: 'road',
                 geometry: drivingRoute.geometry,
