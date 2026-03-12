@@ -598,13 +598,13 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
             const gatewayPath = isSouthParking ? southGateway : northGateway;
 
             // Define snap radii: 
-            // - Start point: null (allow snapping to nearest road)
-            // - Gateway points: 50 (road-pinning with some tolerance)
-            // - Parking point: null (allow snapping to parking)
+            // - Start point: unlimited (allow snapping to nearest road)
+            // - Gateway points: 100 (road-pinning with high reliability)
+            // - Parking point: unlimited (allow snapping to parking)
             const snapRadiuses = [
-                'null', 
-                ...gatewayPath.map(() => '50'),
-                'null'
+                'unlimited', 
+                ...gatewayPath.map(() => '100'),
+                'unlimited'
             ];
 
             // FORCE the driving route to pass through the entire Gateway Sequence
