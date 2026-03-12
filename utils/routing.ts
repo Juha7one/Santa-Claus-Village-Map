@@ -466,7 +466,7 @@ async function calculateDirectRoute(start: Coordinates, end: Coordinates, localP
 /** Helper function to check if a point is within the map bounds with a buffer. */
 function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
     if (!bounds) return true;
-    const buffer = 0.01;
+    const buffer = 0.002; // Reduced buffer for more precise village detection (approx 200m)
     const [[minLat, minLng], [maxLat, maxLng]] = bounds;
     return (
         point.lat >= minLat - buffer &&
@@ -495,10 +495,21 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         };
     }
 
-    const parkingSpots = allPlaces.filter(p =>
-        p.categoryKey === 'Transportation' &&
-        p.id.toLowerCase().includes('parking')
-    );
+    const parkingSpots = allPlaces.filter(p => {
+        if (p.categoryKey !== 'Transportation') return false;
+        
+        const nameMatch = (name: any) => {
+            if (typeof name === 'string') return name.toLowerCase().includes('parking') || name.toLowerCase().includes('pysäköinti');
+            if (typeof name === 'object') return Object.values(name).some((v: any) => v.toLowerCase().includes('parking') || v.toLowerCase().includes('pysäköinti'));
+            return false;
+        };
+
+        return (
+            (p.id && p.id.toLowerCase().includes('parking')) || 
+            (p.originalId && p.originalId.toLowerCase().includes('parking')) ||
+            nameMatch(p.name)
+        );
+    });
 
     const isStartInside = bounds ? isInsideBounds(start, bounds) : true;
 

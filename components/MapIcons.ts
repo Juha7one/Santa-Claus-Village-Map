@@ -6,7 +6,7 @@ import { Place } from '../types';
 
 
 // Icon for KML places
-export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved: boolean, placeId: string, subCategory?: string) => {
+export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved: boolean, placeId: string, subCategory?: string, originalId?: string) => {
     // We ignore the specific place.color from KML to ensure strict consistency 
     // with the footer filter buttons and accessibility standards.
     const baseColor = getCategoryColor(categoryKey);
@@ -94,7 +94,11 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     }
 
     // Check for Bus stops in Transportation category
-    if (categoryKey === 'Transportation' && (subCategory === 'bus' || placeId.toLowerCase().includes('bus-stop'))) {
+    const isBusStop = subCategory === 'bus' || 
+                      placeId.toLowerCase().includes('bus-stop') || 
+                      (originalId && originalId.toLowerCase().includes('bus-stop'));
+
+    if (categoryKey === 'Transportation' && isBusStop) {
         const busIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.22 210.57" fill="currentColor" class="w-5 h-5 text-white"><path d="M196.12,62.97h-6.21c-.39,0-.76.04-1.13.1V28.43c.03-.29.05-.57.05-.86,0-1.93-.63-3.82-1.83-5.63-.75-1.24-1.69-2.34-2.81-3.25C172.5,7.82,139.94,0,101.61,0S31.13,7.72,19.25,18.48c-1.47,1.14-2.68,2.59-3.53,4.27-.87,1.56-1.33,3.17-1.33,4.82,0,.15.01.29.02.43,0,.11-.02.21-.02.31v34.74c-.36-.05-.72-.09-1.09-.09h-6.21c-3.92,0-7.1,3.18-7.1,7.1v37.2c0,3.92,3.18,7.1,7.1,7.1h6.21c.37,0,.73-.04,1.09-.09v63.59c0,6.86,5.56,12.42,12.42,12.42h7.14v17.39c0,1.6,1.3,2.9,2.9,2.9h19.12c1.6,0,2.9-1.3,2.9-2.9v-17.39h85.46v17.39c0,1.6,1.3,2.9,2.9,2.9h19.12c1.6,0,2.9-1.3,2.9-2.9v-17.39h7.1c6.86,0,12.42-5.56,12.42-12.42v-63.6c.37.06.75.1,1.13.1h6.21c3.92,0,7.1-3.18,7.1-7.1v-37.2c0-3.92-3.18-7.1-7.1-7.1ZM58.14,17.99c0-4.55,3.68-8.23,8.23-8.23h70.48c4.55,0,8.23,3.68,8.23,8.23h0c0,4.55-3.68,8.23-8.23-8.23h-70.48c-4.55,0-8.23-3.68-8.23-8.23h0ZM46.99,174.76c-6.99,0-12.65-5.66-12.65-12.65s5.66-12.65,12.65-12.65,12.65,5.66,12.65,12.65-5.66,12.65-12.65,12.65ZM156.23,174.76c-6.99,0-12.65-5.66-12.65-12.65s5.66-12.65,12.65-12.65,12.65,5.66,12.65,12.65-5.66,12.65-12.65,12.65ZM171.94,122.45c0,6.28-5.09,11.37-11.37,11.37H42.65c-6.28,0-11.37-5.09-11.37-11.37V50.64c0-6.28,5.09-11.37,11.37-11.37h117.91c6.28,0,11.37,5.09,11.37,11.37v71.81Z"/></svg>`;
         return new L.DivIcon({
             html: `<div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md border-2 border-white" style="background-color: ${color};">${busIconSvg}</div>`,
@@ -107,7 +111,12 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
 
 
     // Check for Parking spots in Transportation category
-    if (categoryKey === 'Transportation' && (subCategory === 'parking' || placeId.toLowerCase().includes('parking') || !subCategory)) {
+    const isParking = subCategory === 'parking' || 
+                       placeId.toLowerCase().includes('parking') || 
+                       (originalId && originalId.toLowerCase().includes('parking')) ||
+                       (!subCategory && categoryKey === 'Transportation');
+
+    if (categoryKey === 'Transportation' && isParking) {
         return new L.DivIcon({
             html: `<div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md border-2 border-white" style="background-color: ${color};">
                      <span class="text-white font-bold text-lg font-sans">P</span>
