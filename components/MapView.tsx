@@ -698,10 +698,10 @@ const MapView: React.FC<MapViewProps> = ({
                     })
                 )}
 
-                {/* TEST MODE: Visible Wonk Polygon (Violet for deployment confirmation) */}
+                {/* TEST MODE: Visible Wonk Polygon (Small surgical version) */}
                 <Polygon 
                     positions={RESTRICTED_WONK_POLYGON.map(p => [p.lat, p.lng] as [number, number])} 
-                    pathOptions={{ color: 'violet', weight: 2, fillOpacity: 0.2, dashArray: '5, 5' }} 
+                    pathOptions={{ color: 'red', weight: 1, fillOpacity: 0.1, dashArray: '5, 5' }} 
                 />
 
                 {favouriteRouteSegments && favouriteRouteSegments.map((segment, index) => (
