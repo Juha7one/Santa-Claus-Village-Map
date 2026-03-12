@@ -527,9 +527,9 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         // Highway Gateways: Force OSRM to exit the highway at the correct spot 
         // to prevent it from finding 'shortcuts' through the village core.
         // Highway Gateways: Refined to major transit bottlenecks.
-        // South: The Myllymäentie bridge (ensures staying on main road)
-        // North: The Pukinpolku highway approach
-        const southGateway = { lat: 66.5405, lng: 25.8365 }; 
+        // South: The southern roundabout (Myllymäentie / Pajakyläntie)
+        // North: The northern highway exit / Pukinpolku line
+        const southGateway = { lat: 66.5414, lng: 25.8362 }; 
         const northGateway = { lat: 66.5475, lng: 25.8485 };
 
         // Determine which side of the village the user is arriving at
