@@ -187,19 +187,16 @@ function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
 
 /** 
  * THE VIRTUAL FENCE: 
- * This box covers the entire residential detour zone (Pukinpolku).
- * We raised the north boundary to 66.5415 to ensure it catches even the 'slight' detours.
+ * Made tighter and lower to stay strictly BELOW Joulumaantie.
  */
 export const RESTRICTED_WONK_ZONE: Bounds = [
-    [66.5411, 25.8360], // South-West (Moved North/East)
-    [66.5422, 25.8440]  // North-East (Moved North/East)
+    [66.54115, 25.8370], // South-West
+    [66.54165, 25.8405]  // North-East
 ];
 
 function filterWonkyPoints(geometry: Coordinates[]): Coordinates[] {
-    if (geometry.length <= 2) return geometry;
     const filtered = geometry.filter(p => !isInsideBounds(p, RESTRICTED_WONK_ZONE));
-    if (filtered.length < 2) return geometry;
-    return filtered;
+    return filtered.length > 0 ? filtered : geometry;
 }
 
 // --- ROUTE FETCHING ---
