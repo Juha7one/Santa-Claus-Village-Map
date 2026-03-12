@@ -13,7 +13,7 @@ i18n
         },
         detection: {
             // Check 'lang' parameter since user prefers it over 'lng'
-            order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
+            order: ['navigator', 'querystring', 'cookie', 'localStorage', 'htmlTag'],
             lookupQuerystring: 'lang',
             caches: ['localStorage', 'cookie'],
         },

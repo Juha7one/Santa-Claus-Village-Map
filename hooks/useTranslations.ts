@@ -18,7 +18,7 @@ export function useTranslations() {
   // 2. Fallback to i18next state
   const i18nLang = i18n.language?.split('-')[0];
 
-  const currentLang = langParam || i18nLang || 'en';
+  const currentLang = i18nLang || langParam || 'en';
 
   return useMemo(() => {
     // translations contains { en, fi }
