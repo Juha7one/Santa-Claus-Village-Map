@@ -526,18 +526,20 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         // South entrance is roughly near St1: 66.541, 25.836
         // North entrance is roughly near Nova Skyland: 66.546, 25.848
         
-        const southEntrance = { lat: 66.541, lng: 25.836 };
+        // South entrance: Intersection of Myllymäentie and Joulumaantie approaches (South-West)
+        const southEntrance = { lat: 66.540, lng: 25.834 };
+        // North entrance: Approaches from the North-East side (Pukinpolku/Tähtikuja area)
         const northEntrance = { lat: 66.546, lng: 25.848 };
 
-        // Determine which entrance the user is approaching from
+        // Determine which side of the village the user is arriving at
         const distToSouthEntrance = calculateDistance(start, southEntrance);
         const distToNorthEntrance = calculateDistance(start, northEntrance);
         const isApproachingFromSouth = distToSouthEntrance < distToNorthEntrance;
 
-        // Filter parking spots to those reachable from the arrival side without crossing the village core.
-        // Latitude 66.5438 is the center line (Roosevelt area)
+        // The 'split' point is near Roosevelt Cottage/Santa Claus Office (approx 66.5435)
+        // This 'invisible wall' prevents routing from driving through the village core.
         const zoneParkingSpots = parkingSpots.filter(p => {
-            const isNorthSide = p.location.lat > 66.5438;
+            const isNorthSide = p.location.lat > 66.5435;
             return isApproachingFromSouth ? !isNorthSide : isNorthSide;
         });
 
