@@ -560,25 +560,26 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
             
             // Reference points for the highway entrances
             const southGateway = { lat: 66.5414, lng: 25.8362 }; // Main Southern Roundabout
-            const northGateway = { lat: 66.5505, lng: 25.8485 }; // North Highway Ramp
+            const northGateway = { lat: 66.5505, lng: 25.8480 }; // North Highway Ramp
 
             const isSouthParking = nearestParking.subCategory === 'parking-south';
-            const targetGateway = isSouthParking ? southGateway : northGateway;
+            const gateway = isSouthParking ? southGateway : northGateway;
 
-            // Decision: Do we NEED to force a waypoint?
-            // If the user is already closer to the 'target entrance' than the 'opposite entrance',
-            // and they are relatively close to the gateway, OSRM will naturally take the right path.
-            // We only force the waypoint if they are far away (to ensure the highway choice)
-            // or if they are approaching from the "wrong" side.
+            // Logic: Only force the gateway if the user is actually 'outside' and far away.
+            // If they are already near the gateway or past it, don't force it, 
+            // as it causes "Dead end tours" (forcing a U-turn to touch the point).
             
-            const distToTargetGateway = calculateDistance(start, targetGateway);
-            const distToOppositeGateway = calculateDistance(start, isSouthParking ? northGateway : southGateway);
-            
+            const distStartToParking = calculateDistance(start, nearestParking.location);
+            const distGatewayToParking = calculateDistance(gateway, nearestParking.location);
+            const distStartToGateway = calculateDistance(start, gateway);
+
             const waypoints = [start];
             
-            // Force the gateway if they are coming from the "wrong side" or are still far out on the highway
-            if (distToTargetGateway > 500 || distToTargetGateway > distToOppositeGateway) {
-                waypoints.push(targetGateway);
+            // We ONLY add the gateway if the user is:
+            // 1. Far enough away that we need to guide them TO the highway exit (> 300m)
+            // 2. Further from the parking lot than the gateway is.
+            if (distStartToGateway > 300 && distStartToParking > distGatewayToParking) {
+                waypoints.push(gateway);
             }
             
             waypoints.push(nearestParking.location);
