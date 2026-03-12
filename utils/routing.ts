@@ -408,6 +408,18 @@ export async function calculateWalkingRoute(
 }
 
 
+/** Private helper to format OSRM route data consistently */
+function handleRouteData(data: OSRMRouteResponse): { geometry: Coordinates[], distance: number, duration: number, isRoute: boolean } {
+    const route = data.routes[0];
+    return {
+        geometry: route.geometry.coordinates.map(([lng, lat]: [number, number]) => ({ lat, lng })),
+        distance: route.distance,
+        duration: route.duration,
+        isRoute: true
+    };
+}
+
+
 /** Fetches a route from the OSRM API with support for multiple waypoints. */
 async function fetchOSRMRoute(
     points: Coordinates[], 
@@ -423,22 +435,32 @@ async function fetchOSRMRoute(
     }
 
     try {
-        const response = await fetch(url, { signal });
-        if (!response.ok) throw new Error('OSRM error');
+        let response = await fetch(url, { signal });
+        
+        // If strict snapping failed, retry once with unlimited search
+        if (!response.ok && customRadiuses) {
+            console.warn("OSRM strict snapping failed, retrying with unlimited search");
+            const fallbackUrl = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson`;
+            response = await fetch(fallbackUrl, { signal });
+        }
 
+        if (!response.ok) throw new Error('OSRM error');
         const data: OSRMRouteResponse = await response.json();
 
         if (data.code !== 'Ok' || !data.routes || data.routes.length === 0) {
+            // One last try if the specific code was 'NoRoute'
+            if (customRadiuses) {
+                const fallbackUrl = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson`;
+                const retryResponse = await fetch(fallbackUrl, { signal });
+                const retryData = await retryResponse.json();
+                if (retryData.code === 'Ok' && retryData.routes?.length > 0) {
+                    return handleRouteData(retryData);
+                }
+            }
             throw new Error('No route found');
         }
 
-        const route = data.routes[0];
-        return {
-            geometry: route.geometry.coordinates.map(([lng, lat]: [number, number]) => ({ lat, lng })),
-            distance: route.distance,
-            duration: route.duration,
-            isRoute: true
-        };
+        return handleRouteData(data);
     } catch (error) {
         if ((error as Error).name !== 'AbortError') {
             console.warn("OSRM fetch failed, falling back to straight line", error);
@@ -589,10 +611,10 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
                     const distStartToPoint = calculateDistance(start, p);
                     
                     // 1. Point must be closer to destination than we are (forward movement)
-                    // 2. We must not be right on top of it yet (> 100m)
-                    if (distPointToParking < distStartToParking && distStartToPoint > 100) {
+                    // 2. We must not be right on top of it yet (> 50m)
+                    if (distPointToParking < distStartToParking && distStartToPoint > 50) {
                         waypoints.push(p);
-                        radiuses.push('20'); // Strict 20m snap to keep car ON asphalt
+                        radiuses.push('50'); // Balanced 50m snap to keep car ON asphalt but avoid failures
                     }
                 });
             }
