@@ -412,10 +412,15 @@ export async function calculateWalkingRoute(
 async function fetchOSRMRoute(
     points: Coordinates[], 
     mode: 'driving' | 'foot', 
-    signal: AbortSignal
+    signal: AbortSignal,
+    customRadiuses?: string[]
 ): Promise<{ geometry: Coordinates[], distance: number, duration: number, isRoute: boolean }> {
     const pointsStr = points.map(p => `${p.lng},${p.lat}`).join(';');
-    const url = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson`;
+    let url = `https://router.project-osrm.org/route/v1/${mode}/${pointsStr}?overview=full&geometries=geojson`;
+    
+    if (customRadiuses) {
+        url += `&radiuses=${customRadiuses.join(';')}`;
+    }
 
     try {
         const response = await fetch(url, { signal });
@@ -558,33 +563,44 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // Reference points for the highway entrances
-            const southGateway = { lat: 66.5414, lng: 25.8362 }; // Main Southern Roundabout
-            const northGateway = { lat: 66.5505, lng: 25.8480 }; // North Highway Ramp
+            // The "Asphalt Spine": Mandatory waypoints along main roads
+            const southSpine: Coordinates[] = [
+                { lat: 66.5414, lng: 25.8362 }, // Roundabout
+                { lat: 66.5422, lng: 25.8400 }, // Joulumaantie mid-west
+                { lat: 66.5428, lng: 25.8430 }, // Joulumaantie center (Bus stop area)
+                { lat: 66.5432, lng: 25.8465 }  // Joulumaantie/Tähtikuja junction
+            ];
+            const northSpine: Coordinates[] = [
+                { lat: 66.5505, lng: 25.8480 }, // North Ramp
+                { lat: 66.5480, lng: 25.8480 }, // Pukinpolku approach
+                { lat: 66.5455, lng: 25.8475 }  // Tähtikuja approach
+            ];
 
             const isSouthParking = nearestParking.subCategory === 'parking-south';
-            const gateway = isSouthParking ? southGateway : northGateway;
+            const targetSpine = isSouthParking ? southSpine : northSpine;
 
-            // Logic: Only force the gateway if the user is actually 'outside' and far away.
-            // If they are already near the gateway or past it, don't force it, 
-            // as it causes "Dead end tours" (forcing a U-turn to touch the point).
+            // Only force the spine if we are coming from "outside"
+            const distToEntry = calculateDistance(start, targetSpine[0]);
             
-            const distStartToParking = calculateDistance(start, nearestParking.location);
-            const distGatewayToParking = calculateDistance(gateway, nearestParking.location);
-            const distStartToGateway = calculateDistance(start, gateway);
-
             const waypoints = [start];
-            
-            // We ONLY add the gateway if the user is:
-            // 1. Far enough away that we need to guide them TO the highway exit (> 300m)
-            // 2. Further from the parking lot than the gateway is.
-            if (distStartToGateway > 300 && distStartToParking > distGatewayToParking) {
-                waypoints.push(gateway);
+            const radiuses = ['unlimited'];
+
+            if (distToEntry > 300) {
+                targetSpine.forEach(p => {
+                    waypoints.push(p);
+                    radiuses.push('50'); // Strict 50m road-pinning for spine
+                });
             }
             
             waypoints.push(nearestParking.location);
+            radiuses.push('unlimited');
 
-            const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal);
+            const drivingRoute = await fetchOSRMRoute(
+                waypoints, 
+                'driving', 
+                signal,
+                radiuses
+            );
             
             segments.push({
                 type: 'road',
