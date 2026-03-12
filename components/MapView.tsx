@@ -626,6 +626,77 @@ const MapView: React.FC<MapViewProps> = ({
 
                 {lines.filter(line => line.categoryKey !== 'Facilities' && line.categoryKey !== 'Paths').map(line => {
                     const displayName = getLangString(line.name, currentLang);
+                    
+                    // Special rendering for Arctic Circle Line with Tilt and Gradient
+                    if (line.id === 'arctic-circle-line') {
+                        const midpoint = line.coordinates[Math.floor(line.coordinates.length / 2)];
+                        if (!midpoint) return null;
+
+                        const tiltDegrees = 340.7; // User specified tilt
+                        const tiltRad = (tiltDegrees * Math.PI) / 180;
+                        const totalLengthMeters = 800; // Total visible length
+                        const segmentCount = 40; // Number of segments for the gradient
+                        const stepMeters = totalLengthMeters / segmentCount;
+                        
+                        // Earth radius approximation for lat/lng math
+                        const R_LAT = 111320; 
+                        const R_LNG = 111320 * Math.cos((midpoint.lat * Math.PI) / 180);
+
+                        return (
+                            <React.Fragment key={line.id}>
+                                {Array.from({ length: segmentCount }).map((_, i) => {
+                                    // Calculate center-relative position of this segment
+                                    const distFromCenter = (i - segmentCount / 2) * stepMeters;
+                                    const nextDistFromCenter = (i + 1 - segmentCount / 2) * stepMeters;
+                                    
+                                    // Opacity: 1.0 at center, 0.0 at edges
+                                    const normalizedPos = Math.abs((i + 0.5) / segmentCount - 0.5) * 2; // 0 at center, 1 at edges
+                                    const opacity = Math.max(0, 1 - normalizedPos);
+                                    
+                                    const p1 = {
+                                        lat: midpoint.lat + (distFromCenter * Math.cos(tiltRad)) / R_LAT,
+                                        lng: midpoint.lng + (distFromCenter * Math.sin(tiltRad)) / R_LNG
+                                    };
+                                    const p2 = {
+                                        lat: midpoint.lat + (nextDistFromCenter * Math.cos(tiltRad)) / R_LAT,
+                                        lng: midpoint.lng + (nextDistFromCenter * Math.sin(tiltRad)) / R_LNG
+                                    };
+
+                                    return (
+                                        <Polyline
+                                            key={`${line.id}-seg-${i}`}
+                                            positions={[p1, p2]}
+                                            pane="routePane"
+                                            pathOptions={{
+                                                color: line.color || "#b0279c",
+                                                weight: line.weight || 8,
+                                                opacity: opacity,
+                                                lineCap: 'round'
+                                            }}
+                                        />
+                                    );
+                                })}
+                                {/* Invisible broad polyline for tooltip/hover */}
+                                <Polyline
+                                    positions={[
+                                        {
+                                            lat: midpoint.lat - (totalLengthMeters/2 * Math.cos(tiltRad)) / R_LAT,
+                                            lng: midpoint.lng - (totalLengthMeters/2 * Math.sin(tiltRad)) / R_LNG
+                                        },
+                                        {
+                                            lat: midpoint.lat + (totalLengthMeters/2 * Math.cos(tiltRad)) / R_LAT,
+                                            lng: midpoint.lng + (totalLengthMeters/2 * Math.sin(tiltRad)) / R_LNG
+                                        }
+                                    ]}
+                                    pane="routePane"
+                                    pathOptions={{ color: 'transparent', weight: 20 }}
+                                >
+                                    <Tooltip sticky>{displayName}</Tooltip>
+                                </Polyline>
+                            </React.Fragment>
+                        );
+                    }
+
                     return (
                         <Polyline
                             key={line.id}

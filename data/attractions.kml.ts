@@ -8,7 +8,7 @@ export const attractionsKML = `
   <Placemark id="arctic-circle-line">
     <styleUrl>#arctic-circle-line-style-map</styleUrl>
     <LineString>
-      <coordinates>25.840,66.543477 25.860,66.543477</coordinates>
+      <coordinates>25.846555,66.543477</coordinates>
     </LineString>
   </Placemark>
   <Placemark id="3YQuM">
