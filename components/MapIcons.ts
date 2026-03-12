@@ -93,6 +93,22 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
         });
     }
 
+    // Check for EV Charging spots in Transportation category
+    const isEVCharging = subCategory?.startsWith('ev-charging') || 
+                         placeId.toLowerCase().includes('ev-charging') || 
+                         (originalId && originalId.toLowerCase().includes('ev-charging'));
+
+    if (categoryKey === 'Transportation' && isEVCharging) {
+        const chargingIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-white"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>`;
+        return new L.DivIcon({
+            html: `<div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md border-2 border-white" style="background-color: ${color};">${chargingIconSvg}</div>`,
+            className: 'bg-transparent border-0',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, -16]
+        });
+    }
+
     // Check for Bus stops in Transportation category
     const isBusStop = subCategory === 'bus' || 
                       placeId.toLowerCase().includes('bus-stop') || 
