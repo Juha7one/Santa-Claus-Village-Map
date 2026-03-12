@@ -630,9 +630,10 @@ const MapView: React.FC<MapViewProps> = ({
                         <Polyline
                             key={line.id}
                             positions={line.coordinates}
+                            pane="routePane"
                             pathOptions={{
                                 color: line.color || "rgba(0, 181, 255, 0.19)",
-                                weight: 5
+                                weight: line.weight || 5
                             }}
                         >
                             <Tooltip>{displayName}</Tooltip>
@@ -649,7 +650,7 @@ const MapView: React.FC<MapViewProps> = ({
                             pane="kmlPathPane"
                             pathOptions={{
                                 color: '#FFFFFF',
-                                weight: 4,
+                                weight: line.weight || 4,
                                 opacity: line.categoryKey === 'Paths' ? 0.1 : 0.2,
                             }}
                         >

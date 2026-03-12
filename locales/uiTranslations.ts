@@ -41,7 +41,7 @@ export const uiTranslations: Record<string, any> = {
             all: 'Kaikki',
         },
         onboarding: {
-            welcomeTitle: 'Tervetuloa Pajakylän Kartalle!',
+            welcomeTitle: 'Tervetuloa Pajakylän Kartalle! (v1.1.260313-0015)',
             welcomeText: 'Tämä on virallinen interaktiivinen karttapalvelu Joulupukin Pajakylään. Autamme sinua löytämään kaiken tarvitsemasi ja suunnittelemaan vierailusi.',
             stepCategoriesTitle: 'Selaa kategorioita',
             stepCategoriesText: 'Voit suodattaa kohteita alkunäytön alareunasta. Valitse esim. "Ostokset" tai "Majoitus" nähdäksesi vain ne.',
@@ -99,7 +99,7 @@ export const uiTranslations: Record<string, any> = {
             all: 'All',
         },
         onboarding: {
-            welcomeTitle: 'Welcome to the Village Map!',
+            welcomeTitle: 'Welcome to the Village Map! (v1.1.260313-0015)',
             welcomeText: 'This is the official interactive map for Santa Claus Village. We help you find everything you need and plan your visit.',
             stepCategoriesTitle: 'Browse Categories',
             stepCategoriesText: 'You can filter places using the category bar at the bottom. Choose e.g. "Shopping" or "Accommodation" to see only those.',

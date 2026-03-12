@@ -37,6 +37,7 @@ export interface LineData {
   categoryKey: string;
   coordinates: Coordinates[];
   color?: string;
+  weight?: number;
 }
 
 export interface RouteSegment {

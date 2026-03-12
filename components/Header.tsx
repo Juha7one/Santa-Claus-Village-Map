@@ -107,7 +107,7 @@ const Header: React.FC<HeaderProps> = ({
 
     return (
         <header
-            className="bg-[#B71C1C] text-white px-4 shadow-md flex items-center z-30 relative transition-all duration-300"
+            className="bg-[#263238] text-white px-4 shadow-md flex items-center z-30 relative transition-all duration-300"
             style={{
                 paddingTop: 'calc(1rem + var(--safe-area-inset-top))',
                 paddingBottom: '1rem',
@@ -168,7 +168,10 @@ const Header: React.FC<HeaderProps> = ({
                 </div>
             ) : (
                 <>
-                    <h1 className="text-lg sm:text-xl font-bold flex-1 truncate mr-2">{t.ui.mapTitle}</h1>
+                    <div className="flex-1 flex flex-col justify-center">
+                        <h1 className="text-lg sm:text-xl font-bold truncate">{t.ui.mapTitle}</h1>
+                        <span className="text-[10px] opacity-80 leading-tight">v1.1.260313-0015 (Updated)</span>
+                    </div>
                     <div className="flex items-center space-x-2 flex-shrink-0">
                         <button
                             onClick={() => setIsSearchOpen(true)}

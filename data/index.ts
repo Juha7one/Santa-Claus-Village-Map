@@ -589,6 +589,22 @@ export const kmlDataString = `<?xml version="1.0" encoding="UTF-8"?>
         <styleUrl>#line-C2185B-8894-highlight</styleUrl>
       </Pair>
     </StyleMap>
+    <Style id="arctic-circle-line-style">
+      <LineStyle>
+        <color>ff9c27b0</color>
+        <width>8</width>
+      </LineStyle>
+    </Style>
+    <StyleMap id="arctic-circle-line-style-map">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#arctic-circle-line-style</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#arctic-circle-line-style</styleUrl>
+      </Pair>
+    </StyleMap>
     ${attractionsKML}
     ${activitiesKML}
     ${accommodationKML}

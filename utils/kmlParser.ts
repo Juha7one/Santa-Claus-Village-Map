@@ -67,7 +67,7 @@ export const parseKML = (kmlString: string, translations: any): { places: Place[
 
     let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180;
 
-    const styles = new Map<string, { color?: string }>();
+    const styles = new Map<string, { color?: string, weight?: number }>();
     const styleMaps = new Map<string, string>();
 
     // Parse StyleMaps
@@ -87,9 +87,14 @@ export const parseKML = (kmlString: string, translations: any): { places: Place[
         const id = node.getAttribute('id');
         if (id) {
             const iconColorNode = node.getElementsByTagNameNS(kmlNamespace, 'IconStyle')[0]?.getElementsByTagNameNS(kmlNamespace, 'color')[0];
-            const lineColorNode = node.getElementsByTagNameNS(kmlNamespace, 'LineStyle')[0]?.getElementsByTagNameNS(kmlNamespace, 'color')[0];
+            const lineStyleNode = node.getElementsByTagNameNS(kmlNamespace, 'LineStyle')[0];
+            const lineColorNode = lineStyleNode?.getElementsByTagNameNS(kmlNamespace, 'color')[0];
+            const lineWidthNode = lineStyleNode?.getElementsByTagNameNS(kmlNamespace, 'width')[0];
+            
             const color = kmlColorToHex(iconColorNode?.textContent || lineColorNode?.textContent);
-            styles.set(`#${id}`, { color });
+            const weight = lineWidthNode ? parseFloat(lineWidthNode.textContent || '') : undefined;
+            
+            styles.set(`#${id}`, { color, weight });
         }
     });
 
@@ -117,7 +122,7 @@ export const parseKML = (kmlString: string, translations: any): { places: Place[
         const category = translations.categories[categoryKey] || categoryKey;
 
         const styleUrlNode = placemark.getElementsByTagNameNS(kmlNamespace, 'styleUrl')[0];
-        let finalStyle: { color?: string } | undefined;
+        let finalStyle: { color?: string, weight?: number } | undefined;
         if (styleUrlNode?.textContent) {
             let styleUrl = styleUrlNode.textContent;
             // Resolve StyleMap to a normal Style
@@ -182,6 +187,7 @@ export const parseKML = (kmlString: string, translations: any): { places: Place[
                         categoryKey,
                         coordinates: coords,
                         color: finalStyle?.color,
+                        weight: finalStyle?.weight,
                     });
                 }
             });
