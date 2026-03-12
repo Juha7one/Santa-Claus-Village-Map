@@ -177,9 +177,21 @@ export async function calculateWalkingRoute(start: Coordinates, end: Coordinates
     return [{ type: 'path', geometry: cleanGeometry, distance: totalDist, duration: totalDist / 1.4 }];
 }
 
-function handleRouteData(data: any): { geometry: Coordinates[], distance: number, duration: number, isRoute: boolean } {
+function handleRouteData(data: any, mode: 'driving' | 'foot'): { geometry: Coordinates[], distance: number, duration: number, isRoute: boolean } {
     const route = data.routes[0];
-    return { geometry: route.geometry.coordinates.map(([lng, lat]: [number, number]) => ({ lat, lng })), distance: route.distance, duration: route.duration, isRoute: true };
+    let geometry = route.geometry.coordinates.map(([lng, lat]: [number, number]) => ({ lat, lng }));
+    
+    // APPLY THE VIRTUAL FENCE: If driving, remove points from the 'Wonk Zone'
+    if (mode === 'driving') {
+        geometry = filterWonkyPoints(geometry);
+    }
+
+    return {
+        geometry,
+        distance: route.distance,
+        duration: route.duration,
+        isRoute: true
+    };
 }
 
 /** Pure Routing Helper (Trusting OSM servers natively) */
@@ -199,7 +211,7 @@ async function fetchOSRMRoute(
         const response = await fetch(url, { signal });
         const data = await response.json();
         if (data.code !== 'Ok' || !data.routes?.[0]) throw new Error('OSRM error');
-        return handleRouteData(data);
+        return handleRouteData(data, mode);
     } catch (error) {
         if ((error as Error).name !== 'AbortError') console.warn("OSRM failed, falling back", error);
         const start = points[0], end = points[points.length - 1], dist = calculateDistance(start, end);
@@ -211,6 +223,31 @@ function isInsideBounds(point: Coordinates, bounds: Bounds): boolean {
     if (!bounds) return true;
     const [min, max] = bounds;
     return point.lat >= min[0] && point.lat <= max[0] && point.lng >= min[1] && point.lng <= max[1];
+}
+
+/** 
+ * THE VIRTUAL FENCE: Solution 2 implementation.
+ * This box covers the residential area (Pukinpolku) where the detours happen.
+ */
+const RESTRICTED_WONK_ZONE: Bounds = [
+    [66.5404, 25.8330], // South-West
+    [66.5413, 25.8365]  // North-East
+];
+
+/** 
+ * Solution 1 implementation: Deletes 'wonky' points from the array.
+ * This naturally results in a straight line between the points outside the restricted zone.
+ */
+function filterWonkyPoints(geometry: Coordinates[]): Coordinates[] {
+    // If we only have 2 points, don't break the line.
+    if (geometry.length <= 2) return geometry;
+
+    const filtered = geometry.filter(p => !isInsideBounds(p, RESTRICTED_WONK_ZONE));
+    
+    // Ensure we don't return an empty array or just one point
+    if (filtered.length < 2) return geometry;
+    
+    return filtered;
 }
 
 /** Calculates a multi-modal route. Match official OSM behavior exactly. */
