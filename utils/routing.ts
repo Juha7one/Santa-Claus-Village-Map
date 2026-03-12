@@ -594,18 +594,26 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
             const radiuses = ['unlimited'];
 
             if (isSouthParking) {
-                // The "South Gate": Highway exit ramp and Roundabout
-                const hwyExit = { lat: 66.5405, lng: 25.8335 };
-                const roundabout = { lat: 66.5414, lng: 25.8362 };
+                // The "South Gate Complex": Forces entry via highway and Joulumaantie
+                // adding a point early on Joulumaantie blocks the Mykkälä/residential detour.
+                const southGatePoints = [
+                    { lat: 66.5405, lng: 25.8335 }, // Highway Exit
+                    { lat: 66.5414, lng: 25.8362 }, // Roundabout
+                    { lat: 66.5419, lng: 25.8390 }  // Joulumaantie Entry Anchor (Blocks Mykkälä)
+                ];
 
                 const distToParking = calculateDistance(start, nearestParking.location);
-                const distGateToParking = calculateDistance(roundabout, nearestParking.location);
 
-                // Only force the gates if the user is truly approaching from outside
-                if (distToParking > distGateToParking + 200) {
-                    waypoints.push(hwyExit, roundabout);
-                    radiuses.push('unlimited', 'unlimited');
-                }
+                southGatePoints.forEach(p => {
+                    const distGateToParking = calculateDistance(p, nearestParking.location);
+                    
+                    // Only add the gate if it's "on the way" (further from parking than we are)
+                    // This prevents U-turns if the user is already inside the village.
+                    if (distToParking > distGateToParking + 100) {
+                        waypoints.push(p);
+                        radiuses.push('unlimited');
+                    }
+                });
             }
             
             waypoints.push(nearestParking.location);
