@@ -594,24 +594,21 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
             const radiuses = ['unlimited'];
 
             if (isSouthParking) {
-                // The "South Gate Complex": Forces entry via highway and Joulumaantie
-                // adding a point early on Joulumaantie blocks the Mykkälä/residential detour.
-                const southGatePoints = [
-                    { lat: 66.5405, lng: 25.8335 }, // Highway Exit
+                // THE ASPHALT RAILS: Forces the car onto the main Joulumaantie asphalt.
+                // Strict 30m snapping prevents the engine from jumping to backyard service paths.
+                const asphaltRails = [
                     { lat: 66.5414, lng: 25.8362 }, // Roundabout
-                    { lat: 66.5419, lng: 25.8390 }  // Joulumaantie Entry Anchor (Blocks Mykkälä)
+                    { lat: 66.5420, lng: 25.8400 }, // Joulumaantie Start-ish
+                    { lat: 66.5425, lng: 25.8435 }  // Joulumaantie Middle
                 ];
 
                 const distToParking = calculateDistance(start, nearestParking.location);
 
-                southGatePoints.forEach(p => {
+                asphaltRails.forEach(p => {
                     const distGateToParking = calculateDistance(p, nearestParking.location);
-                    
-                    // Only add the gate if it's "on the way" (further from parking than we are)
-                    // This prevents U-turns if the user is already inside the village.
-                    if (distToParking > distGateToParking + 100) {
+                    if (distToParking > distGateToParking + 150) {
                         waypoints.push(p);
-                        radiuses.push('unlimited');
+                        radiuses.push('30'); // Strict snapping to main road
                     }
                 });
             }

@@ -172,17 +172,28 @@ function App() {
   };
 
 
+  const [pendingNavPlace, setPendingNavPlace] = useState<Place | null>(null);
+
   const handleGetDirections = (place: Place) => {
     if (!userLocation) {
+      alert("Please check your browser and Allow GPS access to start navigation.");
+      setPendingNavPlace(place);
       requestLocation();
       return;
     }
     if (place) {
+      setPendingNavPlace(null);
       handleClosePopup(); // Closes popup and clears URL
       setRoute({ start: userLocation, end: place.location });
       setViewState('route');
     }
   };
+
+  useEffect(() => {
+    if (userLocation && pendingNavPlace) {
+      handleGetDirections(pendingNavPlace);
+    }
+  }, [userLocation, pendingNavPlace]);
 
   const handleStopNavigation = () => {
     handleClosePopup();
