@@ -524,15 +524,18 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
-        // Highway Gateways: Multi-point sequences to 'glue' the route to main roads.
-        // This prevents zig-zags through cottage/residential areas.
+        // Highway Gateways: Dense "Road Railing" to keep cars on main asphalt.
+        // We provide points every ~100m to prevent OSRM from finding 'shortcuts' through cottage paths.
         const southGateway: Coordinates[] = [
-            { lat: 66.5414, lng: 25.8362 }, // Roundabout
-            { lat: 66.5428, lng: 25.8425 }  // Joulumaantie main stretch
+            { lat: 66.5414, lng: 25.8362 }, // Roundabout entry
+            { lat: 66.5418, lng: 25.8390 }, // Joulumaantie (past first cottage entrance)
+            { lat: 66.5423, lng: 25.8415 }, // Joulumaantie (past second cottage entrance)
+            { lat: 66.5428, lng: 25.8450 }  // Joulumaantie (near Information center)
         ]; 
         const northGateway: Coordinates[] = [
-            { lat: 66.5475, lng: 25.8485 }, // North Highway exit
-            { lat: 66.5455, lng: 25.8475 }  // Pukinpolku approach
+            { lat: 66.5505, lng: 25.8485 }, // North Highway exit
+            { lat: 66.5475, lng: 25.8485 }, // Pukinpolku start
+            { lat: 66.5458, lng: 25.8475 }  // Tähtikuja approach
         ];
 
         // Determine side based on first gateway point
