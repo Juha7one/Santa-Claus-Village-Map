@@ -596,8 +596,15 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
             const radiuses = ['unlimited'];
 
             if (isSouthParking) {
-                waypoints.push(southRoundabout);
-                radiuses.push('unlimited');
+                // THE "ASPHALT LOCK": We force the car to stay on the main Joulumaantie asphalt
+                // by placing pillars with strict 20m snapping. 
+                // The cottage paths are >30m away, so OSRM is forced to stay on the big road.
+                const pillar1 = { lat: 66.5414, lng: 25.8362 }; // Roundabout
+                const pillar2 = { lat: 66.5423, lng: 25.8420 }; // Joulumaantie Middle
+                const pillar3 = { lat: 66.5430, lng: 25.8465 }; // Joulumaantie East Pillar
+
+                waypoints.push(pillar1, pillar2, pillar3);
+                radiuses.push('50', '20', '20'); // Lock it to the center line
             }
             
             waypoints.push(nearestParking.location);
