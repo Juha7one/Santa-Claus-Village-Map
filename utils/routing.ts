@@ -528,8 +528,8 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
 
     // 3. If start is OUTSIDE, force driving to nearest parking -> walking
     if (parkingSpots.length > 0) {
-        const southReference = { lat: 66.5395, lng: 25.8285 };
-        const northReference = { lat: 66.5505, lng: 25.8485 };
+        const southReference = { lat: 66.5414, lng: 25.8362 }; // Southern Roundabout
+        const northReference = { lat: 66.5505, lng: 25.8485 }; // Northern Ramp
 
         // Determine side based on proximity to highway exits
         const distToSouth = calculateDistance(start, southReference);
@@ -558,15 +558,32 @@ export async function getRoute(start: Coordinates, end: Coordinates, allPlaces: 
         if (nearestParking) {
             const segments: RouteSegment[] = [];
             
-            // Forces correct entrance ramp without micro-managing waypoints
-            const isSouthParking = nearestParking.subCategory === 'parking-south';
-            const gateway = isSouthParking ? southReference : northReference;
+            // Reference points for the highway entrances
+            const southGateway = { lat: 66.5414, lng: 25.8362 }; // Main Southern Roundabout
+            const northGateway = { lat: 66.5505, lng: 25.8485 }; // North Highway Ramp
 
-            const drivingRoute = await fetchOSRMRoute(
-                [start, gateway, nearestParking.location], 
-                'driving', 
-                signal
-            );
+            const isSouthParking = nearestParking.subCategory === 'parking-south';
+            const targetGateway = isSouthParking ? southGateway : northGateway;
+
+            // Decision: Do we NEED to force a waypoint?
+            // If the user is already closer to the 'target entrance' than the 'opposite entrance',
+            // and they are relatively close to the gateway, OSRM will naturally take the right path.
+            // We only force the waypoint if they are far away (to ensure the highway choice)
+            // or if they are approaching from the "wrong" side.
+            
+            const distToTargetGateway = calculateDistance(start, targetGateway);
+            const distToOppositeGateway = calculateDistance(start, isSouthParking ? northGateway : southGateway);
+            
+            const waypoints = [start];
+            
+            // Force the gateway if they are coming from the "wrong side" or are still far out on the highway
+            if (distToTargetGateway > 500 || distToTargetGateway > distToOppositeGateway) {
+                waypoints.push(targetGateway);
+            }
+            
+            waypoints.push(nearestParking.location);
+
+            const drivingRoute = await fetchOSRMRoute(waypoints, 'driving', signal);
             
             segments.push({
                 type: 'road',
