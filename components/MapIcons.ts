@@ -8,8 +8,9 @@ import { Place } from '../types';
 // Icon for KML places
 export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved: boolean, placeId: string, subCategory?: string, originalId?: string, status?: 'Open' | 'Closed') => {
     const isClosed = status === 'Closed';
-    const closedLine = isClosed ? '<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full" style="z-index: 10;"><div class="w-[140%] h-[3px] bg-black rotate-45 shadow-[0_0_1px_rgba(255,255,255,0.9)]"></div></div>' : '';
-    const closedLinePin = isClosed ? '<div class="absolute top-0 left-0 w-8 h-8 flex items-center justify-center pointer-events-none overflow-hidden" style="z-index: 10;"><div class="w-[90%] h-[3px] bg-black rotate-45 shadow-[0_0_1px_rgba(255,255,255,0.9)]"></div></div>' : '';
+    const closedLine = isClosed ? '<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full" style="z-index: 10;"><div class="w-[140%] h-[3px] bg-white rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>' : '';
+    const closedLinePin = isClosed ? '<div class="absolute top-0 left-0 w-8 h-8 flex items-center justify-center pointer-events-none overflow-hidden" style="z-index: 10;"><div class="w-[90%] h-[3px] bg-white rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>' : '';
+
 
     // We ignore the specific place.color from KML to ensure strict consistency 
     // with the footer filter buttons and accessibility standards.
@@ -33,7 +34,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     if (categoryKey === 'Food-And-Drink') {
         const foodIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-white"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z" /></svg>`;
         return new L.DivIcon({
-            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${foodIconSvg}${closedLine}</div>`,
+            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${isClosed ? '' : foodIconSvg}${closedLine}</div>`,
             className: 'bg-transparent border-0',
             iconSize: [32, 32],
             iconAnchor: [16, 16], // Center anchor for a circle
@@ -44,7 +45,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     if (categoryKey === 'Shopping') {
         const shoppingIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-white"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" /></svg>`;
         return new L.DivIcon({
-            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${shoppingIconSvg}${closedLine}</div>`,
+            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${isClosed ? '' : shoppingIconSvg}${closedLine}</div>`,
             className: 'bg-transparent border-0',
             iconSize: [32, 32],
             iconAnchor: [16, 16], // Center anchor for a circle
@@ -55,7 +56,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     if (categoryKey === 'Accommodation') {
         const accommodationIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-white"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>`;
         return new L.DivIcon({
-            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${accommodationIconSvg}${closedLine}</div>`,
+            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${isClosed ? '' : accommodationIconSvg}${closedLine}</div>`,
             className: 'bg-transparent border-0',
             iconSize: [32, 32],
             iconAnchor: [16, 16], // Center anchor for a circle
@@ -66,7 +67,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     if (categoryKey === 'Activities') {
         const activitiesIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-white"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>`;
         return new L.DivIcon({
-            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${activitiesIconSvg}${closedLine}</div>`,
+            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${isClosed ? '' : activitiesIconSvg}${closedLine}</div>`,
             className: 'bg-transparent border-0',
             iconSize: [32, 32],
             iconAnchor: [16, 16], // Center anchor for a circle
@@ -77,7 +78,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     if (categoryKey === 'Attractions') {
         const attractionsIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-white"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>`;
         return new L.DivIcon({
-            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${attractionsIconSvg}${closedLine}</div>`,
+            html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${isClosed ? '' : attractionsIconSvg}${closedLine}</div>`,
             className: 'bg-transparent border-0',
             iconSize: [32, 32],
             iconAnchor: [16, 16], // Center anchor for a circle
@@ -88,7 +89,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     if (categoryKey === 'Facilities') {
         return new L.DivIcon({
             html: `<div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">
-                     <span class="text-white font-bold text-lg leading-none select-none">i</span>
+                     ${isClosed ? '' : '<span class="text-white font-bold text-lg leading-none select-none">i</span>'}
                      ${closedLine}
                    </div>`,
             className: 'bg-transparent border-0',
@@ -106,7 +107,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     if (categoryKey === 'Transportation' && isEVCharging) {
         const chargingIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-white"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>`;
         return new L.DivIcon({
-            html: `<div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${chargingIconSvg}${closedLine}</div>`,
+            html: `<div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${isClosed ? '' : chargingIconSvg}${closedLine}</div>`,
             className: 'bg-transparent border-0',
             iconSize: [32, 32],
             iconAnchor: [16, 16],
@@ -122,7 +123,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     if (categoryKey === 'Transportation' && isBusStop) {
         const busIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.22 210.57" fill="currentColor" class="w-5 h-5 text-white"><path d="M196.12,62.97h-6.21c-.39,0-.76.04-1.13.1V28.43c.03-.29.05-.57.05-.86,0-1.93-.63-3.82-1.83-5.63-.75-1.24-1.69-2.34-2.81-3.25C172.5,7.82,139.94,0,101.61,0S31.13,7.72,19.25,18.48c-1.47,1.14-2.68,2.59-3.53,4.27-.87,1.56-1.33,3.17-1.33,4.82,0,.15.01.29.02.43,0,.11-.02.21-.02.31v34.74c-.36-.05-.72-.09-1.09-.09h-6.21c-3.92,0-7.1,3.18-7.1,7.1v37.2c0,3.92,3.18,7.1,7.1,7.1h6.21c.37,0,.73-.04,1.09-.09v63.59c0,6.86,5.56,12.42,12.42,12.42h7.14v17.39c0,1.6,1.3,2.9,2.9,2.9h19.12c1.6,0,2.9-1.3,2.9-2.9v-17.39h85.46v17.39c0,1.6,1.3,2.9,2.9,2.9h19.12c1.6,0,2.9-1.3,2.9-2.9v-17.39h7.1c6.86,0,12.42-5.56,12.42-12.42v-63.6c.37.06.75.1,1.13.1h6.21c3.92,0,7.1-3.18,7.1-7.1v-37.2c0-3.92-3.18-7.1-7.1-7.1ZM58.14,17.99c0-4.55,3.68-8.23,8.23-8.23h70.48c4.55,0,8.23,3.68,8.23,8.23h0c0,4.55-3.68,8.23-8.23-8.23h-70.48c-4.55,0-8.23-3.68-8.23-8.23h0ZM46.99,174.76c-6.99,0-12.65-5.66-12.65-12.65s5.66-12.65,12.65-12.65,12.65,5.66,12.65,12.65-5.66,12.65-12.65,12.65ZM156.23,174.76c-6.99,0-12.65-5.66-12.65-12.65s5.66-12.65,12.65-12.65,12.65,5.66,12.65,12.65-5.66,12.65-12.65,12.65ZM171.94,122.45c0,6.28-5.09,11.37-11.37,11.37H42.65c-6.28,0-11.37-5.09-11.37-11.37V50.64c0-6.28,5.09-11.37,11.37-11.37h117.91c6.28,0,11.37,5.09,11.37,11.37v71.81Z"/></svg>`;
         return new L.DivIcon({
-            html: `<div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${busIconSvg}${closedLine}</div>`,
+            html: `<div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">${isClosed ? '' : busIconSvg}${closedLine}</div>`,
             className: 'bg-transparent border-0',
             iconSize: [32, 32],
             iconAnchor: [16, 16],
@@ -140,7 +141,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     if (categoryKey === 'Transportation' && isParking) {
         return new L.DivIcon({
             html: `<div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-md border-2 border-white relative" style="background-color: ${color};">
-                     <span class="text-white font-bold text-lg font-sans">P</span>
+                     ${isClosed ? '' : '<span class="text-white font-bold text-lg font-sans">P</span>'}
                      ${closedLine}
                    </div>`,
             className: 'bg-transparent border-0',
@@ -151,7 +152,8 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
     }
 
     // Use the default pin icon
-    const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-8 h-8 drop-shadow-lg" style="color: ${color};"><path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.1.4-.223.654-.369.395-.226.86-.52 1.358-.863.54-.38 1.14-.833 1.774-1.355a11.965 11.965 0 002.503-2.686 11.965 11.965 0 001.44-3.93C18.5 6.044 14.766 2 10 2S1.5 6.044 1.5 10c0 1.58.48 3.05 1.44 4.396a11.964 11.964 0 002.503 2.686c.635.522 1.234.975 1.774 1.355.498.343.963.637 1.358.863.254.146.468.27.654.369a5.745 5.745 0 00.28.14l.018.008.006.003zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>`;
+    const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-8 h-8 drop-shadow-lg" style="color: ${color};"><path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.1.4-.223.654-.369.395-.226.86-.52 1.358-.863.54-.38 1.14-.833 1.774-1.355a11.965 11.965 0 002.503-2.686 11.965 11.965 0 001.44-3.93C18.5 6.044 14.766 2 10 2S1.5 6.044 1.5 10c0 1.58.48 3.05 1.44 4.396a11.964 11.964 0 002.503 2.686c.635.522 1.234.975 1.774 1.355.498.343.963.637 1.358.863.254.146.468.27.654.369a5.745 5.745 0 00.28.14l.018.008.006.003zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>${isClosed ? '' : '<circle cx="10" cy="10" r="2.5" fill="white"/>'}</svg>`;
+
 
     return new L.DivIcon({
         html: `<div class="relative w-8 h-8">${iconSvg}${closedLinePin}</div>`,
@@ -165,7 +167,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
 // Icon for User Places
 export const userPlaceMarkerIcon = (place: Place, selected: boolean, selectedCategory: string | null) => {
     const isClosed = place.status === 'Closed';
-    const closedLine = isClosed ? `<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full" style="z-index: 10;"><div class="w-[140%] h-[3px] bg-black rotate-45 shadow-[0_0_1px_rgba(255,255,255,0.9)]"></div></div>` : '';
+    const closedLine = isClosed ? `<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full" style="z-index: 10;"><div class="w-[140%] h-[3px] bg-white rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>` : '';
 
     const { categoryKey, originalCategoryKey } = place;
 
@@ -210,7 +212,7 @@ export const userPlaceMarkerIcon = (place: Place, selected: boolean, selectedCat
     const popupAnchor = -anchor;
 
     return new L.DivIcon({
-        html: `<div class="${wrapperSizeClasses} rounded-full flex items-center justify-center shadow-lg border-2 border-white relative" style="background-color: ${color};"><svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" fill="currentColor" class="${iconSizeClasses} text-white">${iconSvg}</svg>${closedLine}</div>`,
+        html: `<div class="${wrapperSizeClasses} rounded-full flex items-center justify-center shadow-lg border-2 border-white relative" style="background-color: ${color};">${isClosed ? '' : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" fill="currentColor" class="${iconSizeClasses} text-white">${iconSvg}</svg>`}${closedLine}</div>`,
         className: 'bg-transparent border-0',
         iconSize: [size, size],
         iconAnchor: [anchor, anchor],
