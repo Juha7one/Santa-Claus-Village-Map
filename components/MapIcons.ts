@@ -8,8 +8,8 @@ import { Place } from '../types';
 // Icon for KML places
 export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved: boolean, placeId: string, subCategory?: string, originalId?: string, status?: 'Open' | 'Closed') => {
     const isClosed = status === 'Closed';
-    const closedLine = isClosed ? '<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full" style="z-index: 10;"><div class="w-[140%] h-[9px] bg-white rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>' : '';
-    const closedLinePin = isClosed ? '<div class="absolute top-0 left-0 w-8 h-8 flex items-center justify-center pointer-events-none overflow-hidden" style="z-index: 10;"><div class="w-[90%] h-[9px] bg-white rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>' : '';
+    const closedLine = isClosed ? '<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full" style="z-index: 10;"><div class="w-[140%] h-[4.5px] bg-white rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>' : '';
+    const closedLinePin = isClosed ? '<div class="absolute top-0 left-0 w-8 h-8 flex items-center justify-center pointer-events-none overflow-hidden" style="z-index: 10;"><div class="w-[90%] h-[4.5px] bg-white rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>' : '';
 
 
 
@@ -169,7 +169,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
 // Icon for User Places
 export const userPlaceMarkerIcon = (place: Place, selected: boolean, selectedCategory: string | null) => {
     const isClosed = place.status === 'Closed';
-    const closedLine = isClosed ? `<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full" style="z-index: 10;"><div class="w-[140%] h-[3px] bg-white rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>` : '';
+    const closedLine = isClosed ? `<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full" style="z-index: 10;"><div class="w-[140%] h-[4.5px] bg-white rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>` : '';
 
     const { categoryKey, originalCategoryKey } = place;
 
