@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import L from 'leaflet';
+// Deploy trigger: v1.2.1 diagnostic
+
 import Header from './components/Header';
 import MapView from './components/MapView';
 import AdminPanel from './components/AdminPanel';
