@@ -185,9 +185,20 @@ function ViewManager({
             isNewAllPlacesView ||
             (viewState === 'all-places' && (focusChanged || !hasSetInitialView.current || placeDeselected || versionChanged)) ||
             (viewState === 'category-view' && (!selectedCategory || focusChanged || placeDeselected || versionChanged))) {
-            if (isVillageFocused && bounds) {
-                // If Village is focused, zoom to the predefined village area
-                map.flyToBounds(bounds, { padding: [50, 50] });
+            if (isVillageFocused && villageBounds) {
+                // Determine pins inside the village area to zoom tightly
+                const allAvailablePlaces = [...places, ...userPlaces];
+                const villagePoints = allAvailablePlaces
+                    .filter(p => villageBounds.contains(p.location))
+                    .map(p => p.location);
+
+                if (villagePoints.length > 0) {
+                    const pinBounds = L.latLngBounds(villagePoints);
+                    map.flyToBounds(pinBounds, { padding: [80, 80] });
+                } else {
+                    // Fallback to village road area if no pins found
+                    map.flyToBounds(villageBounds, { padding: [50, 50] });
+                }
             } else {
                 // Show everything or falling back
                 const allAvailablePlaces = [...places, ...userPlaces];
