@@ -8,8 +8,8 @@ import { Place } from '../types';
 // Icon for KML places
 export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved: boolean, placeId: string, subCategory?: string, originalId?: string, status?: 'Open' | 'Closed') => {
     const isClosed = status === 'Closed';
-    const closedLine = isClosed ? '<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full"><div class="w-[140%] h-[2.5px] bg-black rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>' : '';
-    const closedLinePin = isClosed ? '<div class="absolute top-[2px] left-0 w-8 h-8 flex items-center justify-center pointer-events-none overflow-hidden"><div class="w-[100%] h-[2.5px] bg-black rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>' : '';
+    const closedLine = isClosed ? '<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full" style="z-index: 10;"><div class="w-[140%] h-[3px] bg-black rotate-45 shadow-[0_0_1px_rgba(255,255,255,0.9)]"></div></div>' : '';
+    const closedLinePin = isClosed ? '<div class="absolute top-0 left-0 w-8 h-8 flex items-center justify-center pointer-events-none overflow-hidden" style="z-index: 10;"><div class="w-[90%] h-[3px] bg-black rotate-45 shadow-[0_0_1px_rgba(255,255,255,0.9)]"></div></div>' : '';
 
     // We ignore the specific place.color from KML to ensure strict consistency 
     // with the footer filter buttons and accessibility standards.
@@ -165,7 +165,7 @@ export const placeMarkerIcon = (categoryKey: string, selected: boolean, isLoved:
 // Icon for User Places
 export const userPlaceMarkerIcon = (place: Place, selected: boolean, selectedCategory: string | null) => {
     const isClosed = place.status === 'Closed';
-    const closedLine = isClosed ? `<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full"><div class="w-[140%] h-[2.5px] bg-black rotate-45 shadow-[0_0_2px_rgba(0,0,0,0.5)]"></div></div>` : '';
+    const closedLine = isClosed ? `<div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full" style="z-index: 10;"><div class="w-[140%] h-[3px] bg-black rotate-45 shadow-[0_0_1px_rgba(255,255,255,0.9)]"></div></div>` : '';
 
     const { categoryKey, originalCategoryKey } = place;
 
