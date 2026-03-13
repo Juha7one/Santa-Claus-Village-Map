@@ -6,10 +6,10 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- Table: places (Map Markers)
 CREATE TABLE IF NOT EXISTS places (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
+  name JSONB NOT NULL, -- {en: "Name", fi: "Nimi", ...}
   category TEXT,
   category_key TEXT,
-  description TEXT,
+  description JSONB,
   image_url TEXT,
   location_lat DOUBLE PRECISION NOT NULL,
   location_lng DOUBLE PRECISION NOT NULL,
@@ -18,14 +18,16 @@ CREATE TABLE IF NOT EXISTS places (
   original_category_key TEXT,
   booking_url TEXT,
   linked_wp_url TEXT,
-  address TEXT,
+  address JSONB,
   phone TEXT,
   email TEXT,
   website TEXT,
-  opening_hours TEXT,
+  opening_hours JSONB,
   facebook_url TEXT,
   instagram_url TEXT,
   sub_category TEXT,
+  status TEXT DEFAULT 'Open',
+  is_deleted BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

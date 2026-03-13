@@ -76,7 +76,8 @@ export function usePlaces(translations: any) {
             openingHours: sp.opening_hours,
             facebookUrl: sp.facebook_url,
             instagramUrl: sp.instagram_url,
-            subCategory: sp.sub_category
+            subCategory: sp.sub_category,
+            status: sp.status
           }));
 
           // SUCCESS: Use ONLY the database points. 
