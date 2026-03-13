@@ -2,7 +2,7 @@
 
 An ultra-premium, mobile-first interactive map designed for visitors of the Santa Claus Village in Rovaniemi, Finland. This application provides a seamless navigation experience, real-time routing, and a comprehensive directory of services within the Arctic Circle.
 
-🚀 **Live App**: [Santa Claus Village Map]((https://merry-pastelito-8b7918.netlify.app/?admin=true))
+🚀 **Live App**: [Santa Claus Village Map](https://merry-pastelito-8b7918.netlify.app/?admin=true)
 
 ---
 
