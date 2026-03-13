@@ -127,9 +127,16 @@ const PlacePopup: React.FC<PlacePopupProps> = ({
 
                 {/* 1. Sticky Header */}
                 <div className="p-4 flex-shrink-0 border-b border-amber-100">
-                    <span id="popup-title" className="text-xs font-semibold uppercase" style={{ color: getCategoryColor(place.categoryKey) }}>
-                        {categoryLabel}
-                    </span>
+                    <div className="flex justify-between items-start">
+                        <span id="popup-title" className="text-xs font-semibold uppercase" style={{ color: getCategoryColor(place.categoryKey) }}>
+                            {categoryLabel}
+                        </span>
+                        {place.status && (
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter shadow-sm ${place.status === 'Open' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-gray-100 text-gray-700 border border-gray-200'}`}>
+                                {place.status === 'Open' ? t.ui.open : t.ui.closed}
+                            </span>
+                        )}
+                    </div>
                     <h3 className="text-lg font-bold mt-1 text-gray-900 leading-tight">{localizedName}</h3>
                 </div>
 

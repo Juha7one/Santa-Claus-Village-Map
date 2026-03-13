@@ -39,6 +39,8 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Joulupukin Pajakylä',
             village: 'Pajakylä',
             all: 'Kaikki',
+            open: 'Avoinna',
+            closed: 'Suljettu',
         },
         onboarding: {
             welcomeTitle: 'Tervetuloa Pajakylän Kartalle!',
@@ -97,6 +99,8 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Santa Claus Village',
             village: 'Village',
             all: 'All',
+            open: 'Open',
+            closed: 'Closed',
         },
         onboarding: {
             welcomeTitle: 'Welcome to the Village Map!',
@@ -151,6 +155,8 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Weihnachtsmann-Dorf',
             village: 'Dorf',
             all: 'Alle',
+            open: 'Geöffnet',
+            closed: 'Geschlossen',
         },
         onboarding: {
             welcomeTitle: 'Willkommen auf der Dorfkarte!',
@@ -209,6 +215,8 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Village du Père Noël',
             village: 'Village',
             all: 'Tout',
+            open: 'Ouvert',
+            closed: 'Fermé',
         },
         onboarding: {
             welcomeTitle: 'Bienvenue sur la carte du Village !',
@@ -267,6 +275,8 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Pueblo de Papá Noel',
             village: 'Pueblo',
             all: 'Todo',
+            open: 'Abierto',
+            closed: 'Cerrado',
         },
         onboarding: {
             welcomeTitle: '¡Bienvenido al mapa del pueblo!',
@@ -325,6 +335,8 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Villaggio di Babbo Natale',
             village: 'Villaggio',
             all: 'Tutto',
+            open: 'Aperto',
+            closed: 'Chiuso',
         },
         onboarding: {
             welcomeTitle: 'Benvenuto nella mappa del Villaggio!',
@@ -383,6 +395,8 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'Tomtens Pajakyla',
             village: 'Byn',
             all: 'Alla',
+            open: 'Öppet',
+            closed: 'Stängt',
         },
         onboarding: {
             welcomeTitle: 'Välkommen till bykartan!',
@@ -441,6 +455,8 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: 'サンタクロース村',
             village: '村',
             all: '全て',
+            open: '営業中',
+            closed: '閉店',
         },
         onboarding: {
             welcomeTitle: '村のマップへようこそ！',
@@ -499,6 +515,8 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: '圣诞老人村',
             village: '村庄',
             all: '全部',
+            open: '营业中',
+            closed: '已打烊',
         },
         onboarding: {
             welcomeTitle: '欢迎来到村庄地图！',
@@ -557,6 +575,8 @@ export const uiTranslations: Record<string, any> = {
             mapTitle: '산타클로스 마을',
             village: '마을',
             all: '전체',
+            open: '영업 중',
+            closed: '영업 종료',
         },
         onboarding: {
             welcomeTitle: '마을 지도에 오신 것을 환영합니다!',

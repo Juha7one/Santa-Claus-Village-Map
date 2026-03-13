@@ -28,6 +28,7 @@ export interface Place {
   facebookUrl?: string;
   instagramUrl?: string;
   subCategory?: string;
+  status?: 'Open' | 'Closed';
 }
 
 export interface LineData {

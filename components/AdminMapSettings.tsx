@@ -41,6 +41,7 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
     const [facebookUrl, setFacebookUrl] = useState('');
     const [instagramUrl, setInstagramUrl] = useState('');
     const [subCategory, setSubCategory] = useState('');
+    const [status, setStatus] = useState<'Open' | 'Closed'>('Open');
     const [isSyncing, setIsSyncing] = useState(false);
     const [latInput, setLatInput] = useState('');
     const [lngInput, setLngInput] = useState('');
@@ -77,6 +78,7 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
             setBookingUrl(existingPlace.bookingUrl || '');
             setLatInput(existingPlace.location.lat.toString());
             setLngInput(existingPlace.location.lng.toString());
+            setStatus(existingPlace.status || 'Open');
         } else if (clickedLocation) {
             setName('');
             setCategoryKey('Attractions');
@@ -94,6 +96,7 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
             setSubCategory('');
             setLatInput(clickedLocation.lat.toString());
             setLngInput(clickedLocation.lng.toString());
+            setStatus('Open');
         }
     }, [existingPlace, clickedLocation]);
 
@@ -147,7 +150,8 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
                 opening_hours: results.openingHours,
                 facebook_url: results.facebookUrl.trim() || null,
                 instagram_url: results.instagramUrl.trim() || null,
-                sub_category: subCategory.trim() || null
+                sub_category: subCategory.trim() || null,
+                status: status
             });
 
             setTimeout(() => setSyncStatus(null), 3000);
@@ -191,7 +195,8 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
                 opening_hours: { ...fullTranslations.openingHours, en: openingHours.trim() },
                 facebook_url: facebookUrl.trim() || null,
                 instagram_url: instagramUrl.trim() || null,
-                sub_category: subCategory.trim() || null
+                sub_category: subCategory.trim() || null,
+                status: status
             };
 
             if (existingPlace && existingPlace.id && !existingPlace.id.startsWith('user_place_')) {
@@ -291,6 +296,26 @@ const AdminMapSettings: React.FC<AdminMapSettingsProps> = ({ existingPlace, clic
                     <select value={categoryKey} onChange={(e) => setCategoryKey(e.target.value)} className="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500">
                         {CATEGORIES.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
                     </select>
+                </div>
+
+                <div>
+                    <label className="block text-gray-700 font-bold mb-1 border-t pt-2">Status</label>
+                    <div className="flex bg-white p-1 rounded-lg border border-gray-200">
+                        <button
+                            type="button"
+                            onClick={() => setStatus('Open')}
+                            className={`flex-1 py-2 text-xs font-bold rounded-md transition-all ${status === 'Open' ? 'bg-green-600 text-white shadow-sm' : 'text-gray-500 hover:bg-gray-50'}`}
+                        >
+                            {status === 'Open' ? '✓ Open' : 'Open'}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setStatus('Closed')}
+                            className={`flex-1 py-2 text-xs font-bold rounded-md transition-all ${status === 'Closed' ? 'bg-gray-600 text-white shadow-sm' : 'text-gray-500 hover:bg-gray-50'}`}
+                        >
+                            {status === 'Closed' ? '✓ Closed' : 'Closed'}
+                        </button>
+                    </div>
                 </div>
 
                 {categoryKey === 'Transportation' && (

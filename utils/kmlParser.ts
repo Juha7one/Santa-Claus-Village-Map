@@ -173,6 +173,7 @@ export const parseKML = (kmlString: string, translations: any): { places: Place[
                     bookingUrl: bookingUrl,
                     linkedWpUrl: linkedWpUrl,
                     website: website,
+                    status: 'Open',
                 });
             }
         } else if (lineStrings.length > 0) {
