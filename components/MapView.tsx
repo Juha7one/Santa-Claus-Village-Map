@@ -390,7 +390,7 @@ const PlaceMarker = React.memo(({ place, route, selectedCategory, routeInfo, onS
         <Marker
             position={place.location}
             // We pass categoryKey to determine color from constant palette
-            icon={placeMarkerIcon(place.categoryKey, isSelected, isLoved, place.id, place.subCategory, place.originalId)}
+            icon={placeMarkerIcon(place.categoryKey, isSelected, isLoved, place.id, place.subCategory, place.originalId, place.status)}
             zIndexOffset={zIndex}
             opacity={opacity}
             draggable={isDraggable}
