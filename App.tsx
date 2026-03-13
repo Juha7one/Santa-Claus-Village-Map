@@ -46,7 +46,7 @@ function App() {
 
   const [isDbAdminMode, setIsDbAdminMode] = useState(false);
   const [dbAdminClickedCoords, setDbAdminClickedCoords] = useState<Coordinates | null>(null);
-  const [isVillageFocused, setIsVillageFocused] = useState(false);
+  const [isVillageFocused, setIsVillageFocused] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [viewVersion, setViewVersion] = useState(0);
